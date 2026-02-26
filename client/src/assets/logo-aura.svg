@@ -1,0 +1,14 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 60" width="250" height="60">
+	<defs>
+		<image  width="68" height="60" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAAA8AQMAAADlrI5dAAAAAXNSR0IB2cksfwAAAAZQTFRFAAAA////pdmf3QAAAAJ0Uk5TAP9bkSK1AAABTUlEQVR4nGXSPU6EQBQH8PcAsyQWYCyMjXADLS2MsCfwCnoDLUzsgMRES4/gNawEs4WlR2CstIPCZMnCjv83zMRCislvwjzmfcCE5/QdC4vOVk7nb05Z41QscyvdWPFWpbP80Wmx7uNZUeeU1U5FacVbslqsnaKO7Feymr4OjTTRasohfyS6vw0hBFCw8aCkJb0zMoSAYXdscpaA/gA5MG6g5qIbQpZQTtopYIRqL6u1hy0NYVESM0L7GFGVqFlKFONF9YBrFKQ95AVpmoKk/TjpIQmd1cdFGXeztN5zmvaNVFrcHLf23FUGSQOy5WstGsKjz6JUuHcKpFKFrLQnrWkYd5qaK8m+KmUrFalUjrDpo6mIZE1aVInTkqpKTddQqnQDr1ESz31W6dYzU9B9jKmbybyEdr7Rt5P/48SbwE3/7vG//v6c6yeny2csvyP9qr22e/ZjAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+		tspan { white-space:pre } 
+		.t0 { font-size: 40px;fill: #ffffff;font-weight: 400;font-family: "DejaVuSans", "DejaVu Sans" } 
+	</style>
+	<use id="Background" href="#img1" x="0" y="0"/>
+	<text id="Text layer 1" transform="translate(84,47)">
+		<tspan x="0" y="0" class="t0">A</tspan><tspan  y="0" class="t0">u</tspan><tspan  y="0" class="t0">r</tspan><tspan  y="0" class="t0">a</tspan><tspan  y="0" class="t0"> </tspan><tspan  y="0" class="t0">A</tspan><tspan  y="0" class="t0">I</tspan><tspan  y="0" class="t0">
+</tspan>
+	</text>
+</svg>

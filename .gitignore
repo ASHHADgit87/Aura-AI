@@ -1,0 +1,30 @@
+# Node + build
+node_modules/
+dist/
+build/
+.vite/
+.cache/
+coverage/
+
+# TypeScript / tooling
+*.tsbuildinfo
+/.turbo
+/.parcel-cache
+
+# Env + logs
+.env
+.env.local
+.env.*
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+*.log
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Misc
+*.tgz
