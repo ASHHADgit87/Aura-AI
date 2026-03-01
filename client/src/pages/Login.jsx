@@ -1,33 +1,28 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import axios from "../configs/axios";
-import { useAppContext } from "../context/AuthContext";
+import { useAppContext } from "../context/authContext";
+import logoAura from "../assets/logo-aura.svg";
 
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAppContext();
-
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
 
-  const onChangeHandler = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const onChangeHandler = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-/*************  ✨ Windsurf Command ⭐  *************/
-/**
- * Handles changes to form data fields.
- * Updates the formData state with the new value.
- * @param {React.ChangeEvent<HTMLFormElement>} e - The change event.
- */
-/*******  becfcf55-0d96-42a8-b761-6e9741f5154f  *******/  const onSubmitHandler = async (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) return toast.error("Please fill in all fields");
     try {
       setLoading(true);
       const { data } = await axios.post("/api/auth/login", formData);
+      
+      localStorage.setItem("aura_user_exists", "true");
+      
       login(data.token, data.user);
       toast.success("Welcome back!");
       navigate("/");
@@ -40,44 +35,62 @@ const Login = () => {
 
   return (
     <section
-      className="flex flex-col items-center justify-center text-white text-sm px-4 min-h-screen font-poppins"
-      style={{ background: `linear-gradient(180deg, #0d0d1a 0%, #1a0533 50%, #0d0d1a 100%)` }}
+      className="flex flex-col items-center justify-center text-white pb-20 px-6 font-poppins min-h-screen"
+      style={{
+        background: "linear-gradient(180deg, #FF7A18 0%, #E10600 40%, #E10600 80%, #FF4DA6 100%)",
+      }}
     >
-      <div onClick={() => navigate("/")} className="flex items-center gap-2 mb-8 cursor-pointer">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-sm font-bold">A</div>
-        <span className="text-lg font-bold tracking-tight">Aura<span className="text-violet-400">AI</span></span>
+      <div onClick={() => navigate("/")} className="flex items-center mb-3 mt-8 cursor-pointer transition-transform hover:scale-105">
+        <img src={logoAura} alt="Aura AI" className="h-10 w-auto min-w-[60px]" />
       </div>
 
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-8 w-full max-w-md">
-        <h1 className="text-2xl font-semibold mb-1">Welcome back</h1>
-        <p className="text-white/40 text-xs mb-6">Sign in to continue to AuraAI</p>
+      <div className="bg-black/20 backdrop-blur-xl border border-white/20 rounded-3xl p-8 w-full max-w-md shadow-2xl">
+        <h1 className="text-3xl font-bold mb-2 text-center">Welcome back</h1>
+        <p className="text-sm mb-8 text-center text-white/80">Sign in to continue to AuraAI</p>
 
-        <form onSubmit={onSubmitHandler} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-white/60 text-xs">Email</label>
-            <input type="email" name="email" value={formData.email} onChange={onChangeHandler} placeholder="you@example.com"
-              className="bg-white/5 border border-white/10 focus:border-violet-500/60 outline-none rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-white/20 transition-colors" required />
+        <form onSubmit={onSubmitHandler} className="flex flex-col gap-5">
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-bold uppercase tracking-widest text-white/70 ml-1">Email</label>
+            <input 
+              type="email" 
+              name="email" 
+              value={formData.email} 
+              onChange={onChangeHandler} 
+              placeholder="you@example.com" 
+              required
+              className="bg-white/10 border border-white/10 outline-none rounded-xl px-4 py-2 text-sm text-white placeholder:text-white/30 transition-all focus:bg-white/20 focus:border-white/40"
+            />
           </div>
-          <div className="flex flex-col gap-1.5">
-            <label className="text-white/60 text-xs">Password</label>
-            <input type="password" name="password" value={formData.password} onChange={onChangeHandler} placeholder="••••••••"
-              className="bg-white/5 border border-white/10 focus:border-violet-500/60 outline-none rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-white/20 transition-colors" required />
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-bold uppercase tracking-widest text-white/70 ml-1">Password</label>
+            <input 
+              type="password" 
+              name="password" 
+              value={formData.password} 
+              onChange={onChangeHandler} 
+              placeholder="••••••••" 
+              required
+              className="bg-white/10 border border-white/10 outline-none rounded-xl px-4 py-2 text-sm text-white placeholder:text-white/30 transition-all focus:bg-white/20 focus:border-white/40"
+            />
           </div>
-          <button type="submit" disabled={loading}
-            className="mt-2 w-full py-2.5 bg-gradient-to-r from-violet-600 to-pink-600 hover:brightness-110 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed">
-            {loading ? <><span>Signing in</span><Loader2 className="animate-spin w-4 h-4" /></> : "Sign In"}
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="mt-2 w-full py-2.5 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 hover:scale-[1.02] transition-all duration-300 shadow-xl flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            {loading ? <Loader2 className="animate-spin w-5 h-5" /> : "Sign In"}
           </button>
         </form>
 
-        <div className="flex items-center gap-3 my-5">
-          <div className="flex-1 h-px bg-white/10" />
-          <span className="text-white/20 text-xs">or</span>
-          <div className="flex-1 h-px bg-white/10" />
+        <div className="flex items-center gap-4 my-8">
+          <div className="flex-1 h-px bg-white/20" />
+          <span className="text-white/40 text-[10px] font-bold uppercase tracking-tighter">or</span>
+          <div className="flex-1 h-px bg-white/20" />
         </div>
 
-        <p className="text-center text-white/40 text-xs">
+        <p className="text-center text-sm font-medium">
           Don't have an account?{" "}
-          <Link to="/register" className="text-violet-400 hover:text-violet-300 transition-colors">Sign up for free</Link>
+          <Link to="/register" className="font-bold underline hover:text-white/80 transition-colors">Sign up for free</Link>
         </p>
       </div>
     </section>

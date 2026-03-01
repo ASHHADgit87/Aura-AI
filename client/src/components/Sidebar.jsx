@@ -20,25 +20,33 @@ const Sidebar = () => {
 
   return (
     <aside
-      className={`flex flex-col h-screen sticky top-0 border-r border-white/5 bg-[#0d0d1a]/80 backdrop-blur-md transition-all duration-300 ${
-        collapsed ? "w-16" : "w-56"
-      }`}
+      className="flex flex-col h-screen sticky top-0 transition-all duration-300"
+      style={{
+        width: collapsed ? "64px" : "224px",
+        background: "#0F0F14",
+        borderRight: "1px solid rgba(255,255,255,0.05)",
+      }}
     >
       {/* Logo + Collapse Toggle */}
-      <div className="flex items-center justify-between px-4 py-5 border-b border-white/5">
+      <div className="flex items-center justify-between px-4 py-5"
+        style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
         {!collapsed && (
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-xs font-bold shrink-0">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0"
+              style={{ background: "linear-gradient(135deg, #FF7A18, #E10600)" }}>
               A
             </div>
             <span className="text-sm font-bold tracking-tight text-white">
-              Aura<span className="text-violet-400">AI</span>
+              Aura<span style={{ color: "#FF7A18" }}>AI</span>
             </span>
           </Link>
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="w-7 h-7 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-lg transition text-white/40 hover:text-white ml-auto"
+          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all ml-auto"
+          style={{ background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.4)" }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,122,24,0.15)"; e.currentTarget.style.color = "#FF7A18"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "rgba(255,255,255,0.4)"; }}
         >
           {collapsed ? "→" : "←"}
         </button>
@@ -52,11 +60,19 @@ const Sidebar = () => {
             <Link
               key={item.route}
               to={item.route}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 ${
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200"
+              style={
                 isActive
-                  ? "bg-violet-600/20 text-violet-300 border border-violet-500/30"
-                  : "text-white/40 hover:text-white hover:bg-white/5"
-              }`}
+                  ? {
+                      background: "rgba(225,6,0,0.12)",
+                      color: "#FF7A18",
+                      borderLeft: "2px solid #FF7A18",
+                      paddingLeft: "10px",
+                    }
+                  : { color: "rgba(255,255,255,0.4)" }
+              }
+              onMouseEnter={(e) => { if (!isActive) { e.currentTarget.style.color = "#F5F5F7"; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; } }}
+              onMouseLeave={(e) => { if (!isActive) { e.currentTarget.style.color = "rgba(255,255,255,0.4)"; e.currentTarget.style.background = "transparent"; } }}
             >
               <span className="text-base shrink-0">{item.icon}</span>
               {!collapsed && <span className="truncate">{item.title}</span>}
@@ -66,22 +82,24 @@ const Sidebar = () => {
       </nav>
 
       {/* User + Logout */}
-      <div className="px-2 py-4 border-t border-white/5">
+      <div className="px-2 py-4" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         {user && (
           <div className={`flex items-center gap-2 px-3 py-2 mb-2 ${collapsed ? "justify-center" : ""}`}>
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-xs font-bold shrink-0">
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
+              style={{ background: "linear-gradient(135deg, #FF7A18, #E10600)" }}>
               {user.name?.charAt(0).toUpperCase()}
             </div>
             {!collapsed && (
-              <span className="text-xs text-white/50 truncate">{user.name}</span>
+              <span className="text-xs truncate" style={{ color: "rgba(255,255,255,0.5)" }}>{user.name}</span>
             )}
           </div>
         )}
         <button
           onClick={logout}
-          className={`flex items-center gap-2 px-3 py-2 w-full rounded-xl text-xs text-white/30 hover:text-red-400 hover:bg-white/5 transition-all ${
-            collapsed ? "justify-center" : ""
-          }`}
+          className={`flex items-center gap-2 px-3 py-2 w-full rounded-xl text-xs transition-all ${collapsed ? "justify-center" : ""}`}
+          style={{ color: "rgba(255,255,255,0.3)" }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = "#E10600"; e.currentTarget.style.background = "rgba(225,6,0,0.08)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.3)"; e.currentTarget.style.background = "transparent"; }}
         >
           <span>🚪</span>
           {!collapsed && <span>Logout</span>}

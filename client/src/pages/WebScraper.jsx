@@ -51,42 +51,50 @@ const WebScraper = () => {
       <section className="flex flex-col items-center text-white text-sm pb-20 px-4 font-poppins">
         <div className="w-full max-w-4xl mt-10 mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center text-lg">🕷️</div>
-            <h1 className="text-2xl font-semibold">AI Web Scraper</h1>
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+              style={{ background: "linear-gradient(135deg, #FF7A18, #E10600)" }}>🕷️</div>
+            <h1 className="text-2xl font-semibold" style={{ color: "#F5F5F7" }}>AI Web Scraper</h1>
           </div>
-          <p className="text-white/40 text-xs">Enter any URL and AI will extract structured data from the page instantly.</p>
+          <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Enter any URL and AI will extract structured data from the page instantly.</p>
         </div>
 
         <form onSubmit={onSubmitHandler} className="w-full max-w-4xl flex flex-col gap-3">
-          <div className="bg-white/5 border border-white/10 focus-within:border-red-500/50 rounded-xl px-4 py-3 flex items-center gap-3 transition-all">
-            <Globe className="w-4 h-4 text-white/30 shrink-0" />
+          <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex items-center gap-3 transition-all backdrop-blur-lg"
+            onFocus={(e) => e.currentTarget.style.borderColor = "rgba(255,122,24,0.4)"}
+            onBlur={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
+          >
+            <Globe className="w-4 h-4 shrink-0" style={{ color: "rgba(255,255,255,0.3)" }} />
             <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://example.com"
               className="bg-transparent outline-none text-white/90 placeholder:text-white/20 w-full text-sm" />
           </div>
-          <div className="bg-white/5 border border-white/10 focus-within:border-red-500/50 rounded-xl p-4 transition-all">
+          <div className="bg-white/5 border border-white/10 rounded-xl p-4 transition-all backdrop-blur-lg"
+            onFocus={(e) => e.currentTarget.style.borderColor = "rgba(255,122,24,0.4)"}
+            onBlur={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
+          >
             <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} rows={2}
               placeholder="Optional: What do you want to extract? (e.g. product names and prices)"
               className="bg-transparent outline-none text-white/90 placeholder:text-white/20 resize-none w-full text-sm" />
           </div>
           <button type="submit" disabled={loading || !url.trim()}
-            className="w-full py-2.5 bg-gradient-to-r from-red-600 to-pink-600 hover:brightness-110 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            className="w-full py-2.5 rounded-lg font-medium text-sm transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:brightness-110"
+            style={{ background: "linear-gradient(to right, #FF7A18, #E10600, #FF4DA6)", boxShadow: "0 0 35px rgba(255,122,24,0.4)" }}>
             {loading ? <><span>Scraping</span><Loader2 className="animate-spin w-4 h-4" /></> : "Scrape Page →"}
           </button>
         </form>
 
         {loading && (
           <div className="w-full max-w-4xl mt-6 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center h-48 gap-3">
-            <Loader2 className="w-8 h-8 text-red-400 animate-spin" />
-            <p className="text-white/40 text-xs">Scraping and extracting data...</p>
+            <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#FF7A18" }} />
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Scraping and extracting data...</p>
           </div>
         )}
 
         {result && !loading && (
-          <div className="w-full max-w-4xl mt-6 bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+          <div className="w-full max-w-4xl mt-6 bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-lg">
             <div className="flex items-center justify-between px-5 py-3 border-b border-white/10">
               <div className="flex items-center gap-2">
-                <Globe className="w-4 h-4 text-red-400" />
-                <span className="text-xs text-white/40 truncate max-w-xs">{url}</span>
+                <Globe className="w-4 h-4" style={{ color: "#FF7A18" }} />
+                <span className="text-xs truncate max-w-xs" style={{ color: "rgba(255,255,255,0.4)" }}>{url}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex items-center bg-white/5 rounded-lg p-1 gap-1">
@@ -107,15 +115,17 @@ const WebScraper = () => {
                 <table className="w-full text-xs">
                   <thead>
                     <tr className="border-b border-white/10">
-                      <th className="text-left px-5 py-3 text-white/30 uppercase tracking-widest font-medium w-1/3">Key</th>
-                      <th className="text-left px-5 py-3 text-white/30 uppercase tracking-widest font-medium">Value</th>
+                      <th className="text-left px-5 py-3 uppercase tracking-widest font-medium w-1/3"
+                        style={{ color: "rgba(255,255,255,0.3)" }}>Key</th>
+                      <th className="text-left px-5 py-3 uppercase tracking-widest font-medium"
+                        style={{ color: "rgba(255,255,255,0.3)" }}>Value</th>
                     </tr>
                   </thead>
                   <tbody>
                     {tableRows.map((row, index) => (
                       <tr key={index} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                        <td className="px-5 py-3 text-red-300 font-mono">{row.key}</td>
-                        <td className="px-5 py-3 text-white/60 break-all">{row.value}</td>
+                        <td className="px-5 py-3 font-mono" style={{ color: "#FF7A18" }}>{row.key}</td>
+                        <td className="px-5 py-3 break-all" style={{ color: "rgba(255,255,255,0.6)" }}>{row.value}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -125,7 +135,8 @@ const WebScraper = () => {
 
             {viewMode === "json" && (
               <div className="p-5">
-                <pre className="text-white/60 text-xs leading-relaxed overflow-x-auto whitespace-pre-wrap font-mono">
+                <pre className="text-xs leading-relaxed overflow-x-auto whitespace-pre-wrap font-mono"
+                  style={{ color: "rgba(255,255,255,0.6)" }}>
                   {JSON.stringify(result, null, 2)}
                 </pre>
               </div>
@@ -136,7 +147,7 @@ const WebScraper = () => {
         {!result && !loading && (
           <div className="w-full max-w-4xl mt-6 bg-white/5 border border-white/10 border-dashed rounded-2xl flex flex-col items-center justify-center h-48 gap-3">
             <Code className="w-8 h-8 text-white/10" />
-            <p className="text-white/20 text-xs">Scraped data will appear here as a table or JSON</p>
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>Scraped data will appear here as a table or JSON</p>
           </div>
         )}
       </section>

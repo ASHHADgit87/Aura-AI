@@ -44,21 +44,27 @@ const ImageGenerator = () => {
       <section className="flex flex-col items-center text-white text-sm pb-20 px-4 font-poppins">
         <div className="w-full max-w-3xl mt-10 mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-lg">🎨</div>
-            <h1 className="text-2xl font-semibold">Image Generator</h1>
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+              style={{ background: "linear-gradient(135deg, #FF7A18, #E10600)" }}>🎨</div>
+            <h1 className="text-2xl font-semibold" style={{ color: "#F5F5F7" }}>Image Generator</h1>
           </div>
-          <p className="text-white/40 text-xs">Describe anything and AI will generate it for you instantly.</p>
+          <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Describe anything and AI will generate it for you instantly.</p>
         </div>
 
-        <form onSubmit={onSubmitHandler} className="bg-white/5 border border-white/10 focus-within:border-violet-500/50 rounded-xl p-4 w-full max-w-3xl transition-all">
+        <form onSubmit={onSubmitHandler}
+          className="bg-white/5 border border-white/10 rounded-xl p-4 w-full max-w-3xl transition-all backdrop-blur-lg"
+          onFocus={(e) => e.currentTarget.style.borderColor = "rgba(255,122,24,0.4)"}
+          onBlur={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
+        >
           <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); e.currentTarget.form?.requestSubmit(); } }}
             rows={3} placeholder="A futuristic city at night with neon lights and flying cars..."
             className="bg-transparent outline-none text-white/90 placeholder:text-white/20 resize-none w-full text-sm" />
           <div className="flex items-center justify-between mt-3">
-            <span className="text-white/20 text-xs">{prompt.length} chars</span>
+            <span className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>{prompt.length} chars</span>
             <button type="submit" disabled={loading}
-              className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-violet-600 to-pink-600 hover:brightness-110 rounded-lg font-medium text-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed">
+              className="flex items-center gap-2 px-5 py-2 rounded-lg font-medium text-sm transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed hover:brightness-110"
+              style={{ background: "linear-gradient(to right, #FF7A18, #E10600, #FF4DA6)", boxShadow: "0 0 35px rgba(255,122,24,0.4)" }}>
               {loading ? <><span>Generating</span><Loader2 className="animate-spin w-4 h-4" /></> : "Generate →"}
             </button>
           </div>
@@ -68,13 +74,13 @@ const ImageGenerator = () => {
           {!imageUrl && !loading && (
             <div className="bg-white/5 border border-white/10 border-dashed rounded-2xl flex flex-col items-center justify-center h-80 gap-3">
               <ImageIcon className="w-10 h-10 text-white/10" />
-              <p className="text-white/20 text-xs">Your generated image will appear here</p>
+              <p className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>Your generated image will appear here</p>
             </div>
           )}
           {loading && (
             <div className="bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center h-80 gap-3">
-              <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
-              <p className="text-white/40 text-xs">Generating your image...</p>
+              <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#FF7A18" }} />
+              <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Generating your image...</p>
             </div>
           )}
           {imageUrl && !loading && (
@@ -82,7 +88,7 @@ const ImageGenerator = () => {
               <img src={imageUrl} alt={prompt} className="w-full object-cover rounded-2xl"
                 onError={() => { toast.error("Failed to load image. Try a different prompt."); setImageUrl(""); }} />
               <div className="flex items-center justify-between px-4 py-3 border-t border-white/10">
-                <p className="text-white/40 text-xs truncate max-w-xs">{prompt}</p>
+                <p className="text-xs truncate max-w-xs" style={{ color: "rgba(255,255,255,0.4)" }}>{prompt}</p>
                 <button onClick={onDownloadHandler}
                   className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/15 rounded-lg text-xs font-medium transition-all">
                   <Download className="w-3.5 h-3.5" /> Download

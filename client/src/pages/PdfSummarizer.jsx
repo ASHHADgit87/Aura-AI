@@ -59,40 +59,45 @@ const PdfSummarizer = () => {
       <section className="flex flex-col items-center text-white text-sm pb-20 px-4 font-poppins">
         <div className="w-full max-w-3xl mt-10 mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-lg">📄</div>
-            <h1 className="text-2xl font-semibold">PDF Summarizer</h1>
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+              style={{ background: "linear-gradient(135deg, #FF7A18, #E10600)" }}>📄</div>
+            <h1 className="text-2xl font-semibold" style={{ color: "#F5F5F7" }}>PDF Summarizer</h1>
           </div>
-          <p className="text-white/40 text-xs">Upload any PDF and get a clear AI-powered summary in seconds.</p>
+          <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Upload any PDF and get a clear AI-powered summary in seconds.</p>
         </div>
 
         <form onSubmit={onSubmitHandler} className="w-full max-w-3xl flex flex-col gap-4">
-          <label className="bg-white/5 border border-white/10 border-dashed hover:border-blue-500/50 rounded-xl p-10 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all group">
+          <label className="bg-white/5 border border-white/10 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all group backdrop-blur-lg"
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = "rgba(255,122,24,0.4)"}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
+          >
             <input type="file" accept="application/pdf" onChange={onFileChange} className="hidden" />
-            <Upload className="w-8 h-8 text-white/20 group-hover:text-blue-400 transition-colors" />
+            <Upload className="w-8 h-8 text-white/20 group-hover:text-[#FF7A18] transition-colors" />
             {file ? (
-              <div className="flex items-center gap-2 text-blue-400">
+              <div className="flex items-center gap-2" style={{ color: "#FF7A18" }}>
                 <FileText className="w-4 h-4" />
                 <span className="text-sm font-medium">{file.name}</span>
               </div>
             ) : (
               <>
-                <p className="text-white/40 text-sm">Click to upload or drag & drop your PDF</p>
-                <p className="text-white/20 text-xs">Max size: 10MB</p>
+                <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>Click to upload or drag & drop your PDF</p>
+                <p className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>Max size: 10MB</p>
               </>
             )}
           </label>
           <button type="submit" disabled={loading || !file}
-            className="w-full py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:brightness-110 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            className="w-full py-2.5 rounded-lg font-medium text-sm transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:brightness-110"
+            style={{ background: "linear-gradient(to right, #FF7A18, #E10600, #FF4DA6)", boxShadow: "0 0 35px rgba(255,122,24,0.4)" }}>
             {loading ? <><span>Summarizing</span><Loader2 className="animate-spin w-4 h-4" /></> : "Summarize PDF →"}
           </button>
         </form>
 
         {summary && (
-          <div className="w-full max-w-3xl mt-6 bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+          <div className="w-full max-w-3xl mt-6 bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-lg">
             <div className="flex items-center justify-between px-5 py-3 border-b border-white/10">
               <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-blue-400" />
-                <span className="text-xs font-medium text-white/60">{file?.name}</span>
+                <FileText className="w-4 h-4" style={{ color: "#FF7A18" }} />
+                <span className="text-xs font-medium" style={{ color: "rgba(255,255,255,0.6)" }}>{file?.name}</span>
               </div>
               <div className="flex items-center gap-2">
                 <button onClick={onCopyHandler} className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/15 rounded-lg text-xs transition-all">
@@ -105,7 +110,7 @@ const PdfSummarizer = () => {
               </div>
             </div>
             <div className="px-5 py-4">
-              <p className="text-white/70 text-sm leading-relaxed whitespace-pre-wrap">{summary}</p>
+              <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: "rgba(255,255,255,0.7)" }}>{summary}</p>
             </div>
           </div>
         )}
@@ -113,7 +118,7 @@ const PdfSummarizer = () => {
         {!summary && !loading && (
           <div className="w-full max-w-3xl mt-6 bg-white/5 border border-white/10 border-dashed rounded-2xl flex flex-col items-center justify-center h-48 gap-3">
             <FileText className="w-8 h-8 text-white/10" />
-            <p className="text-white/20 text-xs">Your PDF summary will appear here</p>
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>Your PDF summary will appear here</p>
           </div>
         )}
       </section>

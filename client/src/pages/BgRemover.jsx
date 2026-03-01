@@ -51,40 +51,46 @@ const BgRemover = () => {
       <section className="flex flex-col items-center text-white text-sm pb-20 px-4 font-poppins">
         <div className="w-full max-w-4xl mt-10 mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-lg">✂️</div>
-            <h1 className="text-2xl font-semibold">Background Remover</h1>
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+              style={{ background: "linear-gradient(135deg, #FF7A18, #E10600)" }}>✂️</div>
+            <h1 className="text-2xl font-semibold" style={{ color: "#F5F5F7" }}>Background Remover</h1>
           </div>
-          <p className="text-white/40 text-xs">Upload any image and AI will remove the background instantly.</p>
+          <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Upload any image and AI will remove the background instantly.</p>
         </div>
 
         <form onSubmit={onSubmitHandler} className="w-full max-w-4xl flex flex-col gap-4">
-          <label className="bg-white/5 border border-white/10 border-dashed hover:border-orange-500/50 rounded-xl cursor-pointer transition-all group overflow-hidden">
+          <label className="bg-white/5 border border-white/10 border-dashed rounded-xl cursor-pointer transition-all group overflow-hidden backdrop-blur-lg"
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = "rgba(255,122,24,0.4)"}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
+          >
             <input type="file" accept="image/*" onChange={onFileChange} className="hidden" />
             {preview ? (
               <img src={preview} alt="preview" className="w-full max-h-64 object-contain rounded-xl" />
             ) : (
               <div className="flex flex-col items-center justify-center gap-3 py-12">
-                <Upload className="w-8 h-8 text-white/20 group-hover:text-orange-400 transition-colors" />
-                <p className="text-white/40 text-sm">Click to upload an image</p>
-                <p className="text-white/20 text-xs">JPG, PNG, WEBP — Max 5MB</p>
+                <Upload className="w-8 h-8 text-white/20 group-hover:text-[#FF7A18] transition-colors" />
+                <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>Click to upload an image</p>
+                <p className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>JPG, PNG, WEBP — Max 5MB</p>
               </div>
             )}
           </label>
           <button type="submit" disabled={loading || !file}
-            className="w-full py-2.5 bg-gradient-to-r from-orange-600 to-amber-600 hover:brightness-110 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            className="w-full py-2.5 rounded-lg font-medium text-sm transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:brightness-110"
+            style={{ background: "linear-gradient(to right, #FF7A18, #E10600, #FF4DA6)", boxShadow: "0 0 35px rgba(255,122,24,0.4)" }}>
             {loading ? <><span>Removing Background</span><Loader2 className="animate-spin w-4 h-4" /></> : "Remove Background →"}
           </button>
         </form>
 
         {resultUrl && !loading && (
           <div className="w-full max-w-4xl mt-6 grid grid-cols-2 gap-4">
-            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-              <p className="text-white/30 text-xs px-4 py-2.5 border-b border-white/10 uppercase tracking-widest">Original</p>
+            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-lg">
+              <p className="text-xs px-4 py-2.5 border-b border-white/10 uppercase tracking-widest"
+                style={{ color: "rgba(255,255,255,0.3)" }}>Original</p>
               <div className="p-3"><img src={preview} alt="original" className="w-full object-contain rounded-xl max-h-64" /></div>
             </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-lg">
               <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/10">
-                <p className="text-white/30 text-xs uppercase tracking-widest">Background Removed</p>
+                <p className="text-xs uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>Background Removed</p>
                 <button onClick={onDownloadHandler} className="flex items-center gap-1.5 px-3 py-1 bg-white/10 hover:bg-white/15 rounded-lg text-xs transition-all">
                   <Download className="w-3.5 h-3.5" /> Download
                 </button>
@@ -98,15 +104,15 @@ const BgRemover = () => {
 
         {loading && (
           <div className="w-full max-w-4xl mt-6 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center h-48 gap-3">
-            <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
-            <p className="text-white/40 text-xs">Removing background...</p>
+            <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#FF7A18" }} />
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Removing background...</p>
           </div>
         )}
 
         {!preview && !loading && (
           <div className="w-full max-w-4xl mt-6 bg-white/5 border border-white/10 border-dashed rounded-2xl flex flex-col items-center justify-center h-48 gap-3">
             <Scissors className="w-8 h-8 text-white/10" />
-            <p className="text-white/20 text-xs">Original and result will appear here side by side</p>
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>Original and result will appear here side by side</p>
           </div>
         )}
       </section>
