@@ -1,614 +1,341 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { Canvas, useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 
-const tools = [
-  {
-    icon: "🎨",
-    title: "Image Generator",
-    route: "/image-generator",
-    model: "Stable Diffusion (FLUX) via Pollinations.ai",
-    modelShort: "Pollinations.ai",
-    limit: "Unlimited · Free",
-    description: "Transform any text prompt into stunning high-resolution artwork. From photorealistic renders to abstract compositions — the model understands lighting, depth, style, and mood.",
-    how: "Type a detailed description of what you want to see. The more specific you are — art style, lighting, mood — the better the result. Press Enter or click Generate.",
-    color: "#FF7A18",
-  },
-  {
-    icon: "📄",
-    title: "PDF Summarizer",
-    route: "/pdf-summarizer",
-    model: "LLaMA (Public Proxy)",
-    modelShort: "LLaMA",
-    limit: "100 req/day · Free",
-    description: "Upload any PDF — research papers, legal docs, reports — and receive a concise, intelligent summary that captures the core ideas without the fluff.",
-    how: "Click the upload zone or drag & drop your PDF (max 10MB). Hit Summarize and the AI extracts the text, processes it through LLaMA, and returns a structured summary.",
-    color: "#FF7A18",
-  },
-  {
-    icon: "🔍",
-    title: "Image Analyzer",
-    route: "/image-analyzer",
-    model: "DeepAI Vision API",
-    modelShort: "DeepAI Vision",
-    limit: "300 req/day · Free",
-    description: "Drop any image and receive a detailed AI-powered breakdown — object detection, scene classification, color analysis, labels, and a natural language description.",
-    how: "Upload a JPG, PNG, or WEBP image (max 5MB). Click Analyze Image and DeepAI's vision model scans every pixel, returning labels and a full description you can copy.",
-    color: "#E10600",
-  },
-  {
-    icon: "🎵",
-    title: "Song Generator",
-    route: "/song-generator",
-    model: "Meta MusicGen via Hugging Face",
-    modelShort: "MusicGen",
-    limit: "10 req/day · Free",
-    description: "Describe a musical vibe — genre, tempo, instruments, mood — and Meta's MusicGen model composes an original audio clip tailored exactly to your description.",
-    how: "Write a music prompt like 'chill lo-fi hip hop with rain sounds'. Hit Generate and wait 20–30 seconds. Download the .wav file and use it anywhere.",
-    color: "#FF4DA6",
-  },
-  {
-    icon: "✂️",
-    title: "Background Remover",
-    route: "/bg-remover",
-    model: "Remove.bg API",
-    modelShort: "Remove.bg",
-    limit: "50 req/day · Free",
-    description: "Professional-grade background removal powered by Remove.bg. Works on portraits, products, animals, and complex scenes — delivering clean transparent PNG output.",
-    how: "Upload your image. Click Remove Background. The result appears side-by-side with the original — with a checkered pattern showing the transparent areas. Download as PNG.",
-    color: "#FF7A18",
-  },
-  {
-    icon: "🌍",
-    title: "AI Translator",
-    route: "/translator",
-    model: "LibreTranslate (Neural MT)",
-    modelShort: "LibreTranslate",
-    limit: "Unlimited · Free",
-    description: "Neural machine translation across 55+ languages including Urdu, Arabic, Chinese, Hindi, and all major European languages — with swap functionality and copy support.",
-    how: "Select source and target languages from the dropdowns. Paste or type your text. Hit Translate. Swap languages and text with the arrow button anytime.",
-    color: "#E10600",
-  },
-  {
-    icon: "✍️",
-    title: "Grammar Fixer",
-    route: "/grammar-fixer",
-    model: "LanguageTool API",
-    modelShort: "LanguageTool",
-    limit: "20 req/day · Free",
-    description: "Deep grammar, spelling, punctuation, and style analysis powered by LanguageTool. Each issue is shown with a red/green inline diff and one-click Apply All Fixes.",
-    how: "Paste your text into the input box. Click Check Grammar. Review each flagged issue with its suggested fix. Hit Apply All Fixes to correct everything in one click.",
-    color: "#FF4DA6",
-  },
-  {
-    icon: "🕷️",
-    title: "Web Scraper",
-    route: "/web-scraper",
-    model: "ScrapeGraphAI",
-    modelShort: "ScrapeGraphAI",
-    limit: "25 req/day · Free",
-    description: "AI-powered web scraping that understands context — not just raw HTML. Enter a URL and an optional prompt, and receive structured JSON data you can explore in table or raw view.",
-    how: "Enter any URL starting with http. Optionally describe what you want to extract (e.g. 'product names and prices'). Toggle between Table and JSON views. Copy with one click.",
-    color: "#FF7A18",
-  },
-];
+const BubbleField = ({ count = 500 }) => {
+  const mesh = useRef();
 
-const developer = {
-  name: "Muhammad Ashhadullah Zaheer",
-  role: "Full Stack Developer",
-  linkedin: "https://www.linkedin.com/in/muhammad-ashhadullah-zaheer-41194a340/",
-  stack: ["React.js", "Node.js", "Express.js", "MongoDB", "Tailwind CSS", "Vite"],
-  bio: "Passionate full-stack developer with a focus on building AI-powered SaaS products. Aura-AI was built to prove that cutting-edge AI tools don't need to cost anything.",
-};
-
-const techStack = [
-  { label: "Frontend", value: "React.js + Vite", icon: "⚛️" },
-  { label: "Styling", value: "Tailwind CSS", icon: "🎨" },
-  { label: "Backend", value: "Node.js + Express.js", icon: "🔧" },
-  { label: "Database", value: "MongoDB Atlas", icon: "🗄️" },
-  { label: "Auth", value: "JWT + bcrypt", icon: "🔐" },
-  { label: "HTTP Client", value: "Axios", icon: "📡" },
-];
-
-// Animated fire particle background
-const FireCanvas = () => {
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particles = [];
-    for (let i = 0; i < 60; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: canvas.height + Math.random() * 200,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: -(Math.random() * 1.5 + 0.5),
-        life: Math.random(),
-        maxLife: Math.random() * 0.7 + 0.3,
-        size: Math.random() * 3 + 1,
+  const particles = useMemo(() => {
+    const temp = [];
+    for (let i = 0; i < count; i++) {
+      temp.push({
+        t: Math.random() * 100,
+        speed: 0.02 + Math.random() * 0.05,
+        x: (Math.random() - 0.5) * 40,
+        yStart: (Math.random() - 0.5) * 40,
+        z: (Math.random() - 0.5) * 20,
+        size: 0.05 + Math.random() * 0.15,
+        color: ["#FF7A18", "#E10600", "#FF4DA6"][Math.floor(Math.random() * 3)],
       });
     }
+    return temp;
+  }, [count]);
 
-    let animId;
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        p.life -= 0.004;
-        if (p.life <= 0) {
-          p.x = Math.random() * canvas.width;
-          p.y = canvas.height + 10;
-          p.life = p.maxLife;
-          p.vx = (Math.random() - 0.5) * 0.5;
-          p.vy = -(Math.random() * 1.5 + 0.5);
-        }
-        const alpha = p.life / p.maxLife;
-        const hue = p.life > 0.5 ? 30 : p.life > 0.25 ? 10 : 340;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${hue}, 100%, 60%, ${alpha * 0.3})`;
-        ctx.fill();
-      });
-      animId = requestAnimationFrame(draw);
-    };
-    draw();
+  const dummy = useMemo(() => new THREE.Object3D(), []);
 
-    const onResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    window.addEventListener("resize", onResize);
-    return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", onResize); };
-  }, []);
+  useFrame((state) => {
+    particles.forEach((particle, i) => {
+      let { t, speed, x, yStart, z, size } = particle;
+      particle.t += speed;
+      const yPos = ((particle.t + yStart) % 40) - 20;
+      const xOscillation = Math.sin(particle.t * 0.5) * 0.5;
+
+      dummy.position.set(x + xOscillation, yPos, z);
+      dummy.scale.set(size, size, size);
+      dummy.updateMatrix();
+      mesh.current.setMatrixAt(i, dummy.matrix);
+      mesh.current.setColorAt(i, new THREE.Color(particle.color));
+    });
+    mesh.current.instanceMatrix.needsUpdate = true;
+    if (mesh.current.instanceColor)
+      mesh.current.instanceColor.needsUpdate = true;
+  });
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none"
-      style={{ zIndex: 0, opacity: 0.6 }}
-    />
+    <instancedMesh ref={mesh} args={[null, null, count]}>
+      <sphereGeometry args={[1, 16, 16]} />
+      <meshStandardMaterial
+        roughness={0}
+        metalness={0.8}
+        emissiveIntensity={1.5}
+        toneMapped={false}
+      />
+    </instancedMesh>
   );
 };
 
-const GlowCard = ({ children, style = {}, className = "" }) => (
+const GlowCard = ({ children, className = "" }) => (
   <div
-    className={`relative rounded-2xl transition-all duration-300 group ${className}`}
-    style={{
-      background: "rgba(255,255,255,0.04)",
-      border: "1px solid rgba(255,255,255,0.08)",
-      backdropFilter: "blur(12px)",
-      ...style,
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.border = "1px solid rgba(255,122,24,0.45)";
-      e.currentTarget.style.transform = "translateY(-4px) scale(1.01)";
-      e.currentTarget.style.boxShadow = "0 20px 60px rgba(225,6,0,0.2), 0 0 30px rgba(255,122,24,0.15)";
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.border = "1px solid rgba(255,255,255,0.08)";
-      e.currentTarget.style.transform = "translateY(0) scale(1)";
-      e.currentTarget.style.boxShadow = "none";
-    }}
+    className={`relative rounded-2xl p-8 backdrop-blur-md border border-white/5 bg-white/5 shadow-2xl ${className}`}
   >
-    {/* Gradient overlay on hover */}
-    <div className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-      style={{ background: "linear-gradient(135deg, rgba(255,122,24,0.06) 0%, rgba(225,6,0,0.04) 100%)" }} />
     {children}
   </div>
 );
 
 const About = () => {
   const navigate = useNavigate();
-  const [activeToolIndex, setActiveToolIndex] = useState(0);
-  const activeTool = tools[activeToolIndex];
+
+  const tools = [
+    {
+      title: "Image Generator",
+      model: "Stable Diffusion (FLUX)",
+      limit: "Unlimited · Free",
+      description:
+        "High-resolution artwork from text prompts. Understands lighting, depth, and mood.",
+      about:
+        "Aura-AI leverages the FLUX architecture to provide hyper-realistic image synthesis. Unlike standard models, this implementation excels in anatomical correctness and complex prompt adherence, allowing creators to generate professional-grade assets, concept art, and marketing visuals instantly.",
+      color: "#FF7A18",
+    },
+    {
+      title: "PDF Summarizer",
+      model: "LLaMA (Public Proxy)",
+      limit: "100 req/day · Free",
+      description:
+        "AI extraction for research papers and reports to return structured summaries.",
+      about:
+        "This tool uses Large Language Model (LLM) intelligence to scan dense documents. It doesn't just shorten text; it identifies key semantic milestones, extracts data points, and presents them in a logical hierarchy, making it perfect for students and researchers handling massive volumes of data.",
+      color: "#FF7A18",
+    },
+    {
+      title: "Image Analyzer",
+      model: "DeepAI Vision API",
+      limit: "300 req/day · Free",
+      description:
+        "Detailed breakdown including object detection, labels, and natural description.",
+      about:
+        "Equipped with advanced computer vision, the Image Analyzer performs pixel-level scans to identify objects, spatial relationships, and environmental contexts. It provides a technical JSON breakdown or a human-readable description for accessibility and automated tagging workflows.",
+      color: "#E10600",
+    },
+    {
+      title: "Song Generator",
+      model: "Meta MusicGen",
+      limit: "10 req/day · Free",
+      description:
+        "Composes original audio clips tailored to your genre and instrument descriptions.",
+      about:
+        "Aura-AI transforms textual vibes into audible reality. By utilizing neural audio synthesis, MusicGen crafts unique 30-second compositions. It understands the nuances of instruments, BPM, and mood, providing creators with royalty-free background scores for videos and games.",
+      color: "#FF4DA6",
+    },
+    {
+      title: "Background Remover",
+      model: "Remove.bg API",
+      limit: "50 req/day · Free",
+      description:
+        "Professional removal for portraits and products, delivering transparent PNGs.",
+      about:
+        "Using sophisticated edge-detection algorithms, this tool isolates the foreground from the most complex backgrounds—including hair and fine details. It is an essential utility for e-commerce developers and graphic designers looking to streamline their post-production pipeline.",
+      color: "#FF7A18",
+    },
+    {
+      title: "AI Translator",
+      model: "LibreTranslate",
+      limit: "Unlimited · Free",
+      description:
+        "Neural translation across 55+ languages including Urdu and Arabic.",
+      about:
+        "Our translation engine bypasses simple word-to-word swapping for true neural machine translation. It maintains the grammatical integrity and cultural context of 55+ languages, ensuring that communication is not just translated, but understood across global boundaries.",
+      color: "#E10600",
+    },
+    {
+      title: "Grammar Fixer",
+      model: "LanguageTool API",
+      limit: "20 req/day · Free",
+      description:
+        "Deep analysis of grammar and style with one-click automated fixes.",
+      about:
+        "More than a spellchecker, this tool analyzes the syntactic structure of your writing. It detects tonal inconsistencies, passive voice, and stylistic errors, offering intelligent suggestions to elevate the professional quality of your emails, essays, and code documentation.",
+      color: "#FF4DA6",
+    },
+    {
+      title: "Web Scraper",
+      model: "ScrapeGraphAI",
+      limit: "25 req/day · Free",
+      description:
+        "Context-aware scraping that returns structured JSON data from any URL.",
+      about:
+        "Harnessing the power of LLMs for data extraction, this scraper understands the visual and structural layout of websites. It converts messy HTML into clean, structured JSON formats, enabling developers to automate data collection without writing complex CSS selectors.",
+      color: "#FF7A18",
+    },
+  ];
+
+  const techStack = [
+    {
+      label: "Frontend",
+      value: "React.js",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg",
+    },
+    {
+      label: "Styling",
+      value: "Tailwind CSS",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg",
+    },
+    {
+      label: "Backend",
+      value: "Node.js",
+      logo: "https://nodejs.org/static/images/logo.svg",
+    },
+    {
+      label: "Backend Framework",
+      value: "Express.js",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png",
+    },
+    {
+      label: "Database",
+      value: "MongoDB",
+      logo: "https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png",
+    },
+    {
+      label: "HTTP Client",
+      value: "Axios",
+      logo: "https://axios-http.com/assets/logo.svg",
+    },
+  ];
 
   return (
-    <div
-      className="relative min-h-screen font-poppins text-white overflow-x-hidden"
-      style={{ background: "linear-gradient(180deg, #0F0F14 0%, #1A0C08 50%, #0F0F14 100%)" }}
-    >
-      <FireCanvas />
+    <div className="relative min-h-screen bg-[#050505] text-white font-sans overflow-x-hidden selection:bg-orange-500/30">
+      <div className="fixed inset-0 z-0 pointer-events-none bg-black">
+        <Canvas camera={{ position: [0, 0, 15], fov: 60 }}>
+          <ambientLight intensity={0.5} />
+          <pointLight position={[15, 15, 15]} intensity={2} color="#ffffff" />
+          <Suspense fallback={null}>
+            <BubbleField count={500} />
+          </Suspense>
+        </Canvas>
+      </div>
 
-      <div className="relative z-10 flex flex-col items-center px-4 md:px-8 pb-32">
-
-        {/* ─── HERO ─────────────────────────────────── */}
-        <div className="flex flex-col items-center text-center mt-24 mb-20 max-w-5xl w-full">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium mb-6"
-            style={{
-              background: "rgba(255,122,24,0.1)",
-              border: "1px solid rgba(255,122,24,0.3)",
-              color: "#FF7A18",
-            }}>
-            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "#FF7A18" }} />
-            8 Free AI Tools · No Credit Card · No Limits
-          </div>
-
-          <h1 className="text-5xl md:text-7xl font-bold leading-tight tracking-tight mb-6"
-            style={{ color: "#F5F5F7" }}>
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-24">
+        <section className="text-center mb-32">
+          <h1 className="text-6xl md:text-8xl font-black mb-8 tracking-tighter">
             Meet{" "}
-            <span style={{
-              background: "linear-gradient(to right, #FF7A18, #E10600, #FF4DA6)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}>
+            <span className="bg-gradient-to-r from-[#FF7A18] via-[#E10600] to-[#FF4DA6] bg-clip-text text-transparent">
               Aura-AI
             </span>
           </h1>
-
-          <p className="text-lg md:text-xl max-w-2xl leading-relaxed mb-10"
-            style={{ color: "rgba(255,255,255,0.55)" }}>
-            A full-stack AI SaaS platform that brings 8 powerful AI tools under one roof — completely free. Built on the best free AI models available. No subscriptions. No paywalls.
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+            A unified full-stack ecosystem engineered to provide 8 sophisticated
+            AI tools at zero cost. Built on high-performance models for
+            professional utility.
           </p>
+        </section>
 
-          <div className="flex items-center gap-4 flex-wrap justify-center">
-            <button onClick={() => navigate("/register")}
-              className="px-8 py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:brightness-110 hover:scale-105"
-              style={{
-                background: "linear-gradient(to right, #FF7A18, #E10600, #FF4DA6)",
-                boxShadow: "0 0 40px rgba(255,122,24,0.45)",
-              }}>
-              Get Started Free →
-            </button>
-            <button onClick={() => navigate("/")}
-              className="px-8 py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:bg-white/10"
-              style={{ border: "1px solid rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.7)" }}>
-              Back to Home
-            </button>
-          </div>
-        </div>
-
-        {/* ─── STATS BAR ───────────────────────────── */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl w-full mb-24">
-          {[
-            { value: "8", label: "AI Tools" },
-            { value: "100%", label: "Free Forever" },
-            { value: "55+", label: "Languages" },
-            { value: "0", label: "Subscriptions" },
-          ].map((stat, i) => (
-            <GlowCard key={i} className="p-6 text-center">
-              <div className="text-3xl font-bold mb-1"
-                style={{
-                  background: "linear-gradient(to right, #FF7A18, #E10600)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}>
-                {stat.value}
-              </div>
-              <div className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>{stat.label}</div>
-            </GlowCard>
-          ))}
-        </div>
-
-        {/* ─── TOOLS EXPLORER ─────────────────────── */}
-        <div className="w-full max-w-6xl mb-24">
-          <div className="mb-10 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: "#F5F5F7" }}>
-              Explore the{" "}
-              <span style={{
-                background: "linear-gradient(to right, #FF7A18, #E10600)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>Tools</span>
-            </h2>
-            <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>Click any tool to learn how it works, which model powers it, and how to use it.</p>
-          </div>
-
-          <div className="flex gap-6 flex-col lg:flex-row">
-            {/* Tool Tabs */}
-            <div className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible lg:w-64 shrink-0 pb-2 lg:pb-0">
-              {tools.map((tool, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveToolIndex(i)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm whitespace-nowrap lg:whitespace-normal transition-all duration-200 text-left w-full"
-                  style={
-                    activeToolIndex === i
-                      ? {
-                          background: "rgba(225,6,0,0.15)",
-                          borderLeft: "2px solid #FF7A18",
-                          color: "#FF7A18",
-                          paddingLeft: "14px",
-                        }
-                      : {
-                          background: "rgba(255,255,255,0.03)",
-                          border: "1px solid rgba(255,255,255,0.06)",
-                          color: "rgba(255,255,255,0.45)",
-                        }
-                  }
-                  onMouseEnter={(e) => { if (activeToolIndex !== i) { e.currentTarget.style.color = "#F5F5F7"; e.currentTarget.style.background = "rgba(255,255,255,0.06)"; } }}
-                  onMouseLeave={(e) => { if (activeToolIndex !== i) { e.currentTarget.style.color = "rgba(255,255,255,0.45)"; e.currentTarget.style.background = "rgba(255,255,255,0.03)"; } }}
-                >
-                  <span className="text-lg shrink-0">{tool.icon}</span>
-                  <span className="font-medium text-xs">{tool.title}</span>
-                </button>
-              ))}
-            </div>
-
-            {/* Tool Detail Card */}
-            <div className="flex-1 rounded-2xl p-6 md:p-8 relative overflow-hidden"
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,122,24,0.2)",
-                backdropFilter: "blur(16px)",
-                boxShadow: "0 0 50px rgba(225,6,0,0.1), inset 0 0 60px rgba(255,122,24,0.03)",
-              }}>
-              {/* BG glow blob */}
-              <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full pointer-events-none"
-                style={{ background: "radial-gradient(circle, rgba(255,122,24,0.08) 0%, transparent 70%)" }} />
-
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
-                  style={{ background: "linear-gradient(135deg, #FF7A18, #E10600)", boxShadow: "0 0 20px rgba(255,122,24,0.4)" }}>
-                  {activeTool.icon}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold" style={{ color: "#F5F5F7" }}>{activeTool.title}</h3>
-                  <div className="flex items-center gap-2 mt-1 flex-wrap">
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-medium"
-                      style={{ background: "rgba(255,122,24,0.12)", border: "1px solid rgba(255,122,24,0.25)", color: "#FF7A18" }}>
-                      {activeTool.modelShort}
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded-full text-xs"
-                      style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)" }}>
-                      {activeTool.limit}
-                    </span>
+        <section className="mb-32">
+          <h2 className="text-3xl font-bold mb-12 text-center">
+            Core System Capabilities
+          </h2>
+          <div className="grid md:grid-cols-1 gap-8">
+            {" "}
+            {/* Changed to 1 column for bigger impact */}
+            {tools.map((tool, i) => (
+              <GlowCard
+                key={i}
+                className="hover:border-white/20 transition-all duration-700"
+              >
+                <div className="flex flex-col md:flex-row items-start gap-6">
+                  <div
+                    className="w-full md:w-1.5 h-1.5 md:h-32 rounded-full"
+                    style={{ background: tool.color }}
+                  />
+                  <div className="flex-1">
+                    <div className="flex flex-wrap justify-between items-center mb-4">
+                      <h3 className="text-2xl font-bold tracking-tight">
+                        {tool.title}
+                      </h3>
+                      <p className="text-[10px] font-mono text-orange-500 uppercase tracking-widest">
+                        {tool.model} • {tool.limit}
+                      </p>
+                    </div>
+                    <p className="text-lg text-gray-200 mb-4 font-medium">
+                      {tool.description}
+                    </p>
+                    <p className="text-sm text-gray-400 leading-relaxed border-t border-white/5 pt-4">
+                      {tool.about}
+                    </p>
                   </div>
                 </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-5 mb-6">
-                <div className="rounded-xl p-4" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
-                  <p className="text-xs uppercase tracking-widest mb-2" style={{ color: "rgba(255,122,24,0.7)" }}>What it does</p>
-                  <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>{activeTool.description}</p>
-                </div>
-                <div className="rounded-xl p-4" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
-                  <p className="text-xs uppercase tracking-widest mb-2" style={{ color: "rgba(225,6,0,0.8)" }}>How to use it</p>
-                  <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>{activeTool.how}</p>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-                <div className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
-                  Powered by <span style={{ color: "#FF7A18" }}>{activeTool.model}</span>
-                </div>
-                <button onClick={() => navigate(activeTool.route)}
-                  className="px-5 py-2 rounded-lg text-xs font-semibold transition-all duration-300 hover:brightness-110"
-                  style={{ background: "linear-gradient(to right, #FF7A18, #E10600)", boxShadow: "0 0 20px rgba(255,122,24,0.3)" }}>
-                  Try {activeTool.title} →
-                </button>
-              </div>
-            </div>
+              </GlowCard>
+            ))}
           </div>
-        </div>
+        </section>
 
-        {/* ─── ALL MODELS TABLE ────────────────────── */}
-        <div className="w-full max-w-5xl mb-24">
-          <div className="mb-8 text-center">
-            <h2 className="text-3xl font-bold mb-2" style={{ color: "#F5F5F7" }}>
-              AI Models &{" "}
-              <span style={{
-                background: "linear-gradient(to right, #FF7A18, #FF4DA6)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>APIs Used</span>
-            </h2>
-            <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>All models and APIs are 100% free — zero cost to run this project.</p>
-          </div>
-
-          <GlowCard className="overflow-hidden">
-            <table className="w-full text-sm">
-              <thead>
-                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                  {["Tool", "Model / API", "Provider", "Daily Limit"].map((h) => (
-                    <th key={h} className="text-left px-6 py-4 text-xs uppercase tracking-widest font-medium"
-                      style={{ color: "rgba(255,255,255,0.3)" }}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {tools.map((tool, i) => (
-                  <tr key={i}
-                    className="transition-colors cursor-pointer"
-                    style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,122,24,0.05)"}
-                    onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
-                    onClick={() => navigate(tool.route)}
-                  >
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <span>{tool.icon}</span>
-                        <span className="font-medium" style={{ color: "#F5F5F7" }}>{tool.title}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 font-mono text-xs" style={{ color: "#FF7A18" }}>{tool.modelShort}</td>
-                    <td className="px-6 py-4 text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>{tool.model.split("via ")[1] || tool.model.split(" ")[0]}</td>
-                    <td className="px-6 py-4">
-                      <span className="px-2.5 py-1 rounded-full text-xs"
-                        style={{ background: "rgba(255,122,24,0.1)", border: "1px solid rgba(255,122,24,0.2)", color: "#FF7A18" }}>
-                        {tool.limit.split("·")[0].trim()}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </GlowCard>
-        </div>
-
-        {/* ─── TECH STACK ──────────────────────────── */}
-        <div className="w-full max-w-5xl mb-24">
-          <div className="mb-8 text-center">
-            <h2 className="text-3xl font-bold mb-2" style={{ color: "#F5F5F7" }}>
-              Tech{" "}
-              <span style={{
-                background: "linear-gradient(to right, #E10600, #FF7A18)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>Stack</span>
-            </h2>
-            <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>Modern, battle-tested technologies for performance and scale.</p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <section className="mb-32">
+          <h2 className="text-center text-sm font-bold mb-16 uppercase tracking-[0.3em] text-gray-500">
+            Tech Stack
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-10">
             {techStack.map((tech, i) => (
-              <GlowCard key={i} className="p-5 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0"
-                  style={{ background: "rgba(255,122,24,0.1)", border: "1px solid rgba(255,122,24,0.2)" }}>
-                  {tech.icon}
+              <div key={i} className="flex flex-col items-center">
+                <div className="w-20 h-20 mb-4 p-2">
+                  <img
+                    src={tech.logo}
+                    alt={tech.value}
+                    className="w-full h-full object-contain"
+                    style={{
+                      filter:
+                        "drop-shadow(0 0 4px rgba(255,255,255,0.5)) drop-shadow(0 0 8px rgba(255,255,255,0.3))",
+                      animation: "glowPulse 3s ease-in-out infinite alternate",
+                    }}
+                  />
                 </div>
-                <div>
-                  <p className="text-xs mb-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>{tech.label}</p>
-                  <p className="text-sm font-semibold" style={{ color: "#F5F5F7" }}>{tech.value}</p>
-                </div>
-              </GlowCard>
+                <span className="text-[10px] font-black uppercase tracking-widest text-center text-white">
+                  {tech.value}
+                </span>
+              </div>
             ))}
           </div>
-        </div>
 
-        {/* ─── HOW IT WORKS ────────────────────────── */}
-        <div className="w-full max-w-5xl mb-24">
-          <div className="mb-10 text-center">
-            <h2 className="text-3xl font-bold mb-2" style={{ color: "#F5F5F7" }}>
-              How{" "}
-              <span style={{
-                background: "linear-gradient(to right, #FF7A18, #FF4DA6)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>It Works</span>
-            </h2>
-            <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>Three simple steps to unlock all 8 AI tools.</p>
-          </div>
+          <style>
+            {`
+      @keyframes glowPulse {
+        0% { filter: drop-shadow(0 0 4px rgba(255,255,255,0.5)) drop-shadow(0 0 8px rgba(255,255,255,0.3)); }
+        50% { filter: drop-shadow(0 0 6px rgba(255,255,255,0.6)) drop-shadow(0 0 10px rgba(255,255,255,0.4)); }
+        100% { filter: drop-shadow(0 0 4px rgba(255,255,255,0.5)) drop-shadow(0 0 8px rgba(255,255,255,0.3)); }
+      }
+    `}
+          </style>
+        </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-            {/* Connector line */}
-            <div className="hidden md:block absolute top-10 left-1/4 right-1/4 h-px"
-              style={{ background: "linear-gradient(to right, rgba(255,122,24,0.4), rgba(225,6,0,0.4))" }} />
+        <section className="mb-32">
+  <div className="bg-white/5 border border-white/10 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
 
-            {[
-              { step: "01", title: "Create Account", desc: "Sign up in seconds — no credit card, no verification. Just name, email, and password.", icon: "👤" },
-              { step: "02", title: "Choose a Tool", desc: "Pick any of the 8 AI tools from the sidebar. Each one is purpose-built and ready to use.", icon: "🛠️" },
-              { step: "03", title: "Generate & Download", desc: "Run the AI, review your output, and download the result. Images, audio, text — all yours.", icon: "⬇️" },
-            ].map((step, i) => (
-              <GlowCard key={i} className="p-6 text-center relative">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-4"
-                  style={{
-                    background: "linear-gradient(135deg, #FF7A18, #E10600)",
-                    boxShadow: "0 0 20px rgba(255,122,24,0.4)",
-                    color: "#fff",
-                  }}>
-                  {step.step}
-                </div>
-                <div className="text-3xl mb-3">{step.icon}</div>
-                <h3 className="font-bold mb-2" style={{ color: "#F5F5F7" }}>{step.title}</h3>
-                <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>{step.desc}</p>
-              </GlowCard>
-            ))}
-          </div>
-        </div>
+    <h3 className="text-3xl font-bold tracking-tighter">
+      Muhammad Ashhadullah Zaheer
+    </h3>
 
-        {/* ─── DEVELOPER CARD ──────────────────────── */}
-        <div className="w-full max-w-3xl mb-20">
-          <div className="mb-8 text-center">
-            <h2 className="text-3xl font-bold mb-2" style={{ color: "#F5F5F7" }}>
-              The{" "}
-              <span style={{
-                background: "linear-gradient(to right, #FF7A18, #E10600)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>Developer</span>
-            </h2>
-          </div>
+    <p className="text-orange-500 font-bold text-sm uppercase tracking-widest">
+      Software Engineer | Full Stack Developer
+    </p>
 
-          <div className="rounded-2xl p-8 relative overflow-hidden"
-            style={{
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,122,24,0.25)",
-              backdropFilter: "blur(16px)",
-              boxShadow: "0 0 60px rgba(225,6,0,0.12), inset 0 0 80px rgba(255,122,24,0.03)",
-            }}>
-            {/* Decorative glow blobs */}
-            <div className="absolute -top-10 -right-10 w-48 h-48 rounded-full pointer-events-none"
-              style={{ background: "radial-gradient(circle, rgba(255,122,24,0.1) 0%, transparent 70%)" }} />
-            <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full pointer-events-none"
-              style={{ background: "radial-gradient(circle, rgba(225,6,0,0.08) 0%, transparent 70%)" }} />
+    <p className="text-gray-400 leading-relaxed text-sm max-w-2xl">
+      Dedicated to building high-performance AI SaaS products. Aura-AI
+      serves as a proof of concept that sophisticated generative tools
+      can be offered for free without compromising on quality or UI.
+    </p>
 
-            <div className="flex flex-col md:flex-row items-start gap-6 relative z-10">
-              {/* Avatar */}
-              <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-3xl font-black shrink-0"
-                style={{
-                  background: "linear-gradient(135deg, #FF7A18, #E10600, #FF4DA6)",
-                  boxShadow: "0 0 30px rgba(255,122,24,0.5)",
-                  color: "#fff",
-                  fontSize: "28px",
-                }}>
-                {developer.name.charAt(0)}
-              </div>
+    {/* Social Links */}
+    <div className="flex gap-6 mt-4">
+      <a
+        href="https://github.com/ashhadgit87/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
+      >
+        GitHub
+      </a>
 
-              <div className="flex-1">
-                <h3 className="text-xl font-bold mb-1" style={{ color: "#F5F5F7" }}>{developer.name}</h3>
-                <p className="text-xs mb-3 font-medium" style={{ color: "#FF7A18" }}>{developer.role}</p>
-                <p className="text-sm leading-relaxed mb-5" style={{ color: "rgba(255,255,255,0.55)" }}>{developer.bio}</p>
+      <a
+        href="https://linkedin.com/in/muhammad-ashhadullah-zaheer-41194a340/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
+      >
+        LinkedIn
+      </a>
+    </div>
 
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {developer.stack.map((tech, i) => (
-                    <span key={i} className="px-3 py-1 rounded-full text-xs"
-                      style={{ background: "rgba(255,122,24,0.1)", border: "1px solid rgba(255,122,24,0.2)", color: "#FF7A18" }}>
-                      {tech}
-                    </span>
-                  ))}
-                </div>
+  </div>
+</section>
 
-                <a href={developer.linkedin} target="_blank" rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-semibold transition-all duration-300 hover:brightness-110"
-                  style={{
-                    background: "linear-gradient(to right, #FF7A18, #E10600)",
-                    boxShadow: "0 0 20px rgba(255,122,24,0.35)",
-                    color: "#fff",
-                  }}>
-                  <span>🔗</span> Connect on LinkedIn
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ─── FINAL CTA ───────────────────────────── */}
-        <div className="w-full max-w-3xl text-center">
-          <div className="rounded-2xl p-12 relative overflow-hidden"
-            style={{
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,122,24,0.2)",
-              backdropFilter: "blur(16px)",
-            }}>
-            <div className="absolute inset-0 pointer-events-none rounded-2xl"
-              style={{ background: "linear-gradient(135deg, rgba(255,122,24,0.08) 0%, rgba(225,6,0,0.05) 50%, rgba(255,77,166,0.04) 100%)" }} />
-            <div className="relative z-10">
-              <div className="text-4xl mb-4">🔥</div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-3" style={{ color: "#F5F5F7" }}>
-                Ready to use Aura-AI?
-              </h2>
-              <p className="text-sm mb-8" style={{ color: "rgba(255,255,255,0.5)" }}>
-                8 powerful AI tools. Zero cost. Start creating in seconds.
-              </p>
-              <button onClick={() => navigate("/register")}
-                className="px-10 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 hover:brightness-110 hover:scale-105"
-                style={{
-                  background: "linear-gradient(to right, #FF7A18, #E10600, #FF4DA6)",
-                  boxShadow: "0 0 40px rgba(255,122,24,0.5)",
-                  color: "#fff",
-                }}>
-                Create Free Account →
-              </button>
-            </div>
-          </div>
-        </div>
-
+        <section className="text-center pb-20">
+          <button
+            onClick={() => navigate("/")}
+            className="group relative px-14 py-5 bg-white text-black font-black rounded-full overflow-hidden transition-all hover:shadow-[0_0_50px_rgba(255,122,24,0.4)] active:scale-95"
+          >
+            <span className="relative z-10 text-xs uppercase tracking-[0.2em]">
+              Start Generating...
+            </span>
+          </button>
+        </section>
       </div>
     </div>
   );
