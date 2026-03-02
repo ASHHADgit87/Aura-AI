@@ -288,14 +288,14 @@ const Translator = () => {
               <button
                 type="button"
                 onClick={onResetHandler}
-                className="px-5 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-white/30 transition-all flex items-center gap-2"
+                className="px-5 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-white/30 transition-all flex items-center gap-2"
               >
                 <RotateCcw className="w-4 h-4" /> Reset
               </button>
               <button
                 type="submit"
                 disabled={loading || !inputText.trim()}
-                className="px-5 py-2 rounded-xl font-semibold text-white flex items-center gap-2 bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 disabled:cursor-not-allowed transition-all"
+                className="px-5 py-1.5 rounded-xl font-semibold text-white flex items-center gap-2 bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 disabled:cursor-not-allowed transition-all"
               >
                 {loading ? (
                   <>
