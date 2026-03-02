@@ -65,7 +65,7 @@ const WebScraper = () => {
           <div className="w-full max-w-4xl mt-10 mb-10 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">AI Web Scraper</h1>
             <p className="text-white/90 text-sm md:text-base max-w-lg mx-auto">
-              Enter any URL and AI will extract structured data from the page instantly.
+              Enter any URL and Aura AI will extract structured data from the page instantly.
             </p>
           </div>
 
