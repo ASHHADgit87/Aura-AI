@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { Loader2, Download, ImageIcon } from "lucide-react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
@@ -18,7 +18,6 @@ const ImageGenerator = () => {
       setLoading(true);
       setImageUrl("");
 
-      // Express backend endpoint
       const { data } = await axios.post("/api/image/generate", {
         prompt,
       });
@@ -51,21 +50,13 @@ const ImageGenerator = () => {
 
   return (
     <div className="flex min-h-screen">
-      
-      {/* Sidebar */}
       <Sidebar />
 
-      
-
-      {/* Right Side Content */}
       <div className="flex flex-col flex-1">
-        
-        {/* Main Content */}
         <section
           className="flex flex-col items-center text-white pb-20 px-6 flex-1"
           style={{
-            background:
-              "linear-gradient(180deg, #FF7A18 0%, #E10600 60%)",
+            background: "linear-gradient(180deg, #FF7A18 0%, #E10600 60%)",
           }}
         >
           <div className="w-full max-w-4xl mt-10 mb-10 text-center">
@@ -73,7 +64,8 @@ const ImageGenerator = () => {
               Image Generator
             </h1>
             <p className="text-white/90 text-sm md:text-base max-w-lg mx-auto">
-              Unleash your creativity. Describe your vision and Aura-AI will bring it to life instantly.
+              Unleash your creativity. Describe your vision and Aura-AI will
+              bring it to life instantly.
             </p>
           </div>
 
@@ -83,32 +75,33 @@ const ImageGenerator = () => {
               className="bg-black/30 border border-white/20 rounded-2xl p-6 backdrop-blur-xl"
             >
               <textarea
-  value={prompt}
-  onChange={(e) => setPrompt(e.target.value)}
-  placeholder="Describe what Image you want..."
-  className="w-full bg-transparent outline-none text-sm placeholder:text-white/40 resize-none min-h-[60px]" 
-/>
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder="Describe what Image you want..."
+                className="w-full bg-transparent outline-none text-sm placeholder:text-white/40 resize-none min-h-[60px]"
+              />
 
               <div className="flex justify-end mt-6">
                 <button
-  type="submit"
-  disabled={loading}
-  className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white  
+                  type="submit"
+                  disabled={loading || !prompt.trim()}
+                  className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white  
              bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
              border-2 border-white/30 
              hover:border-white/70 
              hover:scale-105 
              active:scale-95 
-             transition-all duration-300 shadow-lg flex items-center justify-center gap-2"
->
-  {loading ? (
-    <>
-      <Loader2 className="animate-spin w-5 h-5" /> Processing
-    </>
-  ) : (
-    "Generate Image"
-  )}
-</button>
+             transition-all duration-300 shadow-lg flex items-center justify-center gap-2
+              disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="animate-spin w-5 h-5" /> Processing
+                    </>
+                  ) : (
+                    "Generate Image"
+                  )}
+                </button>
               </div>
             </form>
           </div>
@@ -147,7 +140,6 @@ const ImageGenerator = () => {
           </div>
         </section>
 
-        
         <FooterForFeature />
       </div>
     </div>
