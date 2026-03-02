@@ -18,13 +18,41 @@ import About from "./pages/About";
 const App = () => {
   const { pathname } = useLocation();
 
-  const hideLayout = pathname === "/login" || pathname === "/register";
+  const hideNavbarPaths = [
+    "/login",
+    "/register",
+    "/image-generator",
+    "/pdf-summarizer",
+    "/image-analyzer",
+    "/song-generator",
+    "/bg-remover",
+    "/translator",
+    "/grammar-fixer",
+    "/web-scraper",
+  ];
+
+  const hideFooterPaths = [
+    "/login",
+    "/register",
+    "/about",
+    "/image-generator",
+    "/pdf-summarizer",
+    "/image-analyzer",
+    "/song-generator",
+    "/bg-remover",
+    "/translator",
+    "/grammar-fixer",
+    "/web-scraper",
+  ];
+
+  const hideNavbar = hideNavbarPaths.includes(pathname);
+  const hideFooter = hideFooterPaths.includes(pathname);
 
   return (
     <div className="flex flex-col min-h-screen">
       <Toaster />
 
-      {!hideLayout && <Navbar />}
+      {!hideNavbar && <Navbar />}
 
       <div className="flex-grow">
         <Routes>
@@ -40,11 +68,10 @@ const App = () => {
           <Route path="/translator" element={<Translator />} />
           <Route path="/grammar-fixer" element={<GrammarFixer />} />
           <Route path="/web-scraper" element={<WebScraper />} />
-
         </Routes>
       </div>
 
-      {!hideLayout && <Footer />}
+      {!hideFooter && <Footer />}
     </div>
   );
 };
