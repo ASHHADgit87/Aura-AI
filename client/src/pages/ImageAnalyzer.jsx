@@ -146,7 +146,7 @@ const ImageAnalyzer = () => {
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="animate-spin w-5 h-5" /> Processing
+                      <Loader2 className="animate-spin w-5 h-5" /> Processing...
                     </>
                   ) : (
                     "Analyze Image"

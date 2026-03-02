@@ -89,7 +89,7 @@ const SongGenerator = () => {
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="animate-spin w-5 h-5" /> Composing
+                      <Loader2 className="animate-spin w-5 h-5" /> Composing...
                     </>
                   ) : (
                     "Generate Music"

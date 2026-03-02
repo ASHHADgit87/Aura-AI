@@ -136,7 +136,7 @@ const BgRemover = () => {
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="animate-spin w-5 h-5" /> Removing Background
+                      <Loader2 className="animate-spin w-5 h-5" /> Removing Background...
                     </>
                   ) : (
                     "Remove Background"
