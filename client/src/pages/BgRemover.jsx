@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Loader2, Upload, Download, Scissors } from "lucide-react";
+import { Loader2, Upload, Download, ImageIcon, X } from "lucide-react";
 import { toast } from "react-hot-toast";
-import axios from "../configs/axios";
-import DashboardLayout from "../components/DashboardLayout";
+import axios from "axios";
+import Sidebar from "../components/Sidebar";
+import FooterForFeature from "../components/FooterForFeature";
 
 const BgRemover = () => {
   const [file, setFile] = useState(null);
@@ -13,22 +14,46 @@ const BgRemover = () => {
   const onFileChange = (e) => {
     const selected = e.target.files[0];
     if (!selected) return;
-    if (!selected.type.startsWith("image/")) return toast.error("Please upload an image file");
-    if (selected.size > 5 * 1024 * 1024) return toast.error("Image size must be under 5MB");
+
+    if (!selected.type.startsWith("image/")) {
+      toast.error("Please upload an image file");
+      e.target.value = null;
+      return;
+    }
+
+    if (selected.size > 5 * 1024 * 1024) {
+      toast.error("Image size must be under 5MB");
+      e.target.value = null;
+      return;
+    }
+
     setFile(selected);
-    setResultUrl("");
     setPreview(URL.createObjectURL(selected));
+    setResultUrl("");
+  };
+
+  const removeImage = () => {
+    setFile(null);
+    setPreview("");
+    setResultUrl("");
   };
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     if (!file) return toast.error("Please upload an image first");
+
     try {
       setLoading(true);
       setResultUrl("");
+
       const formData = new FormData();
       formData.append("image", file);
-      const { data } = await axios.post("/api/bg/remove", formData, { headers: { "Content-Type": "multipart/form-data" }, responseType: "blob" });
+
+      const { data } = await axios.post("/api/bg/remove", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        responseType: "blob",
+      });
+
       const url = URL.createObjectURL(new Blob([data], { type: "image/png" }));
       setResultUrl(url);
       toast.success("Background removed!");
@@ -47,76 +72,112 @@ const BgRemover = () => {
   };
 
   return (
-    <DashboardLayout>
-      <section className="flex flex-col items-center text-white text-sm pb-20 px-4 font-poppins">
-        <div className="w-full max-w-4xl mt-10 mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
-              style={{ background: "linear-gradient(135deg, #FF7A18, #E10600)" }}>✂️</div>
-            <h1 className="text-2xl font-semibold" style={{ color: "#F5F5F7" }}>Background Remover</h1>
+    <div className="flex min-h-screen">
+      <Sidebar />
+
+      <div className="flex flex-col flex-1">
+        <section
+          className="flex flex-col items-center text-white pb-20 px-6 flex-1"
+          style={{ background: "linear-gradient(180deg, #FF7A18 0%, #E10600 60%)" }}
+        >
+          <div className="w-full max-w-4xl mt-10 mb-10 text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Background Remover</h1>
+            <p className="text-white/90 text-sm md:text-base max-w-lg mx-auto">
+              Upload any image and Aura-AI will remove the background instantly.
+            </p>
           </div>
-          <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Upload any image and AI will remove the background instantly.</p>
-        </div>
 
-        <form onSubmit={onSubmitHandler} className="w-full max-w-4xl flex flex-col gap-4">
-          <label className="bg-white/5 border border-white/10 border-dashed rounded-xl cursor-pointer transition-all group overflow-hidden backdrop-blur-lg"
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = "rgba(255,122,24,0.4)"}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
-          >
-            <input type="file" accept="image/*" onChange={onFileChange} className="hidden" />
-            {preview ? (
-              <img src={preview} alt="preview" className="w-full max-h-64 object-contain rounded-xl" />
-            ) : (
-              <div className="flex flex-col items-center justify-center gap-3 py-12">
-                <Upload className="w-8 h-8 text-white/20 group-hover:text-[#FF7A18] transition-colors" />
-                <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>Click to upload an image</p>
-                <p className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>JPG, PNG, WEBP — Max 5MB</p>
-              </div>
-            )}
-          </label>
-          <button type="submit" disabled={loading || !file}
-            className="w-full py-2.5 rounded-lg font-medium text-sm transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:brightness-110"
-            style={{ background: "linear-gradient(to right, #FF7A18, #E10600, #FF4DA6)", boxShadow: "0 0 35px rgba(255,122,24,0.4)" }}>
-            {loading ? <><span>Removing Background</span><Loader2 className="animate-spin w-4 h-4" /></> : "Remove Background →"}
-          </button>
-        </form>
+          {/* Upload Form */}
+          <div className="w-full max-w-3xl">
+            <form
+              onSubmit={onSubmitHandler}
+              className="bg-black/30 border border-white/20 rounded-2xl p-6 backdrop-blur-xl"
+            >
+              <label className="w-full flex flex-col items-center justify-center border-2 border-dashed border-white/20 rounded-xl p-8 cursor-pointer hover:bg-white/5 transition-colors relative">
+                <input type="file" accept="image/*" onChange={onFileChange} className="hidden" />
+                
+                {preview ? (
+                  <div className="relative w-full flex justify-center">
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      className="max-h-64 object-contain rounded-xl"
+                    />
+                    <button
+                      type="button"
+                      onClick={removeImage}
+                      className="absolute top-2 right-2 bg-black/60 p-1.5 rounded-full hover:bg-red-600 transition-all"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <Upload className="w-10 h-10 text-white/40 mb-3" />
+                    <span className="text-white/40 text-sm">
+                      Click to upload image (Max 5MB)
+                    </span>
+                  </>
+                )}
+              </label>
 
-        {resultUrl && !loading && (
-          <div className="w-full max-w-4xl mt-6 grid grid-cols-2 gap-4">
-            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-lg">
-              <p className="text-xs px-4 py-2.5 border-b border-white/10 uppercase tracking-widest"
-                style={{ color: "rgba(255,255,255,0.3)" }}>Original</p>
-              <div className="p-3"><img src={preview} alt="original" className="w-full object-contain rounded-xl max-h-64" /></div>
-            </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-lg">
-              <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/10">
-                <p className="text-xs uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>Background Removed</p>
-                <button onClick={onDownloadHandler} className="flex items-center gap-1.5 px-3 py-1 bg-white/10 hover:bg-white/15 rounded-lg text-xs transition-all">
-                  <Download className="w-3.5 h-3.5" /> Download
+              <div className="flex justify-end mt-6">
+                <button
+                  type="submit"
+                  disabled={loading || !file}
+                  className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white  
+                             bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
+                             border-2 border-white/30 
+                             hover:border-white/70 
+                             hover:scale-105 
+                             active:scale-95 
+                             transition-all duration-300 shadow-lg flex items-center justify-center gap-2
+                             disabled:cursor-not-allowed"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="animate-spin w-5 h-5" /> Removing Background
+                    </>
+                  ) : (
+                    "Remove Background"
+                  )}
                 </button>
               </div>
-              <div className="p-3" style={{ backgroundImage: "linear-gradient(45deg, #1a1a2e 25%, transparent 25%), linear-gradient(-45deg, #1a1a2e 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #1a1a2e 75%), linear-gradient(-45deg, transparent 75%, #1a1a2e 75%)", backgroundSize: "16px 16px", backgroundPosition: "0 0, 0 8px, 8px -8px, -8px 0px" }}>
-                <img src={resultUrl} alt="result" className="w-full object-contain rounded-xl max-h-64" />
+            </form>
+          </div>
+
+          {/* Result Section */}
+          <div className="w-full max-w-3xl mt-12">
+            {!resultUrl && !loading && (
+              <div className="h-[400px] border-2 border-dashed border-white/20 rounded-3xl flex flex-col items-center justify-center text-white/40">
+                <ImageIcon size={60} strokeWidth={1} className="mb-4" />
+                <p>Your processed image will appear here</p>
               </div>
-            </div>
-          </div>
-        )}
+            )}
 
-        {loading && (
-          <div className="w-full max-w-4xl mt-6 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center h-48 gap-3">
-            <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#FF7A18" }} />
-            <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Removing background...</p>
-          </div>
-        )}
+            {loading && (
+              <div className="h-[400px] flex items-center justify-center">
+                <Loader2 className="animate-spin w-10 h-10" />
+              </div>
+            )}
 
-        {!preview && !loading && (
-          <div className="w-full max-w-4xl mt-6 bg-white/5 border border-white/10 border-dashed rounded-2xl flex flex-col items-center justify-center h-48 gap-3">
-            <Scissors className="w-8 h-8 text-white/10" />
-            <p className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>Original and result will appear here side by side</p>
+            {resultUrl && !loading && (
+              <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-black/20 p-8 backdrop-blur-md flex flex-col items-center">
+                <img src={resultUrl} alt="Background Removed" className="max-h-[400px] object-contain rounded-xl mb-4" />
+                <button
+                  onClick={onDownloadHandler}
+                  className="px-6 py-3 bg-black text-white rounded-full font-bold hover:bg-white hover:text-black transition-colors"
+                >
+                  <Download className="inline w-4 h-4 mr-1" /> Download
+                </button>
+              </div>
+            )}
           </div>
-        )}
-      </section>
-    </DashboardLayout>
+        </section>
+
+        <FooterForFeature />
+      </div>
+    </div>
   );
 };
 
