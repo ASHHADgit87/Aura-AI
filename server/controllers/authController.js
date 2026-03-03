@@ -29,8 +29,6 @@ export const register = async (req, res) => {
   }
 };
 
-// src/controllers/authController.js
-
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -41,7 +39,7 @@ export const login = async (req, res) => {
       res.json({
         success: true,
         token,
-        user: { name: user.username, email: user.email }, 
+        user: { name: user.username, email: user.email },
       });
     } else {
       res.json({ success: false, message: "Invalid credentials" });

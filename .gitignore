@@ -1,4 +1,3 @@
-# Node + build
 node_modules/
 dist/
 build/
@@ -6,12 +5,10 @@ build/
 .cache/
 coverage/
 
-# TypeScript / tooling
 *.tsbuildinfo
 /.turbo
 /.parcel-cache
 
-# Env + logs
 .env
 .env.local
 .env.*
@@ -20,11 +17,9 @@ yarn-debug.log*
 pnpm-debug.log*
 *.log
 
-# Editor / OS
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
 
-# Misc
 *.tgz
