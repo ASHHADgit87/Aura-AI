@@ -19,7 +19,13 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
     setHasAccount(true);
   };
-
+  const deleteAccountCleanup = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("aura_user_exists");
+    setToken(null);
+    setUser(null);
+    setHasAccount(false);
+  };
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -62,7 +68,15 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, token, login, logout, loading, hasAccount }}
+      value={{
+        user,
+        token,
+        login,
+        logout,
+        loading,
+        hasAccount,
+        deleteAccountCleanup,
+      }}
     >
       {!loading && children}
     </AuthContext.Provider>

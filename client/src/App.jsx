@@ -15,6 +15,7 @@ import Translator from "./pages/Translator";
 import GrammarFixer from "./pages/GrammarFixer";
 import WebScraper from "./pages/WebScraper";
 import About from "./pages/About";
+import DeletePage from "./pages/DeletePage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
   const hideNavbarPaths = [
     "/login",
     "/register",
+    "/settings",
     "/image-generator",
     "/pdf-summarizer",
     "/image-analyzer",
@@ -42,6 +44,7 @@ const App = () => {
     "/login",
     "/register",
     "/about",
+    "/settings",
     "/image-generator",
     "/pdf-summarizer",
     "/image-analyzer",
@@ -67,6 +70,15 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
+
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <DeletePage />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/image-generator"

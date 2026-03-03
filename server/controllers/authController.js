@@ -42,7 +42,9 @@ export const login = async (req, res) => {
         user: { name: user.username, email: user.email },
       });
     } else {
-      res.json({ success: false, message: "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid credentials" });
     }
   } catch (error) {
     res.json({ success: false, message: error.message });

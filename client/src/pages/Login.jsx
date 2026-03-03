@@ -77,11 +77,14 @@ const Login = () => {
 
       const { data } = await api.post("/api/user/login", formData);
 
-      localStorage.setItem("aura_user_exists", "true");
-
-      login(data.token, data.user);
-      toast.success("Welcome back!");
-      navigate("/");
+      if (data.success) {
+        localStorage.setItem("aura_user_exists", "true");
+        login(data.token, data.user);
+        toast.success("Welcome back!");
+        navigate("/");
+      } else {
+        toast.error(data.message || "Invalid credentials");
+      }
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     } finally {

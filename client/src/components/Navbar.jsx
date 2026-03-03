@@ -8,6 +8,7 @@ const Navbar = () => {
   const { user, logout, hasAccount } = useAppContext();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -66,8 +67,11 @@ const Navbar = () => {
               {hasAccount ? "Login" : "Get Started"}
             </button>
           ) : (
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-3 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
+            <div className="relative">
+              <div
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="flex items-center gap-3 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full cursor-pointer hover:bg-white/10 transition-all"
+              >
                 <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-orange-500 to-pink-500 flex items-center justify-center text-[10px] font-black text-white border border-white/20">
                   {getInitials(user.name)}
                 </div>
@@ -75,15 +79,31 @@ const Navbar = () => {
                   {user.name}
                 </span>
               </div>
-              <button
-                onClick={() => {
-                  logout();
-                  navigate("/");
-                }}
-                className="px-6 py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:scale-105 transition-all shadow-lg text-sm"
-              >
-                Logout
-              </button>
+
+              {showDropdown && (
+                <div className="absolute right-0 mt-3 w-44 py-2 bg-black/90 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl z-[110]">
+                  <button
+                    onClick={() => {
+                      navigate("/settings");
+                      setShowDropdown(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition-all"
+                  >
+                    Settings
+                  </button>
+                  <div className="h-px bg-white/10 mx-2 my-1" />
+                  <button
+                    onClick={() => {
+                      logout();
+                      navigate("/");
+                      setShowDropdown(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-red-400 hover:text-red-500 hover:bg-white/5 transition-all font-bold"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -123,28 +143,21 @@ const Navbar = () => {
             <Link to="/about" onClick={() => setMenuOpen(false)}>
               About
             </Link>
-            {!user ? (
-              <button
-                onClick={() => {
-                  navigate(hasAccount ? "/login" : "/register");
-                  setMenuOpen(false);
-                }}
-                className="text-left py-3 rounded-xl bg-orange-600 px-6"
-              >
-                {hasAccount ? "Login" : "Get Started"}
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  logout();
-                  navigate("/");
-                  setMenuOpen(false);
-                }}
-                className="px-6 py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:scale-105 transition-all shadow-lg text-sm text-left"
-              >
-                Logout
-              </button>
+            {user && (
+              <Link to="/settings" onClick={() => setMenuOpen(false)}>
+                Settings
+              </Link>
             )}
+            <button
+              onClick={() => {
+                if (user) logout();
+                navigate(user ? "/" : hasAccount ? "/login" : "/register");
+                setMenuOpen(false);
+              }}
+              className="text-left py-3 rounded-xl bg-orange-600 px-6"
+            >
+              {user ? "Logout" : hasAccount ? "Login" : "Get Started"}
+            </button>
           </div>
         </div>
       )}
