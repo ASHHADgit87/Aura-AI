@@ -56,7 +56,7 @@ const BubbleField = ({ count = 500 }) => {
 
 const DeletePage = () => {
   const navigate = useNavigate();
-  const { user, logout } = useAppContext();
+  const { user, deleteAccountCleanup } = useAppContext();
   const [loading, setLoading] = useState(false);
 
   const handleDeleteAccount = async () => {
