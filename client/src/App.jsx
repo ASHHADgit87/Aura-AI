@@ -17,6 +17,7 @@ import WebScraper from "./pages/WebScraper";
 import About from "./pages/About";
 import DeletePage from "./pages/DeletePage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import OnlyNewUsersRoute from "./components/OnlyNewUsersRoute";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -67,9 +68,17 @@ const App = () => {
       <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
+
+          <Route
+            path="/register"
+            element={
+              <OnlyNewUsersRoute>
+                <Register />
+              </OnlyNewUsersRoute>
+            }
+          />
 
           <Route
             path="/settings"
