@@ -46,7 +46,7 @@ const Home = () => {
           onClick={() => navigate(hasAccount ? "/login" : "/register")}
           className="mt-8 px-10 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 hover:scale-105 transition-all duration-300 shadow-lg"
         >
-          {hasAccount ? "Login to Continue" : "Get Started for Free →"}
+          {hasAccount ? "Login to Continue →" : "Get Started for Free →"}
         </button>
       )}
 

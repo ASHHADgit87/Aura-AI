@@ -2,14 +2,14 @@ import React, { useState, Suspense, useRef, useMemo } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
-import axios from "../configs/axios";
+import api from "../configs/axios"; // Updated to use your custom api instance
 import { useAppContext } from "../context/authContext";
 import logoAura from "../assets/logo-aura.svg";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 /* ========================= */
-/*  Bubble Background Field  */
+/* Bubble Background Field  */
 /* ========================= */
 
 const BubbleField = ({ count = 500 }) => {
@@ -38,18 +38,14 @@ const BubbleField = ({ count = 500 }) => {
   useFrame(() => {
     particles.forEach((particle, i) => {
       particle.t += particle.speed;
-
       const yPos = ((particle.t + particle.yStart) % 40) - 20;
       const xOscillation = Math.sin(particle.t * 0.5) * 0.5;
-
       dummy.position.set(particle.x + xOscillation, yPos, particle.z);
       dummy.scale.set(particle.size, particle.size, particle.size);
       dummy.updateMatrix();
-
       mesh.current.setMatrixAt(i, dummy.matrix);
       mesh.current.setColorAt(i, new THREE.Color(particle.color));
     });
-
     mesh.current.instanceMatrix.needsUpdate = true;
     if (mesh.current.instanceColor)
       mesh.current.instanceColor.needsUpdate = true;
@@ -69,7 +65,7 @@ const BubbleField = ({ count = 500 }) => {
 };
 
 /* ========================= */
-/*          Login Page       */
+/* Login Page       */
 /* ========================= */
 
 const Login = () => {
@@ -88,13 +84,14 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const { data } = await axios.post("/api/auth/login", formData);
+      // Removed localhost - uses baseURL from api instance
+      const { data } = await api.post("/api/user/login", formData);
 
       localStorage.setItem("aura_user_exists", "true");
 
       login(data.token, data.user);
       toast.success("Welcome back!");
-      navigate("/");
+      navigate("/"); // Redirect to Home
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     } finally {
@@ -104,8 +101,6 @@ const Login = () => {
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-[#050505] text-white font-poppins">
-      
-      {/* Bubble Background */}
       <div className="fixed inset-0 z-0 pointer-events-none bg-black">
         <Canvas camera={{ position: [0, 0, 15], fov: 60 }}>
           <ambientLight intensity={0.5} />
@@ -116,9 +111,7 @@ const Login = () => {
         </Canvas>
       </div>
 
-      {/* Original Content (UNCHANGED) */}
       <div className="relative z-10 flex flex-col items-center justify-center text-white pb-20 px-6 min-h-screen">
-        
         <div
           onClick={() => navigate("/")}
           className="flex items-center mb-3 mt-8 cursor-pointer transition-transform hover:scale-105"
@@ -200,7 +193,6 @@ const Login = () => {
             </Link>
           </p>
         </div>
-
       </div>
     </section>
   );

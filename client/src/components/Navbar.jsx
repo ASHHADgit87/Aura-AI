@@ -78,14 +78,14 @@ const Navbar = () => {
                 </span>
               </div>
               <button
-                onClick={() => {
-                  logout();
-                  navigate("/");
-                }}
-                className="px-4 py-1.5 text-xs font-bold rounded-lg border border-red-500/50 text-red-400 hover:bg-red-500 hover:text-white transition-all"
-              >
-                Logout
-              </button>
+  onClick={() => {
+    logout();
+    navigate("/");
+  }}
+  className="px-6 py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:scale-105 transition-all shadow-lg text-sm"
+>
+  Logout
+</button>
             </div>
           )}
 
@@ -137,15 +137,15 @@ const Navbar = () => {
               </button>
             ) : (
               <button
-                onClick={() => {
-                  logout();
-                  navigate("/");
-                  setMenuOpen(false);
-                }}
-                className="text-left text-red-500"
-              >
-                Logout
-              </button>
+  onClick={() => {
+    logout();
+    navigate("/");
+    setMenuOpen(false);
+  }}
+  className="px-6 py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:scale-105 transition-all shadow-lg text-sm text-left"
+>
+  Logout
+</button>
             )}
           </div>
         </div>

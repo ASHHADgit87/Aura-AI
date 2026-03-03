@@ -1,75 +1,56 @@
-import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-
-axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+import React, { createContext, useContext, useState, useEffect } from "react";
+import api from "../configs/axios";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const navigate = useNavigate();
-
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const [loading, setLoading] = useState(true);
 
-  // Fetch logged in user data from backend
-  const fetchUser = async () => {
+  // This flag determines if we show "Get Started" or "Login"
+  const hasAccount = localStorage.getItem("aura_user_exists") === "true";
+
+  const login = (newToken, userData) => {
+    localStorage.setItem("token", newToken);
+    localStorage.setItem("aura_user_exists", "true");
+    setToken(newToken);
+    setUser(userData);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    setUser(null);
+  };
+
+  const checkUser = async () => {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
     try {
-      const { data } = await axios.get("/api/auth/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      // Your backend should return { success: true, user: {...} }
+      const { data } = await api.get("/api/user/me");
       if (data.success) {
         setUser(data.user);
       } else {
         logout();
       }
-    } catch (error) {
-      logout();
+    } catch (err) {
+      logout(); // Token likely expired (1-day limit hit)
     } finally {
       setLoading(false);
     }
   };
 
-  // Login — save token + user
-  const login = (newToken, userData) => {
-    localStorage.setItem("token", newToken);
-    setToken(newToken);
-    setUser(userData);
-    axios.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
-  };
-
-  // Logout — clear everything
-  const logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-    setUser(null);
-    delete axios.defaults.headers.common["Authorization"];
-    navigate("/login");
-  };
-
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      fetchUser();
-    } else {
-      setLoading(false);
-    }
+    checkUser();
   }, [token]);
 
-  const value = {
-    user,
-    token,
-    login,
-    logout,
-    loading,
-    navigate,
-    axios,
-  };
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{ user, token, login, logout, loading, hasAccount }}>
+      {/* Do not render app until we know if user is logged in or not */}
       {!loading && children}
     </AuthContext.Provider>
   );
