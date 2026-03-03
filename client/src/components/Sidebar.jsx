@@ -29,15 +29,15 @@ const Sidebar = () => {
         <div className="flex items-center justify-between px-4 py-6">
           {!collapsed && (
             <Link
-  to="/"
-  className="flex items-center gap-2 transition-transform duration-300 hover:scale-110"
->
-  <img
-    src={logoAura}
-    alt="Aura AI"
-    className="h-8 w-auto transition-all duration-300"
-  />
-</Link>
+              to="/"
+              className="flex items-center gap-2 transition-transform duration-300 hover:scale-110"
+            >
+              <img
+                src={logoAura}
+                alt="Aura AI"
+                className="h-8 w-auto transition-all duration-300"
+              />
+            </Link>
           )}
 
           <button

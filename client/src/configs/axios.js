@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  // Add the fallback string here to be 100% safe
-  baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:3000", 
+  baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:3000",
   withCredentials: true,
 });
 

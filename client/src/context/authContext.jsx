@@ -8,14 +8,16 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [loading, setLoading] = useState(true);
 
-  // This flag determines if we show "Get Started" or "Login"
-  const hasAccount = localStorage.getItem("aura_user_exists") === "true";
+  const [hasAccount, setHasAccount] = useState(
+    localStorage.getItem("aura_user_exists") === "true",
+  );
 
   const login = (newToken, userData) => {
     localStorage.setItem("token", newToken);
     localStorage.setItem("aura_user_exists", "true");
     setToken(newToken);
     setUser(userData);
+    setHasAccount(true);
   };
 
   const logout = () => {
@@ -29,16 +31,26 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
       return;
     }
+
     try {
-      // Your backend should return { success: true, user: {...} }
       const { data } = await api.get("/api/user/me");
+
       if (data.success) {
         setUser(data.user);
-      } else {
-        logout();
+        setHasAccount(true);
+        localStorage.setItem("aura_user_exists", "true");
       }
     } catch (err) {
-      logout(); // Token likely expired (1-day limit hit)
+      if (
+        err.response &&
+        (err.response.status === 401 || err.response.status === 404)
+      ) {
+        localStorage.removeItem("aura_user_exists");
+        localStorage.removeItem("token");
+        setHasAccount(false);
+        setToken(null);
+        setUser(null);
+      }
     } finally {
       setLoading(false);
     }
@@ -49,8 +61,9 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, loading, hasAccount }}>
-      {/* Do not render app until we know if user is logged in or not */}
+    <AuthContext.Provider
+      value={{ user, token, login, logout, loading, hasAccount }}
+    >
       {!loading && children}
     </AuthContext.Provider>
   );

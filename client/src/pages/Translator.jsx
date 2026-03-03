@@ -5,7 +5,6 @@ import axios from "../configs/axios";
 import Sidebar from "../components/Sidebar";
 import FooterForFeature from "../components/FooterForFeature";
 
-
 const languageCountryMap = {
   en: "US",
   ar: "SA",
@@ -130,7 +129,6 @@ const Translator = () => {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  
   const fromFlagRef = useRef(null);
   const toFlagRef = useRef(null);
 
@@ -213,10 +211,13 @@ const Translator = () => {
             onSubmit={onTranslateHandler}
             className="w-full max-w-5xl bg-black/30 border border-white/20 rounded-2xl p-6 backdrop-blur-xl flex flex-col gap-4"
           >
-            {/* Language selectors */}
             <div className="flex gap-3 flex-col sm:flex-row mb-4">
               <div className="flex items-center gap-2 flex-1">
-                <img ref={fromFlagRef} className="w-6 h-6 rounded-sm" alt="from flag" />
+                <img
+                  ref={fromFlagRef}
+                  className="w-6 h-6 rounded-sm"
+                  alt="from flag"
+                />
                 <select
                   value={fromLang}
                   onChange={(e) => setFromLang(e.target.value)}
@@ -243,7 +244,11 @@ const Translator = () => {
               </button>
 
               <div className="flex items-center gap-2 flex-1">
-                <img ref={toFlagRef} className="w-6 h-6 rounded-sm" alt="to flag" />
+                <img
+                  ref={toFlagRef}
+                  className="w-6 h-6 rounded-sm"
+                  alt="to flag"
+                />
                 <select
                   value={toLang}
                   onChange={(e) => setToLang(e.target.value)}
@@ -262,9 +267,7 @@ const Translator = () => {
               </div>
             </div>
 
-            {/* Input & Output side by side */}
             <div className="flex flex-col md:flex-row gap-4">
-              {/* Input */}
               <textarea
                 rows={10}
                 value={inputText}
@@ -273,7 +276,6 @@ const Translator = () => {
                 className="flex-1 bg-white/5 text-white/90 placeholder:text-white/40 rounded-xl p-4 outline-none resize-none"
               />
 
-              {/* Output */}
               <textarea
                 rows={10}
                 value={outputText}
@@ -283,7 +285,6 @@ const Translator = () => {
               />
             </div>
 
-            {/* Buttons */}
             <div className="flex justify-end gap-2 mt-4">
               <button
                 type="button"

@@ -16,7 +16,8 @@ const WebScraper = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     if (!url.trim()) return toast.error("Please enter a URL");
-    if (!url.startsWith("http")) return toast.error("Please enter a valid URL starting with http");
+    if (!url.startsWith("http"))
+      return toast.error("Please enter a valid URL starting with http");
     try {
       setLoading(true);
       setResult(null);
@@ -44,8 +45,15 @@ const WebScraper = () => {
   const flattenObject = (obj, prefix = "") => {
     return Object.entries(obj).reduce((acc, [key, value]) => {
       const fullKey = prefix ? `${prefix}.${key}` : key;
-      if (value && typeof value === "object" && !Array.isArray(value)) return [...acc, ...flattenObject(value, fullKey)];
-      return [...acc, { key: fullKey, value: Array.isArray(value) ? value.join(", ") : String(value) }];
+      if (value && typeof value === "object" && !Array.isArray(value))
+        return [...acc, ...flattenObject(value, fullKey)];
+      return [
+        ...acc,
+        {
+          key: fullKey,
+          value: Array.isArray(value) ? value.join(", ") : String(value),
+        },
+      ];
     }, []);
   };
 
@@ -63,9 +71,12 @@ const WebScraper = () => {
           }}
         >
           <div className="w-full max-w-4xl mt-10 mb-10 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">AI Web Scraper</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              AI Web Scraper
+            </h1>
             <p className="text-white/90 text-sm md:text-base max-w-lg mx-auto">
-              Enter any URL and Aura AI will extract structured data from the page instantly.
+              Enter any URL and Aura AI will extract structured data from the
+              page instantly.
             </p>
           </div>
 
@@ -74,11 +85,19 @@ const WebScraper = () => {
               onSubmit={onSubmitHandler}
               className="bg-black/30 border border-white/20 rounded-2xl p-6 backdrop-blur-xl flex flex-col gap-4"
             >
-              <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex items-center gap-3 transition-all backdrop-blur-lg"
-                onFocus={(e) => e.currentTarget.style.borderColor = "rgba(255,122,24,0.4)"}
-                onBlur={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
+              <div
+                className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex items-center gap-3 transition-all backdrop-blur-lg"
+                onFocus={(e) =>
+                  (e.currentTarget.style.borderColor = "rgba(255,122,24,0.4)")
+                }
+                onBlur={(e) =>
+                  (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")
+                }
               >
-                <Globe className="w-4 h-4 shrink-0" style={{ color: "rgba(255,255,255,0.3)" }} />
+                <Globe
+                  className="w-4 h-4 shrink-0"
+                  style={{ color: "rgba(255,255,255,0.3)" }}
+                />
                 <input
                   type="text"
                   value={url}
@@ -88,9 +107,14 @@ const WebScraper = () => {
                 />
               </div>
 
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4 transition-all backdrop-blur-lg"
-                onFocus={(e) => e.currentTarget.style.borderColor = "rgba(255,122,24,0.4)"}
-                onBlur={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
+              <div
+                className="bg-white/5 border border-white/10 rounded-xl p-4 transition-all backdrop-blur-lg"
+                onFocus={(e) =>
+                  (e.currentTarget.style.borderColor = "rgba(255,122,24,0.4)")
+                }
+                onBlur={(e) =>
+                  (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")
+                }
               >
                 <textarea
                   value={prompt}
@@ -138,7 +162,9 @@ const WebScraper = () => {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <Globe className="w-4 h-4 text-orange-400" />
-                    <span className="text-xs truncate max-w-xs text-white/70">{url}</span>
+                    <span className="text-xs truncate max-w-xs text-white/70">
+                      {url}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="flex items-center bg-white/5 rounded-xl p-1 gap-1">
@@ -161,7 +187,11 @@ const WebScraper = () => {
                       onClick={onCopyHandler}
                       className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/15 rounded-lg text-xs transition-all"
                     >
-                      {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                      {copied ? (
+                        <Check className="w-4 h-4 text-green-400" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
                       {copied ? "Copied!" : "Copy JSON"}
                     </button>
                   </div>
@@ -172,15 +202,26 @@ const WebScraper = () => {
                     <table className="w-full text-xs">
                       <thead>
                         <tr className="border-b border-white/10">
-                          <th className="text-left px-5 py-3 uppercase tracking-widest font-medium text-white/40 w-1/3">Key</th>
-                          <th className="text-left px-5 py-3 uppercase tracking-widest font-medium text-white/40">Value</th>
+                          <th className="text-left px-5 py-3 uppercase tracking-widest font-medium text-white/40 w-1/3">
+                            Key
+                          </th>
+                          <th className="text-left px-5 py-3 uppercase tracking-widest font-medium text-white/40">
+                            Value
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
                         {tableRows.map((row, index) => (
-                          <tr key={index} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                            <td className="px-5 py-3 font-mono text-orange-400">{row.key}</td>
-                            <td className="px-5 py-3 break-all text-white/70">{row.value}</td>
+                          <tr
+                            key={index}
+                            className="border-b border-white/5 hover:bg-white/5 transition-colors"
+                          >
+                            <td className="px-5 py-3 font-mono text-orange-400">
+                              {row.key}
+                            </td>
+                            <td className="px-5 py-3 break-all text-white/70">
+                              {row.value}
+                            </td>
                           </tr>
                         ))}
                       </tbody>

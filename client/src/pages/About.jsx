@@ -215,7 +215,6 @@ const About = () => {
           </h2>
           <div className="grid md:grid-cols-1 gap-8">
             {" "}
-            {/* Changed to 1 column for bigger impact */}
             {tools.map((tool, i) => (
               <GlowCard
                 key={i}
@@ -286,45 +285,42 @@ const About = () => {
         </section>
 
         <section className="mb-32">
-  <div className="bg-white/5 border border-white/10 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
+            <h3 className="text-3xl font-bold tracking-tighter">
+              Muhammad Ashhadullah Zaheer
+            </h3>
 
-    <h3 className="text-3xl font-bold tracking-tighter">
-      Muhammad Ashhadullah Zaheer
-    </h3>
+            <p className="text-orange-500 font-bold text-sm uppercase tracking-widest">
+              Software Engineer | Full Stack Developer
+            </p>
 
-    <p className="text-orange-500 font-bold text-sm uppercase tracking-widest">
-      Software Engineer | Full Stack Developer
-    </p>
+            <p className="text-gray-400 leading-relaxed text-sm max-w-2xl">
+              Dedicated to building high-performance AI SaaS products. Aura-AI
+              serves as a proof of concept that sophisticated generative tools
+              can be offered for free without compromising on quality or UI.
+            </p>
 
-    <p className="text-gray-400 leading-relaxed text-sm max-w-2xl">
-      Dedicated to building high-performance AI SaaS products. Aura-AI
-      serves as a proof of concept that sophisticated generative tools
-      can be offered for free without compromising on quality or UI.
-    </p>
+            <div className="flex gap-6 mt-4">
+              <a
+                href="https://github.com/ashhadgit87/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
+              >
+                GitHub
+              </a>
 
-    {/* Social Links */}
-    <div className="flex gap-6 mt-4">
-      <a
-        href="https://github.com/ashhadgit87/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
-      >
-        GitHub
-      </a>
-
-      <a
-        href="https://linkedin.com/in/muhammad-ashhadullah-zaheer-41194a340/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
-      >
-        LinkedIn
-      </a>
-    </div>
-
-  </div>
-</section>
+              <a
+                href="https://linkedin.com/in/muhammad-ashhadullah-zaheer-41194a340/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
+              >
+                LinkedIn
+              </a>
+            </div>
+          </div>
+        </section>
 
         <section className="text-center pb-20">
           <button

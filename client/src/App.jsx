@@ -1,5 +1,6 @@
 import { Toaster } from "react-hot-toast";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { useAppContext } from "./context/authContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -17,6 +18,11 @@ import About from "./pages/About";
 
 const App = () => {
   const { pathname } = useLocation();
+  const { loading } = useAppContext();
+
+  if (loading) {
+    return null;
+  }
 
   const hideNavbarPaths = [
     "/login",

@@ -58,7 +58,9 @@ const BgRemover = () => {
       setResultUrl(url);
       toast.success("Background removed!");
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Failed to remove background");
+      toast.error(
+        error?.response?.data?.message || "Failed to remove background",
+      );
     } finally {
       setLoading(false);
     }
@@ -78,24 +80,32 @@ const BgRemover = () => {
       <div className="flex flex-col flex-1">
         <section
           className="flex flex-col items-center text-white pb-20 px-6 flex-1"
-          style={{ background: "linear-gradient(180deg, #FF7A18 0%, #E10600 60%)" }}
+          style={{
+            background: "linear-gradient(180deg, #FF7A18 0%, #E10600 60%)",
+          }}
         >
           <div className="w-full max-w-4xl mt-10 mb-10 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Background Remover</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Background Remover
+            </h1>
             <p className="text-white/90 text-sm md:text-base max-w-lg mx-auto">
               Upload any image and Aura-AI will remove the background instantly.
             </p>
           </div>
 
-          {/* Upload Form */}
           <div className="w-full max-w-3xl">
             <form
               onSubmit={onSubmitHandler}
               className="bg-black/30 border border-white/20 rounded-2xl p-6 backdrop-blur-xl"
             >
               <label className="w-full flex flex-col items-center justify-center border-2 border-dashed border-white/20 rounded-xl p-8 cursor-pointer hover:bg-white/5 transition-colors relative">
-                <input type="file" accept="image/*" onChange={onFileChange} className="hidden" />
-                
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={onFileChange}
+                  className="hidden"
+                />
+
                 {preview ? (
                   <div className="relative w-full flex justify-center">
                     <img
@@ -136,7 +146,8 @@ const BgRemover = () => {
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="animate-spin w-5 h-5" /> Removing Background...
+                      <Loader2 className="animate-spin w-5 h-5" /> Removing
+                      Background...
                     </>
                   ) : (
                     "Remove Background"
@@ -146,7 +157,6 @@ const BgRemover = () => {
             </form>
           </div>
 
-          {/* Result Section */}
           <div className="w-full max-w-3xl mt-12">
             {!resultUrl && !loading && (
               <div className="h-[400px] border-2 border-dashed border-white/20 rounded-3xl flex flex-col items-center justify-center text-white/40">
@@ -163,7 +173,11 @@ const BgRemover = () => {
 
             {resultUrl && !loading && (
               <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-black/20 p-8 backdrop-blur-md flex flex-col items-center">
-                <img src={resultUrl} alt="Background Removed" className="max-h-[400px] object-contain rounded-xl mb-4" />
+                <img
+                  src={resultUrl}
+                  alt="Background Removed"
+                  className="max-h-[400px] object-contain rounded-xl mb-4"
+                />
                 <button
                   onClick={onDownloadHandler}
                   className="px-6 py-3 bg-black text-white rounded-full font-bold hover:bg-white hover:text-black transition-colors"

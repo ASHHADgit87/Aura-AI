@@ -78,8 +78,8 @@ const PdfSummarizer = () => {
               PDF Summarizer
             </h1>
             <p className="text-white/90 text-sm md:text-base max-w-lg mx-auto">
-              Upload any PDF and get a clear AI-powered summary in seconds With Aura AI. Save
-              time and get the core insights instantly.
+              Upload any PDF and get a clear AI-powered summary in seconds With
+              Aura AI. Save time and get the core insights instantly.
             </p>
           </div>
 

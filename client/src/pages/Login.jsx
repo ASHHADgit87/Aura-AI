@@ -2,15 +2,11 @@ import React, { useState, Suspense, useRef, useMemo } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
-import api from "../configs/axios"; // Updated to use your custom api instance
+import api from "../configs/axios";
 import { useAppContext } from "../context/authContext";
 import logoAura from "../assets/logo-aura.svg";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-
-/* ========================= */
-/* Bubble Background Field  */
-/* ========================= */
 
 const BubbleField = ({ count = 500 }) => {
   const mesh = useRef();
@@ -25,9 +21,7 @@ const BubbleField = ({ count = 500 }) => {
         yStart: (Math.random() - 0.5) * 40,
         z: (Math.random() - 0.5) * 20,
         size: 0.05 + Math.random() * 0.15,
-        color: ["#FF7A18", "#E10600", "#FF4DA6"][
-          Math.floor(Math.random() * 3)
-        ],
+        color: ["#FF7A18", "#E10600", "#FF4DA6"][Math.floor(Math.random() * 3)],
       });
     }
     return temp;
@@ -64,10 +58,6 @@ const BubbleField = ({ count = 500 }) => {
   );
 };
 
-/* ========================= */
-/* Login Page       */
-/* ========================= */
-
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAppContext();
@@ -84,14 +74,14 @@ const Login = () => {
 
     try {
       setLoading(true);
-      // Removed localhost - uses baseURL from api instance
+
       const { data } = await api.post("/api/user/login", formData);
 
       localStorage.setItem("aura_user_exists", "true");
 
       login(data.token, data.user);
       toast.success("Welcome back!");
-      navigate("/"); // Redirect to Home
+      navigate("/");
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     } finally {
@@ -124,9 +114,7 @@ const Login = () => {
         </div>
 
         <div className="bg-black/20 backdrop-blur-xl border border-white/20 rounded-3xl p-8 w-full max-w-md shadow-2xl">
-          <h1 className="text-3xl font-bold mb-2 text-center">
-            Welcome back
-          </h1>
+          <h1 className="text-3xl font-bold mb-2 text-center">Welcome back</h1>
           <p className="text-sm mb-8 text-center text-white/80">
             Sign in to continue to AuraAI
           </p>

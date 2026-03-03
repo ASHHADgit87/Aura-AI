@@ -3,20 +3,59 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/authContext";
 
 const features = [
-  { title: "Generate Images", description: "Bring your ideas to life with stunning visuals powered by Aura-AI.", route: "/image-generator" },
-  { title: "Summarize PDFs", description: "Quickly understand any PDF with concise, AI-driven summaries from Aura-AI.", route: "/pdf-summarizer" },
-  { title: "Analyze Images", description: "Get deep insights and detailed analysis for any image using Aura-AI.", route: "/image-analyzer" },
-  { title: "Create Music", description: "Compose original AI-generated music tracks effortlessly with Aura-AI.", route: "/song-generator" },
-  { title: "Remove Backgrounds", description: "Instantly remove image backgrounds with precision using Aura-AI technology.", route: "/bg-remover" },
-  { title: "Translate Text", description: "Translate text seamlessly across 50+ languages using Aura-AI’s smart translation.", route: "/translator" },
-  { title: "Fix Grammar", description: "Enhance your writing with accurate grammar and style corrections powered by Aura-AI.", route: "/grammar-fixer" },
-  { title: "Scrape Web Data", description: "Extract clean, structured data from any website quickly and efficiently with Aura-AI.", route: "/web-scraper" },
+  {
+    title: "Generate Images",
+    description:
+      "Bring your ideas to life with stunning visuals powered by Aura-AI.",
+    route: "/image-generator",
+  },
+  {
+    title: "Summarize PDFs",
+    description:
+      "Quickly understand any PDF with concise, AI-driven summaries from Aura-AI.",
+    route: "/pdf-summarizer",
+  },
+  {
+    title: "Analyze Images",
+    description:
+      "Get deep insights and detailed analysis for any image using Aura-AI.",
+    route: "/image-analyzer",
+  },
+  {
+    title: "Create Music",
+    description:
+      "Compose original AI-generated music tracks effortlessly with Aura-AI.",
+    route: "/song-generator",
+  },
+  {
+    title: "Remove Backgrounds",
+    description:
+      "Instantly remove image backgrounds with precision using Aura-AI technology.",
+    route: "/bg-remover",
+  },
+  {
+    title: "Translate Text",
+    description:
+      "Translate text seamlessly across 50+ languages using Aura-AI’s smart translation.",
+    route: "/translator",
+  },
+  {
+    title: "Fix Grammar",
+    description:
+      "Enhance your writing with accurate grammar and style corrections powered by Aura-AI.",
+    route: "/grammar-fixer",
+  },
+  {
+    title: "Scrape Web Data",
+    description:
+      "Extract clean, structured data from any website quickly and efficiently with Aura-AI.",
+    route: "/web-scraper",
+  },
 ];
 
 const Home = () => {
   const navigate = useNavigate();
-  const { user } = useAppContext();
-  const hasAccount = localStorage.getItem("aura_user_exists") === "true";
+  const { user, hasAccount } = useAppContext();
 
   const handleFeatureClick = (route) => {
     if (user) {
@@ -30,7 +69,8 @@ const Home = () => {
     <section
       className="flex flex-col items-center text-white pb-20 px-6 font-poppins min-h-screen"
       style={{
-        background: "linear-gradient(180deg, #FF7A18 0%, #E10600 40%, #E10600 80%, #FF4DA6 100%)",
+        background:
+          "linear-gradient(180deg, #FF7A18 0%, #E10600 40%, #E10600 80%, #FF4DA6 100%)",
       }}
     >
       <h1 className="text-center text-4xl md:text-6xl font-bold mt-24 max-w-4xl leading-tight">
@@ -38,7 +78,10 @@ const Home = () => {
       </h1>
 
       <p className="text-center text-base md:text-lg max-w-xl mt-6 text-white/90">
-        Aura-AI features 8 Powerful Tools— <span className="font-bold decoration-white/40">completely free with no pricing.</span>
+        Aura-AI features 8 Powerful Tools—{" "}
+        <span className="font-bold decoration-white/40">
+          completely free with no pricing.
+        </span>
       </p>
 
       {!user && (
@@ -58,8 +101,12 @@ const Home = () => {
             className="relative bg-black/20 backdrop-blur-lg border border-white/10 rounded-2xl p-6 cursor-pointer transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 hover:shadow-[0_0_25px_rgba(255,122,24,0.6)]"
           >
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-orange-500 via-red-600 to-pink-500 opacity-10 pointer-events-none"></div>
-            <h3 className="font-semibold text-lg mb-3 z-10 relative">{feature.title}</h3>
-            <p className="text-sm text-white/70 leading-relaxed z-10 relative">{feature.description}</p>
+            <h3 className="font-semibold text-lg mb-3 z-10 relative">
+              {feature.title}
+            </h3>
+            <p className="text-sm text-white/70 leading-relaxed z-10 relative">
+              {feature.description}
+            </p>
           </div>
         ))}
       </div>

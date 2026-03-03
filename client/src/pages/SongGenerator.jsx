@@ -21,7 +21,7 @@ const SongGenerator = () => {
       const { data } = await axios.post(
         "/api/song/generate",
         { prompt },
-        { responseType: "blob" }
+        { responseType: "blob" },
       );
 
       const url = URL.createObjectURL(new Blob([data], { type: "audio/wav" }));
@@ -100,7 +100,6 @@ const SongGenerator = () => {
           </div>
 
           <div className="w-full max-w-3xl mt-12">
-            {/* Placeholder when no audio */}
             {!audioUrl && !loading && (
               <div className="h-[400px] border-2 border-dashed border-white/20 rounded-3xl flex flex-col items-center justify-center text-white/40">
                 <Music size={50} strokeWidth={1} className="mb-4" />
@@ -108,7 +107,6 @@ const SongGenerator = () => {
               </div>
             )}
 
-            {/* Loading state */}
             {loading && (
               <div className="h-[200px] flex flex-col items-center justify-center gap-3">
                 <Loader2 className="animate-spin w-10 h-10" />
@@ -118,7 +116,6 @@ const SongGenerator = () => {
               </div>
             )}
 
-            {/* Audio player */}
             {audioUrl && !loading && (
               <div className="bg-black/30 border border-white/20 rounded-2xl overflow-hidden p-4 flex flex-col gap-4">
                 <div className="flex justify-between items-center">

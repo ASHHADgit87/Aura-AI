@@ -5,11 +5,9 @@ import logoAura from "../assets/logo-aura.svg";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { user, logout } = useAppContext();
+  const { user, logout, hasAccount } = useAppContext();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
-  const hasAccount = localStorage.getItem("aura_user_exists") === "true";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -78,14 +76,14 @@ const Navbar = () => {
                 </span>
               </div>
               <button
-  onClick={() => {
-    logout();
-    navigate("/");
-  }}
-  className="px-6 py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:scale-105 transition-all shadow-lg text-sm"
->
-  Logout
-</button>
+                onClick={() => {
+                  logout();
+                  navigate("/");
+                }}
+                className="px-6 py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:scale-105 transition-all shadow-lg text-sm"
+              >
+                Logout
+              </button>
             </div>
           )}
 
@@ -137,15 +135,15 @@ const Navbar = () => {
               </button>
             ) : (
               <button
-  onClick={() => {
-    logout();
-    navigate("/");
-    setMenuOpen(false);
-  }}
-  className="px-6 py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:scale-105 transition-all shadow-lg text-sm text-left"
->
-  Logout
-</button>
+                onClick={() => {
+                  logout();
+                  navigate("/");
+                  setMenuOpen(false);
+                }}
+                className="px-6 py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:scale-105 transition-all shadow-lg text-sm text-left"
+              >
+                Logout
+              </button>
             )}
           </div>
         </div>

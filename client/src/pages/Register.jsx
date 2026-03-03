@@ -2,15 +2,11 @@ import React, { useState, Suspense, useRef, useMemo } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
-import api from "../configs/axios"; // Updated to use your custom api instance
+import api from "../configs/axios";
 import { useAppContext } from "../context/authContext";
 import logoAura from "../assets/logo-aura.svg";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-
-/* ========================= */
-/* Bubble Background Field  */
-/* ========================= */
 
 const BubbleField = ({ count = 500 }) => {
   const mesh = useRef();
@@ -25,9 +21,7 @@ const BubbleField = ({ count = 500 }) => {
         yStart: (Math.random() - 0.5) * 40,
         z: (Math.random() - 0.5) * 20,
         size: 0.05 + Math.random() * 0.15,
-        color: ["#FF7A18", "#E10600", "#FF4DA6"][
-          Math.floor(Math.random() * 3)
-        ],
+        color: ["#FF7A18", "#E10600", "#FF4DA6"][Math.floor(Math.random() * 3)],
       });
     }
     return temp;
@@ -64,10 +58,6 @@ const BubbleField = ({ count = 500 }) => {
   );
 };
 
-/* ========================= */
-/* Register Page       */
-/* ========================= */
-
 const Register = () => {
   const navigate = useNavigate();
   const { login } = useAppContext();
@@ -98,7 +88,6 @@ const Register = () => {
 
     try {
       setLoading(true);
-      // Removed localhost - uses baseURL from api instance
       const { data } = await api.post("/api/user/register", {
         name: formData.name,
         email: formData.email,
@@ -112,7 +101,7 @@ const Register = () => {
       }
 
       toast.success("Account created successfully!");
-      navigate("/"); // Redirect to Home
+      navigate("/");
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     } finally {
@@ -122,9 +111,24 @@ const Register = () => {
 
   const fields = [
     { label: "Full Name", name: "name", type: "text", placeholder: "John Doe" },
-    { label: "Email", name: "email", type: "email", placeholder: "you@example.com" },
-    { label: "Password", name: "password", type: "password", placeholder: "••••••••" },
-    { label: "Confirm Password", name: "confirmPassword", type: "password", placeholder: "••••••••" },
+    {
+      label: "Email",
+      name: "email",
+      type: "email",
+      placeholder: "you@example.com",
+    },
+    {
+      label: "Password",
+      name: "password",
+      type: "password",
+      placeholder: "••••••••",
+    },
+    {
+      label: "Confirm Password",
+      name: "confirmPassword",
+      type: "password",
+      placeholder: "••••••••",
+    },
   ];
 
   return (
