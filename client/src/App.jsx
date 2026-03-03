@@ -15,6 +15,7 @@ import Translator from "./pages/Translator";
 import GrammarFixer from "./pages/GrammarFixer";
 import WebScraper from "./pages/WebScraper";
 import About from "./pages/About";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -66,14 +67,71 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
-          <Route path="/image-generator" element={<ImageGenerator />} />
-          <Route path="/pdf-summarizer" element={<PdfSummarizer />} />
-          <Route path="/image-analyzer" element={<ImageAnalyzer />} />
-          <Route path="/song-generator" element={<SongGenerator />} />
-          <Route path="/bg-remover" element={<BgRemover />} />
-          <Route path="/translator" element={<Translator />} />
-          <Route path="/grammar-fixer" element={<GrammarFixer />} />
-          <Route path="/web-scraper" element={<WebScraper />} />
+
+          <Route
+            path="/image-generator"
+            element={
+              <ProtectedRoute>
+                <ImageGenerator />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pdf-summarizer"
+            element={
+              <ProtectedRoute>
+                <PdfSummarizer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/image-analyzer"
+            element={
+              <ProtectedRoute>
+                <ImageAnalyzer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/song-generator"
+            element={
+              <ProtectedRoute>
+                <SongGenerator />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bg-remover"
+            element={
+              <ProtectedRoute>
+                <BgRemover />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/translator"
+            element={
+              <ProtectedRoute>
+                <Translator />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/grammar-fixer"
+            element={
+              <ProtectedRoute>
+                <GrammarFixer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/web-scraper"
+            element={
+              <ProtectedRoute>
+                <WebScraper />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
 
