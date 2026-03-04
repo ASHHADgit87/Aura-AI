@@ -159,7 +159,7 @@ const PdfSummarizer = () => {
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white  
+                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white   
                     bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
                     border-2 border-white/30 hover:border-white/70 
                     hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg flex items-center justify-center gap-2"
@@ -170,7 +170,7 @@ const PdfSummarizer = () => {
                   <button
                     type="submit"
                     disabled={loading || !file}
-                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white  
+                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white   
                     bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
                     border-2 border-white/30 hover:border-white/70 
                     hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg flex items-center justify-center gap-2
@@ -200,29 +200,77 @@ const PdfSummarizer = () => {
 
             {loading && (
               <div className="h-[300px] flex items-center justify-center">
-                <Loader2 className="animate-spin w-10 h-10" />
+                <Loader2 className="animate-spin w-10 h-10 text-white" />
               </div>
             )}
 
             {summary && !loading && (
-              <div className="rounded-3xl border border-white/20 bg-black/40 p-8 backdrop-blur-md">
-                <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                  <h3 className="font-semibold text-orange-400 flex items-center gap-2">
-                    <FileText size={20} /> AI Summary
-                  </h3>
-                  <button
-                    onClick={onCopyHandler}
-                    className="p-2 hover:bg-white/10 rounded-lg"
-                  >
-                    {copied ? (
-                      <Check size={18} className="text-green-400" />
-                    ) : (
-                      <Copy size={18} />
-                    )}
-                  </button>
-                </div>
-                <div className="text-white/90 leading-relaxed whitespace-pre-wrap max-h-[500px] overflow-y-auto custom-scrollbar">
-                  {summary}
+              <div className="relative animate-in fade-in slide-in-from-bottom-5 duration-500">
+                <div className="bg-[#1e1e2e]/90 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl relative">
+                  <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                    <h3 className="font-semibold text-orange-400 flex items-center gap-2">
+                      <FileText size={20} /> Summary
+                    </h3>
+                    <button
+                      onClick={onCopyHandler}
+                      className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                    >
+                      {copied ? (
+                        <Check size={18} className="text-green-400" />
+                      ) : (
+                        <Copy size={18} className="text-white/70" />
+                      )}
+                    </button>
+                  </div>
+
+                  <div className="text-gray-200 font-sans text-[15px] leading-relaxed tracking-wide space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar">
+                    {summary.split("\n").map((line, index) => {
+                      if (line.trim().startsWith("###")) {
+                        return (
+                          <h3
+                            key={index}
+                            className="text-xl font-bold text-white mt-8 mb-2 border-l-4 border-orange-500 pl-4"
+                          >
+                            {line.replace(/###/g, "").trim()}
+                          </h3>
+                        );
+                      }
+
+                      if (
+                        line.trim().startsWith("*") ||
+                        line.trim().startsWith("-")
+                      ) {
+                        return (
+                          <div
+                            key={index}
+                            className="ml-4 text-gray-300 flex gap-3 items-start"
+                          >
+                            <span className="text-orange-500 mt-1.5 text-[10px]">
+                              ●
+                            </span>
+                            <span>{line.replace(/^[*-]/, "").trim()}</span>
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <p key={index} className="mb-2">
+                          {line.split("**").map((part, i) =>
+                            i % 2 === 1 ? (
+                              <strong
+                                key={i}
+                                className="text-white font-semibold"
+                              >
+                                {part}
+                              </strong>
+                            ) : (
+                              part
+                            ),
+                          )}
+                        </p>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             )}
