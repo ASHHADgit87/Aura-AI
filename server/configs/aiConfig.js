@@ -16,8 +16,4 @@ export const aiConfig = {
     apiKey: process.env.GEMINI_API_KEY,
     model: "gemini-2.5-flash",
   },
-  pollinations: {
-    baseUrl: "https://text.pollinations.ai/openai",
-    model: "openai",
-  },
 };
