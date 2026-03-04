@@ -3,9 +3,11 @@ import { workerConfig } from "../configs/aiConfig.js";
 
 export const generateImageAI = async (prompt) => {
   try {
+    const enhancedPrompt = `Create an image that is 100% accurate, authentic, and correct. ${prompt}`;
+
     const response = await axios.post(
       workerConfig.url,
-      { prompt },
+      { prompt: enhancedPrompt },
       {
         headers: {
           Authorization: `Bearer ${workerConfig.key}`,

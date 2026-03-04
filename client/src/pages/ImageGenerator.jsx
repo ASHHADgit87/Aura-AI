@@ -64,6 +64,13 @@ const ImageGenerator = () => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      imageUrl ? handleReset() : onSubmitHandler(e);
+    }
+  };
+
   return (
     <div className="flex min-h-screen">
       <Sidebar />
@@ -93,6 +100,7 @@ const ImageGenerator = () => {
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
+                onKeyDown={handleKeyDown}
                 placeholder="Describe what Image you want..."
                 readOnly={!!imageUrl}
                 className="w-full bg-transparent outline-none text-sm placeholder:text-white/40 resize-none min-h-[60px]"
@@ -122,8 +130,7 @@ const ImageGenerator = () => {
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="animate-spin w-5 h-5" />{" "}
-                        Processing...
+                        <Loader2 className="animate-spin w-5 h-5" /> Processing...
                       </>
                     ) : (
                       "Generate Image"
