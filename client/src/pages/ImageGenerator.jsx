@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Loader2, Download, ImageIcon, RotateCcw } from "lucide-react";
+import { Loader2, Download, ImageIcon, RotateCcw, Copy } from "lucide-react";
 import { toast } from "react-hot-toast";
 import api from "../configs/axios";
 import Sidebar from "../components/Sidebar";
@@ -51,6 +51,19 @@ const ImageGenerator = () => {
     }
   };
 
+  const onCopyHandler = async () => {
+    try {
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      await navigator.clipboard.write([
+        new ClipboardItem({ [blob.type]: blob }),
+      ]);
+      toast.success("Image copied to clipboard");
+    } catch {
+      toast.error("Failed to copy image");
+    }
+  };
+
   return (
     <div className="flex min-h-screen">
       <Sidebar />
@@ -91,7 +104,7 @@ const ImageGenerator = () => {
                     type="button"
                     onClick={handleReset}
                     className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white   
-                    bg-gradient-to-r from-gray-600 to-gray-800 
+                    bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
                     border-2 border-white/30 hover:border-white/70 
                     hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg flex items-center justify-center gap-2"
                   >
@@ -143,12 +156,18 @@ const ImageGenerator = () => {
                   className="w-full h-auto block min-h-[200px]"
                   onError={() => toast.error("Image data corrupted")}
                 />
-                <div className="absolute bottom-6 right-6">
+                <div className="absolute bottom-6 right-6 flex gap-4">
                   <button
                     onClick={onDownloadHandler}
-                    className="flex items-center gap-2 px-6 py-3 bg-black/80 backdrop-blur-md text-white rounded-full font-bold hover:bg-white hover:text-black transition-all shadow-lg"
+                    className="flex items-center gap-2 px-1.25 py-0.5 bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 hover:scale-105 active:scale-95 rounded-full font-bold transition-all duration-300 shadow-lg"
                   >
                     <Download size={20} /> Download
+                  </button>
+                  <button
+                    onClick={onCopyHandler}
+                    className="flex items-center gap-2 px-1.25 py-0.5 bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 hover:scale-105 active:scale-95 rounded-full font-bold transition-all duration-300 shadow-lg"
+                  >
+                    <Copy size={20} /> Copy
                   </button>
                 </div>
               </div>
