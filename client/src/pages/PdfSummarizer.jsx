@@ -100,8 +100,8 @@ const PdfSummarizer = () => {
               PDF Summarizer
             </h1>
             <p className="text-white/90 text-sm max-w-lg mx-auto">
-              Upload a PDF and give custom instructions to get the exact
-              insights you need.
+              Upload a PDF and give custom instructions Aura AI will get the
+              exact insights you need.
             </p>
           </div>
 
@@ -190,7 +190,6 @@ const PdfSummarizer = () => {
             </form>
           </div>
 
-          {/* Results */}
           <div className="w-full max-w-3xl mt-12">
             {!summary && !loading && (
               <div className="h-[300px] border-2 border-dashed border-white/10 rounded-3xl flex flex-col items-center justify-center text-white/30">
