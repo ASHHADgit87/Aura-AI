@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Loader2, RotateCcw, Copy } from "lucide-react";
+import { Loader2, RotateCcw, Copy, Code, Check } from "lucide-react";
 import { toast } from "react-hot-toast";
 import api from "../configs/axios";
 import Sidebar from "../components/Sidebar";
@@ -10,6 +10,7 @@ const AICodeExplainer = () => {
   const [language, setLanguage] = useState("");
   const [explanation, setExplanation] = useState("");
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -44,7 +45,9 @@ const AICodeExplainer = () => {
   const onCopyHandler = async () => {
     try {
       await navigator.clipboard.writeText(explanation);
+      setCopied(true);
       toast.success("Explanation copied to clipboard");
+      setTimeout(() => setCopied(false), 2000);
     } catch {
       toast.error("Failed to copy explanation");
     }
@@ -143,12 +146,19 @@ const AICodeExplainer = () => {
             {explanation && !loading && (
               <div className="relative animate-in fade-in slide-in-from-bottom-5 duration-500">
                 <div className="bg-[#1e1e2e]/90 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl relative">
-                  <div className="flex justify-end mb-4">
+                  <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                    <h3 className="font-semibold text-orange-400 flex items-center gap-2">
+                      <Code size={20} /> Explanation
+                    </h3>
                     <button
                       onClick={onCopyHandler}
-                      className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs font-medium transition-all"
+                      className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                     >
-                      <Copy size={14} /> Copy Content
+                      {copied ? (
+                        <Check size={18} className="text-green-400" />
+                      ) : (
+                        <Copy size={18} className="text-white/70" />
+                      )}
                     </button>
                   </div>
 
