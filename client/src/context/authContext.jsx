@@ -12,6 +12,33 @@ export const AuthProvider = ({ children }) => {
     localStorage.getItem("aura_user_exists") === "true",
   );
 
+  const getExpiryTime = (token) => {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      return payload.exp * 1000;
+    } catch (e) {
+      return 0;
+    }
+  };
+
+  const setupAutoLogout = (tokenValue) => {
+    if (!tokenValue) return;
+
+    const expirationTime = getExpiryTime(tokenValue);
+    const currentTime = Date.now();
+    const timeLeft = expirationTime - currentTime;
+
+    if (timeLeft <= 0) {
+      logout();
+    } else {
+      const timer = setTimeout(() => {
+        logout();
+      }, timeLeft);
+
+      return () => clearTimeout(timer);
+    }
+  };
+
   const login = (newToken, userData) => {
     localStorage.setItem("token", newToken);
     localStorage.setItem("aura_user_exists", "true");
@@ -19,6 +46,7 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
     setHasAccount(true);
   };
+
   const deleteAccountCleanup = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("aura_user_exists");
@@ -26,6 +54,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setHasAccount(false);
   };
+
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -47,10 +76,11 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("aura_user_exists", "true");
       }
     } catch (err) {
-      if (
-        err.response &&
-        (err.response.status === 401 || err.response.status === 404)
-      ) {
+      if (err.response && err.response.status === 401) {
+        localStorage.removeItem("token");
+        setToken(null);
+        setUser(null);
+      } else if (err.response && err.response.status === 404) {
         localStorage.removeItem("aura_user_exists");
         localStorage.removeItem("token");
         setHasAccount(false);
@@ -63,8 +93,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    checkUser();
+    if (token) {
+      const cleanupTimer = setupAutoLogout(token);
+      return cleanupTimer;
+    }
   }, [token]);
+
+  useEffect(() => {
+    checkUser();
+  }, []);
 
   return (
     <AuthContext.Provider
