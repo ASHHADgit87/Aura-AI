@@ -3,6 +3,7 @@ import {
   analyzeImage,
   imageGenerator,
   summarizePdf,
+  explainCode,
 } from "../controllers/featureController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 import { upload } from "../middlewares/uploadMiddleware.js";
@@ -22,5 +23,7 @@ featureRouter.post(
   upload.single("image"),
   analyzeImage,
 );
+
+featureRouter.post("/code-explainer", protect, explainCode);
 
 export default featureRouter;
