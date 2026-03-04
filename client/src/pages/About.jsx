@@ -98,13 +98,13 @@ const About = () => {
       color: "#E10600",
     },
     {
-      title: "Song Generator",
-      model: "Meta MusicGen",
-      limit: "10 req/day · Free",
+      title: "AI Code Explainer",
+      model: "OpenAI GPT-4 API",
+      limit: "Unlimited · Free",
       description:
-        "Composes original audio clips tailored to your genre and instrument descriptions.",
+        "Paste code snippets and get clear, line-by-line explanations instantly.",
       about:
-        "Aura-AI transforms textual vibes into audible reality. By utilizing neural audio synthesis, MusicGen crafts unique 30-second compositions. It understands the nuances of instruments, BPM, and mood, providing creators with royalty-free background scores for videos and games.",
+        "AI Code Explainer interprets your code logic and provides detailed explanations for each part, making debugging, learning, and collaboration faster and easier. Supports multiple languages including Python, JavaScript, Java, C++, and more.",
       color: "#FF4DA6",
     },
     {

@@ -22,10 +22,10 @@ const features = [
     route: "/image-analyzer",
   },
   {
-    title: "Create Music",
+    title: "AI Code Explainer",
     description:
-      "Compose original AI-generated music tracks effortlessly with Aura-AI.",
-    route: "/song-generator",
+      "Paste your code and get a detailed explanation with comments instantly with Aura AI.",
+    route: "/code-explainer",
   },
   {
     title: "Remove Backgrounds",

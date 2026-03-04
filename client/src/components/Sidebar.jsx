@@ -6,7 +6,7 @@ const navItems = [
   { title: "Image Generator", route: "/image-generator" },
   { title: "PDF Summarizer", route: "/pdf-summarizer" },
   { title: "Image Analyzer", route: "/image-analyzer" },
-  { title: "Song Generator", route: "/song-generator" },
+  { title: "Code Explainer", route: "/code-explainer" },
   { title: "BG Remover", route: "/bg-remover" },
   { title: "Translator", route: "/translator" },
   { title: "Grammar Fixer", route: "/grammar-fixer" },

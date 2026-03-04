@@ -9,7 +9,7 @@ import Register from "./pages/Register";
 import ImageGenerator from "./pages/ImageGenerator";
 import PdfSummarizer from "./pages/PdfSummarizer";
 import ImageAnalyzer from "./pages/ImageAnalyzer";
-import SongGenerator from "./pages/SongGenerator";
+import AICodeExplainer from "./pages/AICodeExplainer";
 import BgRemover from "./pages/BgRemover";
 import Translator from "./pages/Translator";
 import GrammarFixer from "./pages/GrammarFixer";
@@ -23,9 +23,7 @@ const App = () => {
   const { pathname } = useLocation();
   const { loading } = useAppContext();
 
-  if (loading) {
-    return null;
-  }
+  if (loading) return null;
 
   const hideNavbarPaths = [
     "/login",
@@ -34,7 +32,7 @@ const App = () => {
     "/image-generator",
     "/pdf-summarizer",
     "/image-analyzer",
-    "/song-generator",
+    "/code-explainer",
     "/bg-remover",
     "/translator",
     "/grammar-fixer",
@@ -49,7 +47,7 @@ const App = () => {
     "/image-generator",
     "/pdf-summarizer",
     "/image-analyzer",
-    "/song-generator",
+    "/code-explainer",
     "/bg-remover",
     "/translator",
     "/grammar-fixer",
@@ -62,15 +60,12 @@ const App = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Toaster />
-
       {!hideNavbar && <Navbar />}
-
       <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
-
           <Route
             path="/register"
             element={
@@ -79,7 +74,6 @@ const App = () => {
               </OnlyNewUsersRoute>
             }
           />
-
           <Route
             path="/settings"
             element={
@@ -88,7 +82,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/image-generator"
             element={
@@ -114,10 +107,10 @@ const App = () => {
             }
           />
           <Route
-            path="/song-generator"
+            path="/code-explainer"
             element={
               <ProtectedRoute>
-                <SongGenerator />
+                <AICodeExplainer />
               </ProtectedRoute>
             }
           />
@@ -155,7 +148,6 @@ const App = () => {
           />
         </Routes>
       </div>
-
       {!hideFooter && <Footer />}
     </div>
   );
