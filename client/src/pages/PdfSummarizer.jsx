@@ -194,7 +194,7 @@ const PdfSummarizer = () => {
             {!summary && !loading && (
               <div className="h-[300px] border-2 border-dashed border-white/10 rounded-3xl flex flex-col items-center justify-center text-white/30">
                 <FileText size={50} strokeWidth={1} className="mb-2" />
-                <p>Waiting for your document...</p>
+                <p>Summary Will Appear Here</p>
               </div>
             )}
 

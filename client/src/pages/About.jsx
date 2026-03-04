@@ -79,22 +79,22 @@ const About = () => {
     },
     {
       title: "PDF Summarizer",
-      model: "LLaMA (Public Proxy)",
+      model: "Meta Llama 3.2 (Hugging Face)",
       limit: "100 req/day · Free",
       description:
         "AI extraction for research papers and reports to return structured summaries.",
       about:
-        "This tool uses Large Language Model (LLM) intelligence to scan dense documents. It doesn't just shorten text; it identifies key semantic milestones, extracts data points, and presents them in a logical hierarchy, making it perfect for students and researchers handling massive volumes of data.",
+        "Utilizing Meta's Llama-3.2 via Hugging Face, this tool identifies key semantic milestones and extracts data points from dense PDFs. It provides a logical hierarchy of information, ideal for processing academic papers and complex engineering reports efficiently.",
       color: "#FF7A18",
     },
     {
       title: "Image Analyzer",
-      model: "DeepAI Vision API",
-      limit: "300 req/day · Free",
+      model: "Gemini 2.5 Flash (Google Vision)",
+      limit: "1,500 req/day · Free",
       description:
-        "Detailed breakdown including object detection, labels, and natural description.",
+        "Detailed breakdown including object detection, colors, and natural description.",
       about:
-        "Equipped with advanced computer vision, the Image Analyzer performs pixel-level scans to identify objects, spatial relationships, and environmental contexts. It provides a technical JSON breakdown or a human-readable description for accessibility and automated tagging workflows.",
+        "Powered by Google's latest Gemini 2.5 Flash model, this analyzer performs multimodal pixel-level scans. It bridges the gap between visual data and natural language, identifying specific colors, textures, and objects with a high degree of accuracy and contextual understanding.",
       color: "#E10600",
     },
     {

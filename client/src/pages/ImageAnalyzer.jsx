@@ -8,6 +8,7 @@ import {
   X,
   MessageSquareQuote,
   RotateCcw,
+  FileText,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import Sidebar from "../components/Sidebar";
@@ -199,8 +200,8 @@ const ImageAnalyzer = () => {
           <div className="w-full max-w-3xl mt-12">
             {!result && !loading && (
               <div className="h-[300px] border-2 border-dashed border-white/10 rounded-3xl flex flex-col items-center justify-center text-white/30">
-                <ImageIcon size={50} strokeWidth={1} className="mb-2" />
-                <p>Waiting for an image to analyze...</p>
+                <FileText size={50} strokeWidth={1} className="mb-2" />
+                <p>Image Analysis will appear here</p>
               </div>
             )}
 
