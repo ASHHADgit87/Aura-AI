@@ -141,17 +141,64 @@ const AICodeExplainer = () => {
               </div>
             )}
             {explanation && !loading && (
-              <div className="relative overflow-hidden rounded-3xl border border-white/20 shadow-2xl bg-black/20 p-6">
-                <pre className="text-sm whitespace-pre-wrap break-words text-white leading-relaxed">
-                  {explanation}
-                </pre>
-                <div className="flex justify-end mt-4">
-                  <button
-                    onClick={onCopyHandler}
-                    className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full font-bold transition-all"
-                  >
-                    <Copy size={18} /> Copy
-                  </button>
+              <div className="relative animate-in fade-in slide-in-from-bottom-5 duration-500">
+                <div className="bg-[#1e1e2e]/90 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl relative">
+                  <div className="flex justify-end mb-4">
+                    <button
+                      onClick={onCopyHandler}
+                      className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs font-medium transition-all"
+                    >
+                      <Copy size={14} /> Copy Content
+                    </button>
+                  </div>
+
+                  <div className="text-gray-200 font-sans text-[15px] leading-relaxed tracking-wide space-y-4">
+                    {explanation.split("\n").map((line, index) => {
+                      if (line.trim().startsWith("###")) {
+                        return (
+                          <h3
+                            key={index}
+                            className="text-xl font-bold text-white mt-8 mb-2 border-l-4 border-orange-500 pl-4"
+                          >
+                            {line.replace(/###/g, "").trim()}
+                          </h3>
+                        );
+                      }
+                      if (
+                        line.trim().startsWith("*") ||
+                        line.trim().startsWith("-")
+                      ) {
+                        return (
+                          <div
+                            key={index}
+                            className="ml-4 text-gray-300 flex gap-3 items-start"
+                          >
+                            <span className="text-orange-500 mt-1.5 text-[10px]">
+                              ●
+                            </span>
+                            <span>{line.replace(/^[*-]/, "").trim()}</span>
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <p key={index} className="mb-2">
+                          {line.split("**").map((part, i) =>
+                            i % 2 === 1 ? (
+                              <strong
+                                key={i}
+                                className="text-white font-semibold"
+                              >
+                                {part}
+                              </strong>
+                            ) : (
+                              part
+                            ),
+                          )}
+                        </p>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             )}
