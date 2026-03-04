@@ -7,7 +7,11 @@ const OnlyNewUsersRoute = ({ children }) => {
 
   if (loading) return null;
 
-  if (user || hasAccount) {
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (hasAccount) {
     return <Navigate to="/login" replace />;
   }
 
