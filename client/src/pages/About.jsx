@@ -69,12 +69,12 @@ const About = () => {
   const tools = [
     {
       title: "Image Generator",
-      model: "Stable Diffusion (FLUX)",
+      model: "SDXL 1.0 (Stability AI)",
       limit: "Unlimited · Free",
       description:
-        "High-resolution artwork from text prompts. Understands lighting, depth, and mood.",
+        "Cinematic-grade synthesis specializing in complex textures and professional lighting.",
       about:
-        "Aura-AI leverages the FLUX architecture to provide hyper-realistic image synthesis. Unlike standard models, this implementation excels in anatomical correctness and complex prompt adherence, allowing creators to generate professional-grade assets, concept art, and marketing visuals instantly.",
+        "Aura-AI utilizes the SDXL 1.0 architecture, featuring a dual-encoder system for superior prompt adherence. This model excels in anatomical accuracy and photorealism, delivering high-resolution digital illustrations and cinematic assets that outperform standard generative models in artistic depth.",
       color: "#FF7A18",
     },
     {
