@@ -3,6 +3,7 @@ import "dotenv/config";
 import cors from "cors";
 import userRouter from "./routes/userRoutes.js";
 import connectDB from "./configs/db.js";
+import featureRouter from "./routes/featureRoutes.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -17,6 +18,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api/user", userRouter);
+app.use("/api/features", featureRouter);
 
 app.get("/", (req, res) => {
   res.send("Server is Live!");
