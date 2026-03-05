@@ -98,7 +98,7 @@ const Navbar = () => {
                       navigate("/");
                       setShowDropdown(false);
                     }}
-                    className="w-full text-left px-4 py-2 text-sm text-red-400 hover:text-red-500 hover:bg-white/5 transition-all font-bold"
+                    className="w-full text-left px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 rounded-xl hover:scale-105 transition-all"
                   >
                     Logout
                   </button>
@@ -128,7 +128,7 @@ const Navbar = () => {
       {menuOpen && (
         <div className="fixed inset-0 z-[110] bg-black/95 backdrop-blur-xl flex flex-col p-10 md:hidden">
           <div className="flex justify-between items-center mb-10">
-            <span className="text-2xl font-bold text-white">AuraAI</span>
+            <img src={logoAura} alt="Aura AI" className="h-10 w-auto" />
             <button
               onClick={() => setMenuOpen(false)}
               className="text-white text-3xl"
@@ -148,16 +148,28 @@ const Navbar = () => {
                 Settings
               </Link>
             )}
-            <button
-              onClick={() => {
-                if (user) logout();
-                navigate(user ? "/" : hasAccount ? "/login" : "/register");
-                setMenuOpen(false);
-              }}
-              className="text-left py-3 rounded-xl bg-orange-600 px-6"
-            >
-              {user ? "Logout" : hasAccount ? "Login" : "Get Started"}
-            </button>
+            {user ? (
+              <button
+                onClick={() => {
+                  logout();
+                  navigate("/");
+                  setMenuOpen(false);
+                }}
+                className="py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 hover:scale-105 transition-all"
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  navigate(hasAccount ? "/login" : "/register");
+                  setMenuOpen(false);
+                }}
+                className="py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 hover:scale-105 transition-all"
+              >
+                {hasAccount ? "Login" : "Get Started"}
+              </button>
+            )}
           </div>
         </div>
       )}
