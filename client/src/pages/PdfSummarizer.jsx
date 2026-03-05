@@ -233,7 +233,9 @@ const PdfSummarizer = () => {
                             key={index}
                             className="text-xl font-bold text-white mt-8 mb-2 border-l-4 border-orange-500 pl-4"
                           >
-                            {trimmed.replace(/^#{2,3}\s*/, "").replace(/\*\*/g, "")}
+                            {trimmed
+                              .replace(/^#{2,3}\s*/, "")
+                              .replace(/\*\*/g, "")}
                           </h3>
                         );
                       }
