@@ -90,13 +90,13 @@ const PdfSummarizer = () => {
       <Sidebar />
       <div className="flex flex-col flex-1">
         <section
-          className="flex flex-col items-center text-white pb-20 px-6 flex-1"
+          className="flex flex-col items-center text-white pb-20 px-4 sm:px-6 flex-1"
           style={{
             background: "linear-gradient(180deg, #FF7A18 0%, #E10600 60%)",
           }}
         >
           <div className="w-full max-w-4xl mt-10 mb-10 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
               PDF Summarizer
             </h1>
             <p className="text-white/90 text-sm max-w-lg mx-auto">
@@ -154,31 +154,31 @@ const PdfSummarizer = () => {
                 />
               </div>
 
-              <div className="flex justify-end mt-4 gap-3">
+              <div className="flex justify-end mt-4">
                 {summary ? (
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white   
+                    className="px-4 py-1.5 text-sm rounded-lg font-semibold text-white   
                     bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
-                    border-2 border-white/30 hover:border-white/70 
-                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg flex items-center justify-center gap-2"
+                    border border-white/30 hover:border-white/70 
+                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-md flex items-center gap-2"
                   >
-                    <RotateCcw className="w-5 h-5" /> Reset
+                    <RotateCcw className="w-4 h-4" /> Reset
                   </button>
                 ) : (
                   <button
                     type="submit"
                     disabled={loading || !file}
-                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white   
+                    className="px-4 py-1.5 text-sm rounded-lg font-semibold text-white   
                     bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
-                    border-2 border-white/30 hover:border-white/70 
-                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg flex items-center justify-center gap-2
+                    border border-white/30 hover:border-white/70 
+                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-md flex items-center gap-2
                     disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="animate-spin w-5 h-5" />{" "}
+                        <Loader2 className="animate-spin w-4 h-4" />
                         Processing...
                       </>
                     ) : (
@@ -192,21 +192,21 @@ const PdfSummarizer = () => {
 
           <div className="w-full max-w-3xl mt-12">
             {!summary && !loading && (
-              <div className="h-[300px] border-2 border-dashed border-white/10 rounded-3xl flex flex-col items-center justify-center text-white/30">
+              <div className="h-[250px] sm:h-[300px] border-2 border-dashed border-white/10 rounded-3xl flex flex-col items-center justify-center text-white/30">
                 <FileText size={50} strokeWidth={1} className="mb-2" />
                 <p>Summary Will Appear Here</p>
               </div>
             )}
 
             {loading && (
-              <div className="h-[300px] flex items-center justify-center">
+              <div className="h-[250px] sm:h-[300px] flex items-center justify-center">
                 <Loader2 className="animate-spin w-10 h-10 text-white" />
               </div>
             )}
 
             {summary && !loading && (
               <div className="relative animate-in fade-in slide-in-from-bottom-5 duration-500">
-                <div className="bg-[#1e1e2e]/90 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl relative">
+                <div className="bg-[#1e1e2e]/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-white/20 shadow-2xl relative">
                   <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
                     <h3 className="font-semibold text-orange-400 flex items-center gap-2">
                       <FileText size={20} /> Summary
@@ -223,23 +223,41 @@ const PdfSummarizer = () => {
                     </button>
                   </div>
 
-                  <div className="text-gray-200 font-sans text-[15px] leading-relaxed tracking-wide space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar">
+                  <div className="text-gray-200 font-sans text-[15px] leading-relaxed tracking-wide space-y-4 max-h-[400px] sm:max-h-[500px] overflow-y-auto custom-scrollbar">
                     {summary.split("\n").map((line, index) => {
-                      if (line.trim().startsWith("###")) {
+                      const trimmed = line.trim();
+
+                      if (/^#{2,3}\s/.test(trimmed)) {
                         return (
                           <h3
                             key={index}
                             className="text-xl font-bold text-white mt-8 mb-2 border-l-4 border-orange-500 pl-4"
                           >
-                            {line.replace(/###/g, "").trim()}
+                            {trimmed.replace(/^#{2,3}\s*/, "").replace(/\*\*/g, "")}
                           </h3>
                         );
                       }
 
                       if (
-                        line.trim().startsWith("*") ||
-                        line.trim().startsWith("-")
+                        trimmed &&
+                        !trimmed.startsWith("●") &&
+                        !trimmed.startsWith("+") &&
+                        !trimmed.startsWith("-") &&
+                        !trimmed.startsWith("*") &&
+                        trimmed.length < 50 &&
+                        !trimmed.includes(":")
                       ) {
+                        return (
+                          <h3
+                            key={index}
+                            className="text-xl font-bold text-white mt-8 mb-2 border-l-4 border-orange-500 pl-4"
+                          >
+                            {trimmed.replace(/\*\*/g, "")}
+                          </h3>
+                        );
+                      }
+
+                      if (/^[●\-\*\+]\s*/.test(trimmed)) {
                         return (
                           <div
                             key={index}
@@ -248,7 +266,7 @@ const PdfSummarizer = () => {
                             <span className="text-orange-500 mt-1.5 text-[10px]">
                               ●
                             </span>
-                            <span>{line.replace(/^[*-]/, "").trim()}</span>
+                            <span>{trimmed.replace(/^[●\-\*\+]\s*/, "")}</span>
                           </div>
                         );
                       }
