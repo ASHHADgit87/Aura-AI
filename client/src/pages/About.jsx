@@ -69,7 +69,7 @@ const About = () => {
   const tools = [
   {
     title: "Image Generator",
-    model: "SDXL 1.0 (Stability AI)",
+    model: "SDXL 1.0",
     description:
       "Cinematic-grade synthesis specializing in complex textures and professional lighting.",
     about:
@@ -78,7 +78,7 @@ const About = () => {
   },
   {
     title: "PDF Summarizer",
-    model: "Meta Llama 3.2 (Hugging Face)",
+    model: "Meta Llama 3.2",
     description:
       "AI extraction for research papers and reports to return structured summaries.",
     about:
