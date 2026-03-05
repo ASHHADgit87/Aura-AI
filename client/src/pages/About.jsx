@@ -122,7 +122,7 @@ const About = () => {
 },
   {
     title: "Grammar Fixer",
-    model: "LanguageTool API",
+    model: "Gemini API",
     description:
       "Deep analysis of grammar and style with one-click automated fixes.",
     about:

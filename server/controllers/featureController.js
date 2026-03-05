@@ -4,6 +4,7 @@ import { analyzeImageAI } from "../services/imageAnalysisService.js";
 import { explainCodeAI } from "../services/aiCodeExplainService.js";
 import { removeImageBackgroundAI } from "../services/bgRemovalService.js";
 import { translateTextAI } from "../services/translatorService.js";
+import { fixGrammarAI } from "../services/GrammerFixService.js";
 export const imageGenerator = async (req, res) => {
   try {
     const { prompt } = req.body;
@@ -105,12 +106,10 @@ export const translateText = async (req, res) => {
     const { text, from, to } = req.body;
 
     if (!text || !to) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Text and target language are required.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Text and target language are required.",
+      });
     }
 
     const translatedText = await translateTextAI(text, from, to);
@@ -118,6 +117,26 @@ export const translateText = async (req, res) => {
     res.status(200).json({
       success: true,
       translatedText,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+export const fixGrammar = async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Text is required" });
+    }
+
+    const data = await fixGrammarAI(text);
+
+    res.status(200).json({
+      success: true,
+      fixedText: data.fixedText,
+      matches: data.matches,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
