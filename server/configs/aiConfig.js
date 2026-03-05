@@ -26,3 +26,7 @@ export const aiConfigTranslator = {
     model: "gemini-2.5-flash",
   },
 };
+export const scraperConfig = {
+  apiKey: process.env.WEB_SCRAPER_API_KEY,
+  apiUrl: "https://api.webscraperapi.ai/v2/scrape",
+};

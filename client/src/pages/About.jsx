@@ -67,78 +67,79 @@ const About = () => {
   const navigate = useNavigate();
 
   const tools = [
-  {
-    title: "Image Generator",
-    model: "SDXL 1.0",
-    description:
-      "Cinematic-grade synthesis specializing in complex textures and professional lighting.",
-    about:
-      "Built on SDXL 1.0, this model delivers high-resolution image generation with strong prompt adherence. It excels at realistic lighting, textures, and detailed compositions for professional-grade visuals.",
-    color: "#FF7A18",
-  },
-  {
-    title: "PDF Summarizer",
-    model: "Meta Llama 3.2",
-    description:
-      "AI extraction for research papers and reports to return structured summaries.",
-    about:
-      "Powered by Llama 3.2, it processes long-form PDFs and extracts key insights efficiently. Ideal for research papers, reports, and technical documentation summarization.",
-    color: "#FF7A18",
-  },
-  {
-    title: "Image Analyzer",
-    model: "Google Vision",
-    description:
-      "Detailed breakdown including object detection, colors, and natural description.",
-    about:
-      "Using Google Vision, it performs multimodal image understanding with contextual accuracy. Detects objects, colors, and scene descriptions in natural language.",
-    color: "#E10600",
-  },
-  {
-    title: "AI Code Explainer",
-    model: "Gemini 2.5 Flash",
-    description:
-      "Paste code snippets and get clear, line-by-line insights instantly.",
-    about:
-      "Analyzes code logic and converts complex syntax into human-readable explanations. Supports multiple languages and helps with debugging, learning, and documentation.",
-    color: "#FF4DA6",
-  },
-  {
-  title: "Background Remover",
-  model: "Bria AI", 
-  description: "Professional removal for portraits and products, delivering transparent PNGs.",
-  about: "Uses advanced AI segmentation to separate foreground from background precisely. Maintains edge quality and fine details like hair and product outlines.",
-  color: "#FF7A18",
-},
-  {
-  title: "AI Translator",
-  model: "LangTrans 1.5", 
-  description:
-    "Neural translation across 50+ languages including Urdu and Arabic.",
-  about:
-    "Leverages LangTrans 1.5 model to provide high-speed, context-aware translations. Unlike standard literal translation, Aura AI understands linguistic nuances to preserve grammatical structure and cultural meaning.",
-  color: "#E10600", 
-  
-},
-  {
-    title: "Grammar Fixer",
-    model: "Gemini API",
-    description:
-      "Deep analysis of grammar and style with one-click automated fixes.",
-    about:
-      "Performs advanced grammar and style checking beyond basic spell correction. Detects tone issues, sentence structure problems, and clarity improvements.",
-    color: "#FF4DA6",
-  },
-  {
-    title: "Web Scraper",
-    model: "ScrapeGraphAI",
-    description:
-      "Context-aware scraping that returns structured JSON data from any URL.",
-    about:
-      "Leverages LLM-based extraction to interpret webpage structure intelligently. Converts unstructured HTML content into clean, structured JSON data.",
-    color: "#FF7A18",
-  },
-];
+    {
+      title: "Image Generator",
+      model: "SDXL 1.0",
+      description:
+        "Cinematic-grade synthesis specializing in complex textures and professional lighting.",
+      about:
+        "Built on SDXL 1.0, this model delivers high-resolution image generation with strong prompt adherence. It excels at realistic lighting, textures, and detailed compositions for professional-grade visuals.",
+      color: "#FF7A18",
+    },
+    {
+      title: "PDF Summarizer",
+      model: "Meta Llama 3.2",
+      description:
+        "AI extraction for research papers and reports to return structured summaries.",
+      about:
+        "Powered by Llama 3.2, it processes long-form PDFs and extracts key insights efficiently. Ideal for research papers, reports, and technical documentation summarization.",
+      color: "#FF7A18",
+    },
+    {
+      title: "Image Analyzer",
+      model: "Google Vision",
+      description:
+        "Detailed breakdown including object detection, colors, and natural description.",
+      about:
+        "Using Google Vision, it performs multimodal image understanding with contextual accuracy. Detects objects, colors, and scene descriptions in natural language.",
+      color: "#E10600",
+    },
+    {
+      title: "AI Code Explainer",
+      model: "Gemini 2.5 Flash",
+      description:
+        "Paste code snippets and get clear, line-by-line insights instantly.",
+      about:
+        "Analyzes code logic and converts complex syntax into human-readable explanations. Supports multiple languages and helps with debugging, learning, and documentation.",
+      color: "#FF4DA6",
+    },
+    {
+      title: "Background Remover",
+      model: "Bria AI",
+      description:
+        "Professional removal for portraits and products, delivering transparent PNGs.",
+      about:
+        "Uses advanced AI segmentation to separate foreground from background precisely. Maintains edge quality and fine details like hair and product outlines.",
+      color: "#FF7A18",
+    },
+    {
+      title: "AI Translator",
+      model: "LangTrans 1.5",
+      description:
+        "Neural translation across 50+ languages including Urdu and Arabic.",
+      about:
+        "Leverages LangTrans 1.5 model to provide high-speed, context-aware translations. Unlike standard literal translation, Aura AI understands linguistic nuances to preserve grammatical structure and cultural meaning.",
+      color: "#E10600",
+    },
+    {
+      title: "Grammar Fixer",
+      model: "Gemini API",
+      description:
+        "Deep analysis of grammar and style with one-click automated fixes.",
+      about:
+        "Performs advanced grammar and style checking beyond basic spell correction. Detects tone issues, sentence structure problems, and clarity improvements.",
+      color: "#FF4DA6",
+    },
+    {
+      title: "Web Scraper",
+      model: "Web scraper api",
+      description:
+        "Context-aware scraping that extracts structured JSON from any webpage URL.",
+      about:
+        "A multi-stage extraction tool that bypasses bot detection to retrieve raw markdown content, which is then processed by Gemini to generate precise, structured JSON based on your specific prompts.",
+      color: "#FF7A18",
+    },
+  ];
 
   const techStack = [
     {
@@ -237,35 +238,35 @@ const About = () => {
           </div>
         </section>
         <section className="mb-32">
-  <h2 className="text-center text-sm font-bold mb-16 uppercase tracking-[0.3em] text-gray-500">
-    Tech Stack
-  </h2>
+          <h2 className="text-center text-sm font-bold mb-16 uppercase tracking-[0.3em] text-gray-500">
+            Tech Stack
+          </h2>
 
-  <div className="grid grid-cols-2 md:grid-cols-6 gap-10">
-    {techStack.map((tech, i) => (
-      <div key={i} className="flex flex-col items-center">
-        <div className="w-20 h-20 mb-4 p-2">
-          <img
-            src={tech.logo}
-            alt={tech.value}
-            className="w-full h-full object-contain"
-            style={{
-              filter:
-                "drop-shadow(0 0 4px rgba(255,255,255,0.5)) drop-shadow(0 0 8px rgba(255,255,255,0.3))",
-              animation: "glowPulse 3s ease-in-out infinite alternate",
-            }}
-          />
-        </div>
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-10">
+            {techStack.map((tech, i) => (
+              <div key={i} className="flex flex-col items-center">
+                <div className="w-20 h-20 mb-4 p-2">
+                  <img
+                    src={tech.logo}
+                    alt={tech.value}
+                    className="w-full h-full object-contain"
+                    style={{
+                      filter:
+                        "drop-shadow(0 0 4px rgba(255,255,255,0.5)) drop-shadow(0 0 8px rgba(255,255,255,0.3))",
+                      animation: "glowPulse 3s ease-in-out infinite alternate",
+                    }}
+                  />
+                </div>
 
-        <span className="text-[10px] font-black uppercase tracking-widest text-center text-white">
-          {tech.value}
-        </span>
-      </div>
-    ))}
-  </div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-center text-white">
+                  {tech.value}
+                </span>
+              </div>
+            ))}
+          </div>
 
-  <style>
-    {`
+          <style>
+            {`
       @keyframes glowPulse {
         0% {
           filter: drop-shadow(0 0 4px rgba(255,255,255,0.5))
@@ -281,57 +282,57 @@ const About = () => {
         }
       }
     `}
-  </style>
-</section>
+          </style>
+        </section>
 
-<section className="mb-32">
-  <div className="bg-white/5 border border-white/10 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
-    <h3 className="text-3xl font-bold tracking-tighter">
-      Muhammad Ashhadullah Zaheer
-    </h3>
+        <section className="mb-32">
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
+            <h3 className="text-3xl font-bold tracking-tighter">
+              Muhammad Ashhadullah Zaheer
+            </h3>
 
-    <p className="text-orange-500 font-bold text-sm uppercase tracking-widest">
-      Software Engineer | Full Stack Developer
-    </p>
+            <p className="text-orange-500 font-bold text-sm uppercase tracking-widest">
+              Software Engineer | Full Stack Developer
+            </p>
 
-    <p className="text-gray-400 leading-relaxed text-sm max-w-2xl">
-      Dedicated to building high-performance AI SaaS products. Aura-AI serves
-      as a proof of concept that sophisticated generative tools can be offered
-      for free without compromising on quality or UI.
-    </p>
+            <p className="text-gray-400 leading-relaxed text-sm max-w-2xl">
+              Dedicated to building high-performance AI SaaS products. Aura-AI
+              serves as a proof of concept that sophisticated generative tools
+              can be offered for free without compromising on quality or UI.
+            </p>
 
-    <div className="flex gap-6 mt-4">
-      <a
-        href="https://github.com/ashhadgit87/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
-      >
-        GitHub
-      </a>
+            <div className="flex gap-6 mt-4">
+              <a
+                href="https://github.com/ashhadgit87/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
+              >
+                GitHub
+              </a>
 
-      <a
-        href="https://linkedin.com/in/muhammad-ashhadullah-zaheer-41194a340/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
-      >
-        LinkedIn
-      </a>
-    </div>
-  </div>
-</section>
+              <a
+                href="https://linkedin.com/in/muhammad-ashhadullah-zaheer-41194a340/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
+              >
+                LinkedIn
+              </a>
+            </div>
+          </div>
+        </section>
 
-<section className="text-center pb-20">
-  <button
-    onClick={() => navigate("/")}
-    className="group relative px-14 py-5 bg-white text-black font-black rounded-full overflow-hidden transition-all hover:shadow-[0_0_50px_rgba(255,122,24,0.4)] active:scale-95"
-  >
-    <span className="relative z-10 text-xs uppercase tracking-[0.2em]">
-      Start Generating...
-    </span>
-  </button>
-</section>
+        <section className="text-center pb-20">
+          <button
+            onClick={() => navigate("/")}
+            className="group relative px-14 py-5 bg-white text-black font-black rounded-full overflow-hidden transition-all hover:shadow-[0_0_50px_rgba(255,122,24,0.4)] active:scale-95"
+          >
+            <span className="relative z-10 text-xs uppercase tracking-[0.2em]">
+              Start Generating...
+            </span>
+          </button>
+        </section>
       </div>
     </div>
   );

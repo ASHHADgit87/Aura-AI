@@ -7,6 +7,7 @@ import {
   removeBackgroundController,
   translateText,
   fixGrammar,
+  webScraper,
 } from "../controllers/featureController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 import { upload } from "../middlewares/uploadMiddleware.js";
@@ -36,4 +37,5 @@ featureRouter.post(
 );
 featureRouter.post("/translate", protect, translateText);
 featureRouter.post("/grammer-fix", protect, fixGrammar);
+featureRouter.post("/web-scrape", protect, webScraper);
 export default featureRouter;

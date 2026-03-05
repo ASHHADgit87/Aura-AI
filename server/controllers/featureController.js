@@ -5,6 +5,11 @@ import { explainCodeAI } from "../services/aiCodeExplainService.js";
 import { removeImageBackgroundAI } from "../services/bgRemovalService.js";
 import { translateTextAI } from "../services/translatorService.js";
 import { fixGrammarAI } from "../services/GrammerFixService.js";
+import { scrapeUrlAI } from "../services/webScrapeService.js";
+import { aiConfig } from "../configs/aiConfig.js";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(aiConfig.gemini.apiKey);
 export const imageGenerator = async (req, res) => {
   try {
     const { prompt } = req.body;
@@ -139,6 +144,37 @@ export const fixGrammar = async (req, res) => {
       matches: data.matches,
     });
   } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+export const webScraper = async (req, res) => {
+  try {
+    const { url, prompt } = req.body;
+    if (!url)
+      return res
+        .status(400)
+        .json({ success: false, message: "URL is required" });
+
+    const rawData = await scrapeUrlAI(url, prompt);
+
+    const model = genAI.getGenerativeModel({ model: aiConfig.gemini.model });
+    const aiPrompt = `
+      Extract information from this scraped content from ${url}.
+      User Request: ${prompt || "Extract all key information"}
+      
+      Return ONLY a valid JSON object. Do not include markdown formatting or explanations.
+      
+      Content:
+      ${typeof rawData === "string" ? rawData : JSON.stringify(rawData)}
+    `;
+
+    const result = await model.generateContent(aiPrompt);
+    const responseText = result.response.text();
+    const cleanJson = responseText.replace(/```json|```/g, "").trim();
+
+    res.status(200).json(JSON.parse(cleanJson));
+  } catch (error) {
+    console.error("Web Scraper Error:", error.message);
     res.status(500).json({ success: false, message: error.message });
   }
 };
