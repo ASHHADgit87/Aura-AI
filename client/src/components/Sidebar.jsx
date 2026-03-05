@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logoAura from "../assets/logo-aura.svg";
 
@@ -16,6 +16,12 @@ const navItems = [
 const Sidebar = () => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      setCollapsed(true);
+    }
+  }, []);
 
   return (
     <>
