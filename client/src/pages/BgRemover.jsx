@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { Loader2, Upload, Download, ImageIcon, X } from "lucide-react";
+import {
+  Loader2,
+  Upload,
+  Download,
+  ImageIcon,
+  X,
+  RotateCcw,
+  Copy,
+} from "lucide-react";
 import { toast } from "react-hot-toast";
-import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import FooterForFeature from "../components/FooterForFeature";
+import api from "../configs/axios";
 
 const BgRemover = () => {
   const [file, setFile] = useState(null);
@@ -39,7 +47,7 @@ const BgRemover = () => {
   };
 
   const onSubmitHandler = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!file) return toast.error("Please upload an image first");
 
     try {
@@ -48,29 +56,47 @@ const BgRemover = () => {
 
       const formData = new FormData();
       formData.append("image", file);
-
-      const { data } = await axios.post("/api/bg/remove", formData, {
+      const { data } = await api.post("/api/features/remove-bg", formData, {
         headers: { "Content-Type": "multipart/form-data" },
-        responseType: "blob",
       });
 
-      const url = URL.createObjectURL(new Blob([data], { type: "image/png" }));
-      setResultUrl(url);
-      toast.success("Background removed!");
+      if (data.success) {
+        setResultUrl(data.image);
+        toast.success("Background removed!");
+      }
     } catch (error) {
-      toast.error(
-        error?.response?.data?.message || "Failed to remove background",
-      );
+      toast.error("Failed to remove background");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleReset = () => {
+    setFile(null);
+    setPreview("");
+    setResultUrl("");
   };
 
   const onDownloadHandler = () => {
     const a = document.createElement("a");
     a.href = resultUrl;
     a.download = `aura-ai-nobg-${Date.now()}.png`;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
+  };
+
+  const onCopyHandler = async () => {
+    try {
+      const response = await fetch(resultUrl);
+      const blob = await response.blob();
+      await navigator.clipboard.write([
+        new ClipboardItem({ [blob.type]: blob }),
+      ]);
+      toast.success("Image copied to clipboard");
+    } catch {
+      toast.error("Failed to copy image");
+    }
   };
 
   return (
@@ -96,6 +122,16 @@ const BgRemover = () => {
           <div className="w-full max-w-3xl">
             <form
               onSubmit={onSubmitHandler}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  if (resultUrl) {
+                    handleReset();
+                  } else if (file && !loading) {
+                    onSubmitHandler(e);
+                  }
+                }
+              }}
               className="bg-black/30 border border-white/20 rounded-2xl p-6 backdrop-blur-xl"
             >
               <label className="w-full flex flex-col items-center justify-center border-2 border-dashed border-white/20 rounded-xl p-8 cursor-pointer hover:bg-white/5 transition-colors relative">
@@ -132,27 +168,36 @@ const BgRemover = () => {
               </label>
 
               <div className="flex justify-end mt-6">
-                <button
-                  type="submit"
-                  disabled={loading || !file}
-                  className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white  
-                             bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
-                             border-2 border-white/30 
-                             hover:border-white/70 
-                             hover:scale-105 
-                             active:scale-95 
-                             transition-all duration-300 shadow-lg flex items-center justify-center gap-2
-                             disabled:cursor-not-allowed"
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="animate-spin w-5 h-5" /> Removing
-                      Background...
-                    </>
-                  ) : (
-                    "Remove Background"
-                  )}
-                </button>
+                {resultUrl ? (
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white   
+                    bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
+                    border-2 border-white/30 hover:border-white/70 
+                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg flex items-center justify-center gap-2"
+                  >
+                    <RotateCcw className="w-5 h-5" /> Reset
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={loading || !file}
+                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white   
+                    bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
+                    border-2 border-white/30 hover:border-white/70 
+                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg flex items-center justify-center gap-2
+                    disabled:cursor-not-allowed disabled:hover:scale-100"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="animate-spin w-5 h-5" /> Removing...
+                      </>
+                    ) : (
+                      "Remove Background"
+                    )}
+                  </button>
+                )}
               </div>
             </form>
           </div>
@@ -167,23 +212,38 @@ const BgRemover = () => {
 
             {loading && (
               <div className="h-[400px] flex items-center justify-center">
-                <Loader2 className="animate-spin w-10 h-10" />
+                <Loader2 className="animate-spin w-10 h-10 text-white" />
               </div>
             )}
 
             {resultUrl && !loading && (
-              <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-black/20 p-8 backdrop-blur-md flex flex-col items-center">
-                <img
-                  src={resultUrl}
-                  alt="Background Removed"
-                  className="max-h-[400px] object-contain rounded-xl mb-4"
-                />
-                <button
-                  onClick={onDownloadHandler}
-                  className="px-6 py-3 bg-black text-white rounded-full font-bold hover:bg-white hover:text-black transition-colors"
-                >
-                  <Download className="inline w-4 h-4 mr-1" /> Download
-                </button>
+              <div className="relative overflow-hidden rounded-3xl border border-white/20 shadow-2xl bg-black/40 p-6 flex flex-col items-center">
+                <div className="w-full flex justify-center items-center min-h-[350px] bg-[url('https://www.transparenttextures.com/patterns/checkerboard.png')] bg-white/10 rounded-2xl border border-white/10 overflow-hidden">
+                  <img
+                    src={resultUrl}
+                    alt="Background Removed"
+                    className="w-full h-auto block min-h-[200px]"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      toast.error("The processed image data is invalid.");
+                    }}
+                  />
+                </div>
+
+                <div className="absolute bottom-6 right-6 flex gap-4 mt-6">
+                  <button
+                    onClick={onDownloadHandler}
+                    className="flex items-center gap-2 px-1.25 py-0.5 bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 hover:scale-105 active:scale-95 rounded-full font-bold transition-all duration-300 shadow-lg"
+                  >
+                    <Download size={20} /> Download
+                  </button>
+                  <button
+                    onClick={onCopyHandler}
+                    className="flex items-center gap-2 px-1.25 py-0.5 bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 hover:scale-105 active:scale-95 rounded-full font-bold transition-all duration-300 shadow-lg"
+                  >
+                    <Copy size={20} /> Copy
+                  </button>
+                </div>
               </div>
             )}
           </div>

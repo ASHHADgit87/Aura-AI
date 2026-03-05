@@ -87,11 +87,11 @@ const About = () => {
   },
   {
     title: "Image Analyzer",
-    model: "Gemini 2.5 Flash (Google Vision)",
+    model: "Google Vision",
     description:
       "Detailed breakdown including object detection, colors, and natural description.",
     about:
-      "Using Gemini 2.5 Flash, it performs multimodal image understanding with contextual accuracy. Detects objects, colors, and scene descriptions in natural language.",
+      "Using Google Vision, it performs multimodal image understanding with contextual accuracy. Detects objects, colors, and scene descriptions in natural language.",
     color: "#E10600",
   },
   {
@@ -104,14 +104,12 @@ const About = () => {
     color: "#FF4DA6",
   },
   {
-    title: "Background Remover",
-    model: "Remove.bg API",
-    description:
-      "Professional removal for portraits and products, delivering transparent PNGs.",
-    about:
-      "Uses advanced AI segmentation to separate foreground from background precisely. Maintains edge quality and fine details like hair and product outlines.",
-    color: "#FF7A18",
-  },
+  title: "Background Remover",
+  model: "Bria AI", 
+  description: "Professional removal for portraits and products, delivering transparent PNGs.",
+  about: "Uses advanced AI segmentation to separate foreground from background precisely. Maintains edge quality and fine details like hair and product outlines.",
+  color: "#FF7A18",
+},
   {
     title: "AI Translator",
     model: "LibreTranslate",

@@ -2,7 +2,7 @@ import { generateImageAI } from "../services/imageGenService.js";
 import { generatePdfSummaryAI } from "../services/pdfSummaryService.js";
 import { analyzeImageAI } from "../services/imageAnalysisService.js";
 import { explainCodeAI } from "../services/aiCodeExplainService.js";
-
+import { removeImageBackgroundAI } from "../services/bgRemovalService.js";
 export const imageGenerator = async (req, res) => {
   try {
     const { prompt } = req.body;
@@ -66,6 +66,36 @@ export const explainCode = async (req, res) => {
     const explanation = await explainCodeAI(code, language);
     res.status(200).json({ success: true, explanation });
   } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+export const removeBackgroundController = async (req, res) => {
+  try {
+    if (!req.file || !req.file.buffer) {
+      return res
+        .status(400)
+        .json({ success: false, message: "No image uploaded" });
+    }
+
+    const processedBuffer = await removeImageBackgroundAI(req.file.buffer);
+
+    if (processedBuffer[0] === 0x89 && processedBuffer[1] === 0x50) {
+      const base64Image = processedBuffer.toString("base64");
+      return res.status(200).json({
+        success: true,
+        image: `data:image/png;base64,${base64Image}`,
+      });
+    } else {
+      console.error(
+        "Unexpected buffer content:",
+        processedBuffer.toString().slice(0, 100),
+      );
+      return res
+        .status(500)
+        .json({ success: false, message: "Invalid image format received." });
+    }
+  } catch (error) {
+    console.error("Controller Error:", error.message);
     res.status(500).json({ success: false, message: error.message });
   }
 };
