@@ -7,9 +7,9 @@ export const workerConfig = {
 };
 
 export const hfConfig = {
-  token: process.env.HF_TOKEN_IMAGE_GEN,
+  token: process.env.HF_TOKEN,
 
-  summaryModel: "meta-llama/Llama-3.2-3B-Instruct",
+  summaryModel: "meta-llama/Llama-3.1-8B-Instruct",
 };
 export const aiConfig = {
   gemini: {
