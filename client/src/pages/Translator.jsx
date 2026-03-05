@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Loader2, Copy, Check, RotateCcw } from "lucide-react";
 import { toast } from "react-hot-toast";
-import axios from "../configs/axios";
 import Sidebar from "../components/Sidebar";
 import FooterForFeature from "../components/FooterForFeature";
+import api from "../configs/axios";
 
 const languageCountryMap = {
   en: "US",
@@ -155,7 +155,7 @@ const Translator = () => {
     try {
       setLoading(true);
       setOutputText("");
-      const { data } = await axios.post("/api/translate", {
+      const { data } = await api.post("/api/features/translate", {
         text: inputText,
         from: fromLang,
         to: toLang,
@@ -208,8 +208,14 @@ const Translator = () => {
           </div>
 
           <form
-            onSubmit={onTranslateHandler}
+            onSubmit={(e) => e.preventDefault()}
             className="w-full max-w-5xl bg-black/30 border border-white/20 rounded-2xl p-6 backdrop-blur-xl flex flex-col gap-4"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                onTranslateHandler(e);
+              }
+            }}
           >
             <div className="flex gap-3 flex-col sm:flex-row mb-4">
               <div className="flex items-center gap-2 flex-1">
@@ -289,13 +295,13 @@ const Translator = () => {
               <button
                 type="button"
                 onClick={onResetHandler}
-                className="px-5 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-white/30 transition-all flex items-center gap-2"
+                className="px-5 py-1.5 rounded-xl font-semibold text-white flex items-center gap-2 bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 transition-all"
               >
                 <RotateCcw className="w-4 h-4" /> Reset
               </button>
               <button
-                type="submit"
-                disabled={loading || !inputText.trim()}
+                type="button"
+                disabled
                 className="px-5 py-1.5 rounded-xl font-semibold text-white flex items-center gap-2 bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 disabled:cursor-not-allowed transition-all"
               >
                 {loading ? (

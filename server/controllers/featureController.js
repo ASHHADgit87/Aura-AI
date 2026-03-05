@@ -3,6 +3,7 @@ import { generatePdfSummaryAI } from "../services/pdfSummaryService.js";
 import { analyzeImageAI } from "../services/imageAnalysisService.js";
 import { explainCodeAI } from "../services/aiCodeExplainService.js";
 import { removeImageBackgroundAI } from "../services/bgRemovalService.js";
+import { translateTextAI } from "../services/translatorService.js";
 export const imageGenerator = async (req, res) => {
   try {
     const { prompt } = req.body;
@@ -96,6 +97,29 @@ export const removeBackgroundController = async (req, res) => {
     }
   } catch (error) {
     console.error("Controller Error:", error.message);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+export const translateText = async (req, res) => {
+  try {
+    const { text, from, to } = req.body;
+
+    if (!text || !to) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Text and target language are required.",
+        });
+    }
+
+    const translatedText = await translateTextAI(text, from, to);
+
+    res.status(200).json({
+      success: true,
+      translatedText,
+    });
+  } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
