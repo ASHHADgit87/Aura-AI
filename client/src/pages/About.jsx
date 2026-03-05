@@ -24,9 +24,9 @@ const BubbleField = ({ count = 500 }) => {
 
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
-  useFrame((state) => {
+  useFrame(() => {
     particles.forEach((particle, i) => {
-      let { t, speed, x, yStart, z, size } = particle;
+      let { speed, x, yStart, z, size } = particle;
       particle.t += speed;
       const yPos = ((particle.t + yStart) % 40) - 20;
       const xOscillation = Math.sin(particle.t * 0.5) * 0.5;
@@ -67,87 +67,79 @@ const About = () => {
   const navigate = useNavigate();
 
   const tools = [
-    {
-      title: "Image Generator",
-      model: "SDXL 1.0 (Stability AI)",
-      limit: "Unlimited · Free",
-      description:
-        "Cinematic-grade synthesis specializing in complex textures and professional lighting.",
-      about:
-        "Aura-AI utilizes the SDXL 1.0 architecture, featuring a dual-encoder system for superior prompt adherence. This model excels in anatomical accuracy and photorealism, delivering high-resolution digital illustrations and cinematic assets that outperform standard generative models in artistic depth.",
-      color: "#FF7A18",
-    },
-    {
-      title: "PDF Summarizer",
-      model: "Meta Llama 3.2 (Hugging Face)",
-      limit: "100 req/day · Free",
-      description:
-        "AI extraction for research papers and reports to return structured summaries.",
-      about:
-        "Utilizing Meta's Llama-3.2 via Hugging Face, this tool identifies key semantic milestones and extracts data points from dense PDFs. It provides a logical hierarchy of information, ideal for processing academic papers and complex engineering reports efficiently.",
-      color: "#FF7A18",
-    },
-    {
-      title: "Image Analyzer",
-      model: "Gemini 2.5 Flash (Google Vision)",
-      limit: "1,500 req/day · Free",
-      description:
-        "Detailed breakdown including object detection, colors, and natural description.",
-      about:
-        "Powered by Google's latest Gemini 2.5 Flash model, this analyzer performs multimodal pixel-level scans. It bridges the gap between visual data and natural language, identifying specific colors, textures, and objects with a high degree of accuracy and contextual understanding.",
-      color: "#E10600",
-    },
-    {
-      title: "AI Code Explainer",
-      model: "OpenAI GPT-4 API",
-      limit: "Unlimited · Free",
-      description:
-        "Paste code snippets and get clear, line-by-line explanations instantly.",
-      about:
-        "AI Code Explainer interprets your code logic and provides detailed explanations for each part, making debugging, learning, and collaboration faster and easier. Supports multiple languages including Python, JavaScript, Java, C++, and more.",
-      color: "#FF4DA6",
-    },
-    {
-      title: "Background Remover",
-      model: "Remove.bg API",
-      limit: "50 req/day · Free",
-      description:
-        "Professional removal for portraits and products, delivering transparent PNGs.",
-      about:
-        "Using sophisticated edge-detection algorithms, this tool isolates the foreground from the most complex backgrounds—including hair and fine details. It is an essential utility for e-commerce developers and graphic designers looking to streamline their post-production pipeline.",
-      color: "#FF7A18",
-    },
-    {
-      title: "AI Translator",
-      model: "LibreTranslate",
-      limit: "Unlimited · Free",
-      description:
-        "Neural translation across 55+ languages including Urdu and Arabic.",
-      about:
-        "Our translation engine bypasses simple word-to-word swapping for true neural machine translation. It maintains the grammatical integrity and cultural context of 55+ languages, ensuring that communication is not just translated, but understood across global boundaries.",
-      color: "#E10600",
-    },
-    {
-      title: "Grammar Fixer",
-      model: "LanguageTool API",
-      limit: "20 req/day · Free",
-      description:
-        "Deep analysis of grammar and style with one-click automated fixes.",
-      about:
-        "More than a spellchecker, this tool analyzes the syntactic structure of your writing. It detects tonal inconsistencies, passive voice, and stylistic errors, offering intelligent suggestions to elevate the professional quality of your emails, essays, and code documentation.",
-      color: "#FF4DA6",
-    },
-    {
-      title: "Web Scraper",
-      model: "ScrapeGraphAI",
-      limit: "25 req/day · Free",
-      description:
-        "Context-aware scraping that returns structured JSON data from any URL.",
-      about:
-        "Harnessing the power of LLMs for data extraction, this scraper understands the visual and structural layout of websites. It converts messy HTML into clean, structured JSON formats, enabling developers to automate data collection without writing complex CSS selectors.",
-      color: "#FF7A18",
-    },
-  ];
+  {
+    title: "Image Generator",
+    model: "SDXL 1.0 (Stability AI)",
+    description:
+      "Cinematic-grade synthesis specializing in complex textures and professional lighting.",
+    about:
+      "Built on SDXL 1.0, this model delivers high-resolution image generation with strong prompt adherence. It excels at realistic lighting, textures, and detailed compositions for professional-grade visuals.",
+    color: "#FF7A18",
+  },
+  {
+    title: "PDF Summarizer",
+    model: "Meta Llama 3.2 (Hugging Face)",
+    description:
+      "AI extraction for research papers and reports to return structured summaries.",
+    about:
+      "Powered by Llama 3.2, it processes long-form PDFs and extracts key insights efficiently. Ideal for research papers, reports, and technical documentation summarization.",
+    color: "#FF7A18",
+  },
+  {
+    title: "Image Analyzer",
+    model: "Gemini 2.5 Flash (Google Vision)",
+    description:
+      "Detailed breakdown including object detection, colors, and natural description.",
+    about:
+      "Using Gemini 2.5 Flash, it performs multimodal image understanding with contextual accuracy. Detects objects, colors, and scene descriptions in natural language.",
+    color: "#E10600",
+  },
+  {
+    title: "AI Code Explainer",
+    model: "Gemini 2.5 Flash",
+    description:
+      "Paste code snippets and get clear, line-by-line insights instantly.",
+    about:
+      "Analyzes code logic and converts complex syntax into human-readable explanations. Supports multiple languages and helps with debugging, learning, and documentation.",
+    color: "#FF4DA6",
+  },
+  {
+    title: "Background Remover",
+    model: "Remove.bg API",
+    description:
+      "Professional removal for portraits and products, delivering transparent PNGs.",
+    about:
+      "Uses advanced AI segmentation to separate foreground from background precisely. Maintains edge quality and fine details like hair and product outlines.",
+    color: "#FF7A18",
+  },
+  {
+    title: "AI Translator",
+    model: "LibreTranslate",
+    description:
+      "Neural translation across 55+ languages including Urdu and Arabic.",
+    about:
+      "Implements neural machine translation for accurate multilingual conversion. Preserves grammatical structure and contextual meaning across supported languages.",
+    color: "#E10600",
+  },
+  {
+    title: "Grammar Fixer",
+    model: "LanguageTool API",
+    description:
+      "Deep analysis of grammar and style with one-click automated fixes.",
+    about:
+      "Performs advanced grammar and style checking beyond basic spell correction. Detects tone issues, sentence structure problems, and clarity improvements.",
+    color: "#FF4DA6",
+  },
+  {
+    title: "Web Scraper",
+    model: "ScrapeGraphAI",
+    description:
+      "Context-aware scraping that returns structured JSON data from any URL.",
+    about:
+      "Leverages LLM-based extraction to interpret webpage structure intelligently. Converts unstructured HTML content into clean, structured JSON data.",
+    color: "#FF7A18",
+  },
+];
 
   const techStack = [
     {
@@ -214,7 +206,6 @@ const About = () => {
             Core System Capabilities
           </h2>
           <div className="grid md:grid-cols-1 gap-8">
-            {" "}
             {tools.map((tool, i) => (
               <GlowCard
                 key={i}
@@ -231,7 +222,7 @@ const About = () => {
                         {tool.title}
                       </h3>
                       <p className="text-[10px] font-mono text-orange-500 uppercase tracking-widest">
-                        {tool.model} • {tool.limit}
+                        {tool.model}
                       </p>
                     </div>
                     <p className="text-lg text-gray-200 mb-4 font-medium">
@@ -245,92 +236,6 @@ const About = () => {
               </GlowCard>
             ))}
           </div>
-        </section>
-
-        <section className="mb-32">
-          <h2 className="text-center text-sm font-bold mb-16 uppercase tracking-[0.3em] text-gray-500">
-            Tech Stack
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-10">
-            {techStack.map((tech, i) => (
-              <div key={i} className="flex flex-col items-center">
-                <div className="w-20 h-20 mb-4 p-2">
-                  <img
-                    src={tech.logo}
-                    alt={tech.value}
-                    className="w-full h-full object-contain"
-                    style={{
-                      filter:
-                        "drop-shadow(0 0 4px rgba(255,255,255,0.5)) drop-shadow(0 0 8px rgba(255,255,255,0.3))",
-                      animation: "glowPulse 3s ease-in-out infinite alternate",
-                    }}
-                  />
-                </div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-center text-white">
-                  {tech.value}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <style>
-            {`
-      @keyframes glowPulse {
-        0% { filter: drop-shadow(0 0 4px rgba(255,255,255,0.5)) drop-shadow(0 0 8px rgba(255,255,255,0.3)); }
-        50% { filter: drop-shadow(0 0 6px rgba(255,255,255,0.6)) drop-shadow(0 0 10px rgba(255,255,255,0.4)); }
-        100% { filter: drop-shadow(0 0 4px rgba(255,255,255,0.5)) drop-shadow(0 0 8px rgba(255,255,255,0.3)); }
-      }
-    `}
-          </style>
-        </section>
-
-        <section className="mb-32">
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
-            <h3 className="text-3xl font-bold tracking-tighter">
-              Muhammad Ashhadullah Zaheer
-            </h3>
-
-            <p className="text-orange-500 font-bold text-sm uppercase tracking-widest">
-              Software Engineer | Full Stack Developer
-            </p>
-
-            <p className="text-gray-400 leading-relaxed text-sm max-w-2xl">
-              Dedicated to building high-performance AI SaaS products. Aura-AI
-              serves as a proof of concept that sophisticated generative tools
-              can be offered for free without compromising on quality or UI.
-            </p>
-
-            <div className="flex gap-6 mt-4">
-              <a
-                href="https://github.com/ashhadgit87/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
-              >
-                GitHub
-              </a>
-
-              <a
-                href="https://linkedin.com/in/muhammad-ashhadullah-zaheer-41194a340/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
-              >
-                LinkedIn
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <section className="text-center pb-20">
-          <button
-            onClick={() => navigate("/")}
-            className="group relative px-14 py-5 bg-white text-black font-black rounded-full overflow-hidden transition-all hover:shadow-[0_0_50px_rgba(255,122,24,0.4)] active:scale-95"
-          >
-            <span className="relative z-10 text-xs uppercase tracking-[0.2em]">
-              Start Generating...
-            </span>
-          </button>
         </section>
       </div>
     </div>
