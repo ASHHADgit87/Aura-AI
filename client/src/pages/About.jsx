@@ -111,14 +111,15 @@ const About = () => {
   color: "#FF7A18",
 },
   {
-    title: "AI Translator",
-    model: "LibreTranslate",
-    description:
-      "Neural translation across 55+ languages including Urdu and Arabic.",
-    about:
-      "Implements neural machine translation for accurate multilingual conversion. Preserves grammatical structure and contextual meaning across supported languages.",
-    color: "#E10600",
-  },
+  title: "AI Translator",
+  model: "LangTrans 1.5", 
+  description:
+    "Neural translation across 50+ languages including Urdu and Arabic.",
+  about:
+    "Leverages LangTrans 1.5 model to provide high-speed, context-aware translations. Unlike standard literal translation, Aura AI understands linguistic nuances to preserve grammatical structure and cultural meaning.",
+  color: "#E10600", 
+  
+},
   {
     title: "Grammar Fixer",
     model: "LanguageTool API",
