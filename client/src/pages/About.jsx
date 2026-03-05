@@ -237,6 +237,102 @@ const About = () => {
             ))}
           </div>
         </section>
+        <section className="mb-32">
+  <h2 className="text-center text-sm font-bold mb-16 uppercase tracking-[0.3em] text-gray-500">
+    Tech Stack
+  </h2>
+
+  <div className="grid grid-cols-2 md:grid-cols-6 gap-10">
+    {techStack.map((tech, i) => (
+      <div key={i} className="flex flex-col items-center">
+        <div className="w-20 h-20 mb-4 p-2">
+          <img
+            src={tech.logo}
+            alt={tech.value}
+            className="w-full h-full object-contain"
+            style={{
+              filter:
+                "drop-shadow(0 0 4px rgba(255,255,255,0.5)) drop-shadow(0 0 8px rgba(255,255,255,0.3))",
+              animation: "glowPulse 3s ease-in-out infinite alternate",
+            }}
+          />
+        </div>
+
+        <span className="text-[10px] font-black uppercase tracking-widest text-center text-white">
+          {tech.value}
+        </span>
+      </div>
+    ))}
+  </div>
+
+  <style>
+    {`
+      @keyframes glowPulse {
+        0% {
+          filter: drop-shadow(0 0 4px rgba(255,255,255,0.5))
+                  drop-shadow(0 0 8px rgba(255,255,255,0.3));
+        }
+        50% {
+          filter: drop-shadow(0 0 6px rgba(255,255,255,0.6))
+                  drop-shadow(0 0 10px rgba(255,255,255,0.4));
+        }
+        100% {
+          filter: drop-shadow(0 0 4px rgba(255,255,255,0.5))
+                  drop-shadow(0 0 8px rgba(255,255,255,0.3));
+        }
+      }
+    `}
+  </style>
+</section>
+
+<section className="mb-32">
+  <div className="bg-white/5 border border-white/10 rounded-3xl p-10 flex flex-col items-center text-center gap-6">
+    <h3 className="text-3xl font-bold tracking-tighter">
+      Muhammad Ashhadullah Zaheer
+    </h3>
+
+    <p className="text-orange-500 font-bold text-sm uppercase tracking-widest">
+      Software Engineer | Full Stack Developer
+    </p>
+
+    <p className="text-gray-400 leading-relaxed text-sm max-w-2xl">
+      Dedicated to building high-performance AI SaaS products. Aura-AI serves
+      as a proof of concept that sophisticated generative tools can be offered
+      for free without compromising on quality or UI.
+    </p>
+
+    <div className="flex gap-6 mt-4">
+      <a
+        href="https://github.com/ashhadgit87/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
+      >
+        GitHub
+      </a>
+
+      <a
+        href="https://linkedin.com/in/muhammad-ashhadullah-zaheer-41194a340/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="px-6 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm font-semibold"
+      >
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<section className="text-center pb-20">
+  <button
+    onClick={() => navigate("/")}
+    className="group relative px-14 py-5 bg-white text-black font-black rounded-full overflow-hidden transition-all hover:shadow-[0_0_50px_rgba(255,122,24,0.4)] active:scale-95"
+  >
+    <span className="relative z-10 text-xs uppercase tracking-[0.2em]">
+      Start Generating...
+    </span>
+  </button>
+</section>
       </div>
     </div>
   );
