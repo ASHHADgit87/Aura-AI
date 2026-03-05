@@ -77,13 +77,13 @@ const ImageGenerator = () => {
 
       <div className="flex flex-col flex-1">
         <section
-          className="flex flex-col items-center text-white pb-20 px-6 flex-1"
+          className="flex flex-col items-center text-white pb-20 px-4 sm:px-6 flex-1"
           style={{
             background: "linear-gradient(180deg, #FF7A18 0%, #E10600 60%)",
           }}
         >
           <div className="w-full max-w-4xl mt-10 mb-10 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
               Image Generator
             </h1>
             <p className="text-white/90 text-sm md:text-base max-w-lg mx-auto">
@@ -95,7 +95,7 @@ const ImageGenerator = () => {
           <div className="w-full max-w-3xl">
             <form
               onSubmit={imageUrl ? (e) => e.preventDefault() : onSubmitHandler}
-              className="bg-black/30 border border-white/20 rounded-2xl p-6 backdrop-blur-xl"
+              className="relative bg-black/30 border border-white/20 rounded-2xl p-6 backdrop-blur-xl"
             >
               <textarea
                 value={prompt}
@@ -111,26 +111,26 @@ const ImageGenerator = () => {
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white   
+                    className="px-4 py-1.5 text-sm rounded-lg font-semibold text-white   
                     bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
-                    border-2 border-white/30 hover:border-white/70 
-                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg flex items-center justify-center gap-2"
+                    border border-white/30 hover:border-white/70 
+                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-md flex items-center gap-2"
                   >
-                    <RotateCcw className="w-5 h-5" /> Reset
+                    <RotateCcw className="w-4 h-4" /> Reset
                   </button>
                 ) : (
                   <button
                     type="submit"
                     disabled={loading || !prompt.trim()}
-                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white   
+                    className="px-4 py-1.5 text-sm rounded-lg font-semibold text-white   
                     bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
-                    border-2 border-white/30 hover:border-white/70 
-                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg flex items-center justify-center gap-2
+                    border border-white/30 hover:border-white/70 
+                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-md flex items-center gap-2
                     disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="animate-spin w-5 h-5" /> Processing...
+                        <Loader2 className="animate-spin w-4 h-4" /> Processing...
                       </>
                     ) : (
                       "Generate Image"
@@ -143,14 +143,14 @@ const ImageGenerator = () => {
 
           <div className="w-full max-w-3xl mt-12">
             {!imageUrl && !loading && (
-              <div className="h-[400px] border-2 border-dashed border-white/20 rounded-3xl flex flex-col items-center justify-center text-white/40">
+              <div className="h-[300px] sm:h-[400px] border-2 border-dashed border-white/20 rounded-3xl flex flex-col items-center justify-center text-white/40">
                 <ImageIcon size={60} strokeWidth={1} className="mb-4" />
                 <p>Your generated image will appear here</p>
               </div>
             )}
 
             {loading && (
-              <div className="h-[400px] flex items-center justify-center">
+              <div className="h-[300px] sm:h-[400px] flex items-center justify-center">
                 <Loader2 className="animate-spin w-10 h-10 text-white" />
               </div>
             )}
@@ -163,18 +163,18 @@ const ImageGenerator = () => {
                   className="w-full h-auto block min-h-[200px]"
                   onError={() => toast.error("Image data corrupted")}
                 />
-                <div className="absolute bottom-6 right-6 flex gap-4">
+                <div className="absolute bottom-4 right-4 flex gap-3 flex-wrap">
                   <button
                     onClick={onDownloadHandler}
-                    className="flex items-center gap-2 px-1.25 py-0.5 bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 hover:scale-105 active:scale-95 rounded-full font-bold transition-all duration-300 shadow-lg"
+                    className="flex items-center gap-1 px-3 py-1 text-sm bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border border-white/30 hover:border-white/70 hover:scale-105 active:scale-95 rounded-full font-semibold transition-all duration-300 shadow-md"
                   >
-                    <Download size={20} /> Download
+                    <Download size={16} /> Download
                   </button>
                   <button
                     onClick={onCopyHandler}
-                    className="flex items-center gap-2 px-1.25 py-0.5 bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 hover:scale-105 active:scale-95 rounded-full font-bold transition-all duration-300 shadow-lg"
+                    className="flex items-center gap-1 px-3 py-1 text-sm bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border border-white/30 hover:border-white/70 hover:scale-105 active:scale-95 rounded-full font-semibold transition-all duration-300 shadow-md"
                   >
-                    <Copy size={20} /> Copy
+                    <Copy size={16} /> Copy
                   </button>
                 </div>
               </div>
