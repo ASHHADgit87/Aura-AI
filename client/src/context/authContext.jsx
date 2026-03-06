@@ -63,6 +63,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkUser = async () => {
     if (!token) {
+      setHasAccount(false);
       setLoading(false);
       return;
     }
@@ -80,6 +81,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("token");
         setToken(null);
         setUser(null);
+        setHasAccount(false);
       } else if (err.response && err.response.status === 404) {
         localStorage.removeItem("aura_user_exists");
         localStorage.removeItem("token");

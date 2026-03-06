@@ -55,7 +55,9 @@ const features = [
 
 const Home = () => {
   const navigate = useNavigate();
-  const { user, hasAccount } = useAppContext();
+  const { user, hasAccount, loading } = useAppContext();
+
+  if (loading) return null;
 
   const handleFeatureClick = (route) => {
     if (user) {

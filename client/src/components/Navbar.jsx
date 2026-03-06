@@ -5,10 +5,12 @@ import logoAura from "../assets/logo-aura.svg";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { user, logout, hasAccount } = useAppContext();
+  const { user, logout, hasAccount, loading } = useAppContext();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+
+  if (loading) return null;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
