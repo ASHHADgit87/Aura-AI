@@ -62,7 +62,7 @@ const Navbar = () => {
           {!user ? (
             <button
               onClick={() => navigate(hasAccount ? "/login" : "/register")}
-              className="px-6 py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:scale-105 transition-all shadow-lg text-sm"
+              className="px-6 py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:scale-105 transition-all shadow-lg text-sm whitespace-nowrap"
             >
               {hasAccount ? "Login" : "Get Started"}
             </button>
@@ -155,7 +155,7 @@ const Navbar = () => {
                   navigate("/");
                   setMenuOpen(false);
                 }}
-                className="py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 hover:scale-105 transition-all"
+                className="py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 hover:scale-105 transition-all whitespace-nowrap"
               >
                 Logout
               </button>
@@ -165,7 +165,7 @@ const Navbar = () => {
                   navigate(hasAccount ? "/login" : "/register");
                   setMenuOpen(false);
                 }}
-                className="py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 hover:scale-105 transition-all"
+                className="py-2 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 hover:scale-105 transition-all whitespace-nowrap"
               >
                 {hasAccount ? "Login" : "Get Started"}
               </button>
