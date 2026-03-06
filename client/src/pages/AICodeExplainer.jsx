@@ -103,24 +103,25 @@ const AICodeExplainer = () => {
                 readOnly={!!explanation}
                 className="w-full mt-4 bg-transparent outline-none text-sm placeholder:text-white/40 border-b border-white/30 pb-1"
               />
-              <div className="flex justify-end mt-6">
+
+              <div className="flex justify-end mt-6 gap-3">
                 {explanation ? (
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2"
+                    className="px-4 py-1.5 text-sm rounded-lg font-semibold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border border-white/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2"
                   >
-                    <RotateCcw className="w-5 h-5" /> Reset
+                    <RotateCcw className="w-4 h-4" /> Reset
                   </button>
                 ) : (
                   <button
                     type="submit"
                     disabled={loading || !code.trim()}
-                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed"
+                    className="px-4 py-1.5 text-sm rounded-lg font-semibold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border border-white/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed"
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="animate-spin w-5 h-5" />{" "}
+                        <Loader2 className="animate-spin w-4 h-4" />
                         Processing...
                       </>
                     ) : (
@@ -162,7 +163,7 @@ const AICodeExplainer = () => {
                     </button>
                   </div>
 
-                  <div className="text-gray-200 font-sans text-[15px] leading-relaxed tracking-wide space-y-4">
+                  <div className="text-gray-200 font-sans text-[15px] leading-relaxed tracking-wide space-y-4 max-h-[450px] overflow-y-auto custom-scrollbar">
                     {explanation.split("\n").map((line, index) => {
                       if (line.trim().startsWith("###")) {
                         return (

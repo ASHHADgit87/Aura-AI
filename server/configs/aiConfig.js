@@ -16,6 +16,12 @@ export const aiConfig = {
     apiKey: process.env.GEMINI_API_KEY,
     model: "gemini-2.5-flash",
   },
+
+  codeAI: {
+    apiKey: process.env.OPENROUTER_API_KEY,
+    apiUrl: "https://openrouter.ai/api/v1/chat/completions",
+    model: "deepseek/deepseek-chat",
+  },
 };
 export const briaConfig = {
   apiKey: process.env.BRIA_BG_API_KEY,
