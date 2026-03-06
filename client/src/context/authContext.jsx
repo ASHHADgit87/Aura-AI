@@ -62,11 +62,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const checkUser = async () => {
-    if (!token) {
-      setHasAccount(false);
-      setLoading(false);
-      return;
-    }
+  if (!token) {
+    setLoading(false);
+    return;
+  }
 
     try {
       const { data } = await api.get("/api/user/me");
