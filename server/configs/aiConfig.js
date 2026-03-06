@@ -22,6 +22,12 @@ export const aiConfig = {
     apiUrl: "https://openrouter.ai/api/v1/chat/completions",
     model: "deepseek/deepseek-chat",
   },
+
+  grammarAI: {
+    apiKey: process.env.OPENROUTER_API_KEY,
+    apiUrl: "https://openrouter.ai/api/v1/chat/completions",
+    model: "meta-llama/llama-3.3-70b-instruct",
+  },
 };
 export const briaConfig = {
   apiKey: process.env.BRIA_BG_API_KEY,

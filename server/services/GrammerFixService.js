@@ -1,44 +1,69 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import axios from "axios";
 import { aiConfig } from "../configs/aiConfig.js";
-
-const genAI = new GoogleGenerativeAI(aiConfig.gemini.apiKey);
 
 export const fixGrammarAI = async (text) => {
   try {
-    const model = genAI.getGenerativeModel({ model: aiConfig.gemini.model });
+    const systemInstruction = `
+You are a grammar expert.
 
-    const prompt = `
-      Analyze the following text for grammar, spelling, and punctuation errors:
-      "${text}"
+Analyze the following text for grammar, spelling, and punctuation errors.
+Return ONLY valid JSON with the EXACT structure:
 
-      Return ONLY a JSON object with this exact structure:
+{
+  "fixedText": "The corrected full text",
+  "matches": [
+    {
+      "message": "Description of the error",
+      "rule": {
+        "description": "Type of error"
+      },
+      "context": {
+        "text": "Original context text",
+        "offset": 0,
+        "length": 0
+      },
+      "replacements": [
+        { "value": "Corrected text" }
+      ]
+    }
+  ]
+}
+No extra text. No explanation outside JSON.
+`;
+
+    const userPrompt = `
+Text to fix: """${text}"""
+`;
+
+    const response = await axios.post(
+      aiConfig.grammarAI.apiUrl,
       {
-        "fixedText": "The entire text with all corrections applied",
-        "matches": [
-          {
-            "message": "Description of the error",
-            "rule": { "description": "Type of error (e.g., Spelling, Punctuation, Verb Tense)" },
-            "context": {
-              "text": "The original text surrounding the error",
-              "offset": 0,
-              "length": 5
-            },
-            "replacements": [{ "value": "Corrected word/phrase" }]
-          }
-        ]
-      }
-      If there are no errors, "matches" should be an empty array [].
-    `;
+        model: aiConfig.grammarAI.model,
+        messages: [
+          { role: "system", content: systemInstruction },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.1,
+        max_tokens: 1500,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${aiConfig.grammarAI.apiKey}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const jsonString = response
-      .text()
+    const jsonText = response.data.choices[0].message.content
       .replace(/```json|```/g, "")
       .trim();
-    return JSON.parse(jsonString);
+
+    return JSON.parse(jsonText);
   } catch (error) {
-    console.error("Grammar Fix Service Error:", error);
+    console.error(
+      "Grammar Fix Service Error:",
+      error.response?.data || error.message,
+    );
     throw new Error("Failed to analyze grammar.");
   }
 };

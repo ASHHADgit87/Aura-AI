@@ -16,9 +16,7 @@ const GrammarFixer = () => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      if (!loading && inputText.trim()) {
-        onSubmitHandler(e);
-      }
+      checked ? onResetHandler() : onSubmitHandler(e);
     }
   };
 
@@ -30,12 +28,15 @@ const GrammarFixer = () => {
       setMatches([]);
       setFixedText("");
       setChecked(false);
+
       const { data } = await api.post("/api/features/grammer-fix", {
         text: inputText,
       });
+
       setMatches(data.matches || []);
       setFixedText(data.fixedText || inputText);
       setChecked(true);
+
       if ((data.matches || []).length === 0)
         toast.success("No grammar issues found!");
       else toast.success(`Found ${data.matches.length} issue(s)`);
@@ -46,19 +47,19 @@ const GrammarFixer = () => {
     }
   };
 
+  const onResetHandler = () => {
+    setInputText("");
+    setMatches([]);
+    setFixedText("");
+    setChecked(false);
+  };
+
   const onCopyHandler = () => {
     if (!fixedText) return;
     navigator.clipboard.writeText(fixedText);
     setCopied(true);
     toast.success("Copied!");
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const onResetHandler = () => {
-    setInputText("");
-    setMatches([]);
-    setFixedText("");
-    setChecked(false);
   };
 
   const applyAllFixes = () => {
@@ -84,39 +85,17 @@ const GrammarFixer = () => {
               Grammar Fixer
             </h1>
             <p className="text-white/90 text-sm md:text-base max-w-lg mx-auto">
-              Paste your text and Aura AI will find and fix grammar, spelling
+              Paste your text and Aura AI will find and fix grammar, spelling,
               and punctuation errors.
             </p>
           </div>
 
-          <div className="w-full max-w-3xl">
+          <div className="w-full max-w-3xl relative">
             <form
-              onSubmit={onSubmitHandler}
+              onSubmit={checked ? (e) => e.preventDefault() : onSubmitHandler}
               className="bg-black/30 border border-white/20 rounded-2xl p-6 backdrop-blur-xl flex flex-col gap-4"
             >
-              <div
-                className="bg-white/5 border border-white/10 rounded-xl p-4 transition-all backdrop-blur-lg"
-                onFocus={(e) =>
-                  (e.currentTarget.style.borderColor = "rgba(255,122,24,0.4)")
-                }
-                onBlur={(e) =>
-                  (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")
-                }
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-xs uppercase tracking-widest text-white/40">
-                    Your Text
-                  </p>
-                  {inputText && (
-                    <button
-                      type="button"
-                      onClick={onResetHandler}
-                      className="flex items-center gap-1.5 px-3 py-1 bg-white/10 hover:bg-white/15 rounded-lg text-xs transition-all"
-                    >
-                      <RotateCcw className="w-3 h-3" /> Clear
-                    </button>
-                  )}
-                </div>
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4 transition-all backdrop-blur-lg relative">
                 <textarea
                   value={inputText}
                   onChange={(e) => {
@@ -127,28 +106,33 @@ const GrammarFixer = () => {
                   onKeyDown={handleKeyDown}
                   rows={7}
                   placeholder="Paste or type your text here to check for grammar mistakes..."
+                  readOnly={checked}
                   className="bg-transparent outline-none text-white/90 placeholder:text-white/40 resize-none w-full text-sm"
                 />
                 <p className="text-xs mt-2 text-right text-white/30">
                   {inputText.length} chars ·{" "}
                   {inputText.trim().split(/\s+/).filter(Boolean).length} words
                 </p>
-              </div>
 
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={loading || !inputText.trim()}
-                  className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg"
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="animate-spin w-5 h-5" /> Checking...
-                    </>
-                  ) : (
-                    "Check Grammar"
-                  )}
-                </button>
+                <div className="flex justify-end mt-2">
+                  <button
+                    type="submit"
+                    disabled={loading || (!inputText.trim() && !checked)}
+                    className="px-4 py-1.5 text-sm rounded-lg font-semibold text-white bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border border-white/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="animate-spin w-4 h-4" /> Checking...
+                      </>
+                    ) : checked ? (
+                      <span className="flex items-center gap-1">
+                        <RotateCcw className="w-4 h-4" /> Reset
+                      </span>
+                    ) : (
+                      "Check Grammar"
+                    )}
+                  </button>
+                </div>
               </div>
             </form>
           </div>
