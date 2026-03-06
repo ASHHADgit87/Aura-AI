@@ -60,7 +60,7 @@ const BubbleField = ({ count = 500 }) => {
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAppContext();
+  const { login, hasAccount } = useAppContext();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
 
@@ -183,6 +183,17 @@ const Login = () => {
               Sign up for free
             </Link>
           </p>
+
+          {hasAccount && (
+            <div className="mt-6 text-center">
+              <button
+                onClick={() => navigate("/settings")}
+                className="text-xs text-red-400 hover:text-red-300 underline transition"
+              >
+                Delete current account
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>
