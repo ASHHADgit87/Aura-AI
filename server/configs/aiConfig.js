@@ -26,10 +26,11 @@ export const aiConfig = {
 export const briaConfig = {
   apiKey: process.env.BRIA_BG_API_KEY,
 };
+
 export const aiConfigTranslator = {
-  gemini: {
-    apiKey: process.env.TRANSLATOR_KEY,
-    model: "gemini-2.5-flash",
+  translateAPI: {
+    url: process.env.TRANSLATEAPI_URL,
+    apiKey: process.env.TRANSLATEAPI_KEY,
   },
 };
 export const scraperConfig = {
