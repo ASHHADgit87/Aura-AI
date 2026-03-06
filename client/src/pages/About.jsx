@@ -188,7 +188,7 @@ const About = () => {
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-24">
         <section className="text-center mb-32">
-          <h1 className="text-6xl md:text-8xl font-black mb-8 tracking-tighter">
+          <h1 className="text-6xl md:text-8xl font-black mb-8 tracking-tighter whitespace-nowrap">
             Meet{" "}
             <span className="bg-gradient-to-r from-[#FF7A18] via-[#E10600] to-[#FF4DA6] bg-clip-text text-transparent">
               Aura-AI
