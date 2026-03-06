@@ -123,7 +123,7 @@ const About = () => {
     },
     {
       title: "Grammar Fixer",
-      model: "Gemini API",
+      model: "meta-llama/llama-3.3-70b",
       description:
         "Deep analysis of grammar and style with one-click automated fixes.",
       about:
