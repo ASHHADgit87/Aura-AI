@@ -113,26 +113,26 @@ const WebScraper = () => {
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white   
+                    className="px-4 py-1.5 text-sm rounded-lg font-semibold text-white   
                     bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
-                    border-2 border-white/30 hover:border-white/70 
-                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg flex items-center justify-center gap-2"
+                    border border-white/30 hover:border-white/70 
+                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-md flex items-center gap-2"
                   >
-                    <RotateCcw className="w-5 h-5" /> Reset
+                    <RotateCcw className="w-4 h-4" /> Reset
                   </button>
                 ) : (
                   <button
                     type="submit"
                     disabled={loading || !url.trim()}
-                    className="w-full sm:w-auto px-5 py-1.5 rounded-xl font-semibold text-white   
+                    className="px-4 py-1.5 text-sm rounded-lg font-semibold text-white   
                     bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 
-                    border-2 border-white/30 hover:border-white/70 
-                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg flex items-center justify-center gap-2
+                    border border-white/30 hover:border-white/70 
+                    hover:scale-105 active:scale-95 transition-all duration-300 shadow-md flex items-center gap-2
                     disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="animate-spin w-5 h-5" /> Scraping...
+                        <Loader2 className="animate-spin w-4 h-4" /> Scraping...
                       </>
                     ) : (
                       "Scrape Page"
