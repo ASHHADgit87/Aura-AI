@@ -67,13 +67,12 @@ const DeletePage = () => {
 
     try {
       setLoading(true);
+
       const { data } = await api.delete("/api/user/delete-account");
 
       if (data.success) {
         toast.success("Account deleted successfully.");
-
         navigate("/", { replace: true });
-
         setTimeout(() => {
           localStorage.removeItem("aura_user_exists");
           deleteAccountCleanup();

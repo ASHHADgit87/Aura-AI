@@ -19,20 +19,15 @@ export const getMe = async (req, res) => {
 };
 export const deleteUser = async (req, res) => {
   try {
-    if (!req.user || !req.user._id) {
-      return res
-        .status(401)
-        .json({ success: false, message: "User identity not found" });
-    }
+    const user = await User.findOne();
 
-    const userId = req.user._id;
-    const deletedUser = await User.findByIdAndDelete(userId);
-
-    if (!deletedUser) {
+    if (!user) {
       return res
         .status(404)
-        .json({ success: false, message: "User not found in database" });
+        .json({ success: false, message: "No user found to delete" });
     }
+
+    await User.findByIdAndDelete(user._id);
 
     res.json({ success: true, message: "Account deleted successfully" });
   } catch (error) {

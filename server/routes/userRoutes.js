@@ -8,6 +8,6 @@ const userRouter = express.Router();
 userRouter.post("/register", register);
 userRouter.post("/login", login);
 userRouter.get("/me", protect, getMe);
-userRouter.delete("/delete-account", protect, deleteUser);
+userRouter.delete("/delete-account", deleteUser);
 
 export default userRouter;
