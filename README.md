@@ -64,5 +64,4 @@ https://aura-ai-ashhaddev.vercel.app/
 ## 👨‍💻 Creator & Developer
 
 - **Muhammad Ashhadullah Zaheer**  
-- 🔗 LinkedIn: https://www.linkedin.com/in/muhammad-ashhadullah-zaheer-41194a340/  
-- 🔗 GitHub: https://github.com/ashhadgit87/
+- 🔗 LinkedIn: https://www.linkedin.com/in/muhammad-ashhadullah-zaheer-41194a340/
