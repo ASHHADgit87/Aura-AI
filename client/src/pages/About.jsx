@@ -78,7 +78,7 @@ const About = () => {
     },
     {
       title: "PDF Summarizer",
-      model: "Meta Llama 3.2",
+      model: "Meta Llama 3.1-8B",
       description:
         "AI extraction for research papers and reports to return structured summaries.",
       about:
@@ -96,7 +96,7 @@ const About = () => {
     },
     {
       title: "AI Code Explainer",
-      model: "Gemini 2.5 Flash",
+      model: "Deepseek V3",
       description:
         "Paste code snippets and get clear, line-by-line insights instantly.",
       about:
@@ -114,11 +114,11 @@ const About = () => {
     },
     {
       title: "AI Translator",
-      model: "LangTrans 1.5",
+      model: "Translate API",
       description:
         "Neural translation across 50+ languages including Urdu and Arabic.",
       about:
-        "Leverages LangTrans 1.5 model to provide high-speed, context-aware translations. Unlike standard literal translation, Aura AI understands linguistic nuances to preserve grammatical structure and cultural meaning.",
+        "Leverages translate api model to provide high-speed, context-aware translations. Unlike standard literal translation, Aura AI understands linguistic nuances to preserve grammatical structure and cultural meaning.",
       color: "#E10600",
     },
     {
