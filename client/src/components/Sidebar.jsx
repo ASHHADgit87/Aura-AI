@@ -28,7 +28,7 @@ const Sidebar = () => {
       <aside
         className="flex flex-col min-h-screen transition-all duration-300"
         style={{
-          width: collapsed ? (window.innerWidth <= 768 ? "50px" : "70px") : "240px",
+          width: collapsed ? (window.innerWidth <= 768 ? "35px" : "70px") : "240px",
           background: "linear-gradient(180deg, #FF7A18 0%, #E10600 60%)",
         }}
       >
