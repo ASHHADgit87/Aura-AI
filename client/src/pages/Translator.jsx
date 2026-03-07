@@ -300,18 +300,19 @@ const Translator = () => {
                 <RotateCcw className="w-4 h-4" /> Reset
               </button>
               <button
-                type="button"
-                disabled
-                className="px-5 py-1.5 rounded-xl font-semibold text-white flex items-center gap-2 bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 disabled:cursor-not-allowed transition-all"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="animate-spin w-5 h-5" /> Translating...
-                  </>
-                ) : (
-                  "Translate"
-                )}
-              </button>
+  type="button"
+  onClick={onTranslateHandler}
+  disabled={loading || !inputText.trim()}
+  className="px-5 py-1.5 rounded-xl font-semibold text-white flex items-center gap-2 bg-gradient-to-r from-orange-500 via-red-600 to-pink-500 border-2 border-white/30 hover:border-white/70 disabled:cursor-not-allowed transition-all"
+>
+  {loading ? (
+    <>
+      <Loader2 className="animate-spin w-5 h-5" /> Translating...
+    </>
+  ) : (
+    "Translate"
+  )}
+</button>
             </div>
           </form>
         </section>
