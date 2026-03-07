@@ -75,7 +75,7 @@ const Home = () => {
           "linear-gradient(180deg, #FF7A18 0%, #E10600 40%, #E10600 80%, #FF4DA6 100%)",
       }}
     >
-      <h1 className="text-center text-4xl md:text-6xl font-bold mt-24 max-w-4xl leading-tight">
+      <h1 className="text-center text-4xl md:text-6xl font-bold mt-24 max-w-3xl leading-tight">
         All your AI tools on one Platform - Experience The Ultimate Aura AI
       </h1>
 
