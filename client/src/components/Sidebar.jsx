@@ -16,11 +16,22 @@ const navItems = [
 const Sidebar = () => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    if (window.innerWidth <= 768) {
-      setCollapsed(true);
-    }
+    const checkScreen = () => {
+      if (window.innerWidth <= 768) {
+        setIsMobile(true);
+        setCollapsed(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+
+    return () => window.removeEventListener("resize", checkScreen);
   }, []);
 
   return (
@@ -28,11 +39,11 @@ const Sidebar = () => {
       <aside
         className="flex flex-col min-h-screen transition-all duration-300"
         style={{
-          width: collapsed ? (window.innerWidth <= 768 ? "35px" : "70px") : "240px",
+          width: collapsed ? (isMobile ? "40px" : "70px") : "240px",
           background: "linear-gradient(180deg, #FF7A18 0%, #E10600 60%)",
         }}
       >
-        <div className="flex items-center justify-between px-4 py-6">
+        <div className="flex items-center justify-between px-2 py-6">
           {!collapsed && (
             <Link
               to="/"
@@ -48,13 +59,13 @@ const Sidebar = () => {
 
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/10 hover:bg-white/20 text-white text-sm transition-all"
+            className="w-7 h-7 flex items-center justify-center rounded-lg bg-black/10 hover:bg-white/20 text-white text-sm transition-all"
           >
             {collapsed ? "→" : "←"}
           </button>
         </div>
 
-        <nav className="flex flex-col gap-2 px-3 mt-6">
+        <nav className="flex flex-col gap-2 px-2 mt-6">
           {navItems.map((item) => {
             const isActive = location.pathname === item.route;
 
@@ -62,7 +73,7 @@ const Sidebar = () => {
               <Link
                 key={item.route}
                 to={item.route}
-                className="px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-3"
+                className="px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-3"
                 style={
                   isActive
                     ? {
