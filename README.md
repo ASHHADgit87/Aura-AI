@@ -16,6 +16,22 @@ Aura AI follows the **Software as a Service (SaaS)** model by providing centrall
 
 ---
 
+## 🔐 Authentication & Security
+
+Aura AI includes a **custom-built authentication system** designed to handle many real-world security scenarios commonly addressed in production applications.
+
+Key implementations include:
+
+- Custom **JWT-based authentication** with secure token generation  
+- **Token expiration handling and automatic session logout**  
+- Protected API routes using authentication middleware  
+- Secure password hashing using **bcrypt**  
+- Account existence tracking to improve authentication UX  
+
+This authentication system was designed to simulate **industry-level security workflows**, addressing many common edge cases encountered in modern SaaS platforms.
+
+---
+
 ## ✨ Features
 
 ### 🎨 Frontend
